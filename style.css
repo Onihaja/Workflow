@@ -1,0 +1,206 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: #F5F0EA;
+  color: #2a2a2a;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: #fff;
+  text-align: center;
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid #e8e2d9;
+}
+
+.logo-main {
+  font-family: 'Arial', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #1a1a1a;
+}
+
+.logo-sub {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #888;
+  margin-top: 4px;
+  font-family: 'Arial', sans-serif;
+}
+
+.dept-label {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #aaa;
+  font-family: 'Arial', sans-serif;
+  text-transform: uppercase;
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 560px;
+  margin: 36px auto;
+  padding: 0 20px;
+}
+
+/* ── CARD ── */
+.card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 32px;
+  margin-bottom: 24px;
+  border: 1px solid #e8e2d9;
+}
+
+.card-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── FORMULAIRE ── */
+.field {
+  margin-bottom: 18px;
+}
+
+label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #999;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-family: 'Arial', sans-serif;
+}
+
+input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-size: 14px;
+  background: #faf8f5;
+  color: #2a2a2a;
+  font-family: 'Arial', sans-serif;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #999;
+  background: #fff;
+}
+
+/* ── BOUTONS ── */
+button.main-btn {
+  width: 100%;
+  padding: 14px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+button.main-btn:hover {
+  background: #333;
+}
+
+button.main-btn.light {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+  margin-top: 16px;
+}
+
+button.main-btn.light:hover {
+  background: #f5f0ea;
+}
+
+/* ── MESSAGES ── */
+.msg {
+  margin-top: 14px;
+  font-size: 12px;
+  padding: 10px 14px;
+  border-radius: 2px;
+  display: none;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 1px;
+}
+
+.msg.success {
+  background: #f0f5e8;
+  color: #3a5a1a;
+  display: block;
+  border-left: 3px solid #7a9a4a;
+}
+
+.msg.error {
+  background: #fdf0f0;
+  color: #7a2a2a;
+  display: block;
+  border-left: 3px solid #c87a7a;
+}
+
+/* ── QR CODE ── */
+.qr-card {
+  text-align: center;
+}
+
+#qr-box {
+  display: inline-block;
+  margin: 24px auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e8e2d9;
+}
+
+.qr-meta {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+  line-height: 2;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 1px;
+}
+
+.qr-meta strong {
+  color: #1a1a1a;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.qr-id {
+  margin-top: 12px;
+  font-size: 10px;
+  color: #bbb;
+  letter-spacing: 1px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── IMPRESSION ── */
+@media print {
+  body { background: #fff; }
+  header .dept-label,
+  .card:first-of-type,
+  button.light { display: none; }
+  .card { border: none; box-shadow: none; }
+}
