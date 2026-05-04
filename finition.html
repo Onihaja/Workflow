@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akanjo Madagascar — Finition</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo-main">AKANJO</div>
+  <div class="logo-sub">MADAGASCAR</div>
+  <div class="dept-label">Pôle Finition</div>
+</header>
+
+<div class="container">
+
+  <!-- Étape 1 : Opérateur -->
+  <div class="card" id="card-operateur">
+    <div class="card-title">Opérateur</div>
+    <div class="field">
+      <label>Votre nom *</label>
+      <input type="text" id="operateur" placeholder="ex: Paul Martin">
+    </div>
+    <button class="main-btn" onclick="validerOperateur()">Continuer</button>
+    <div class="msg" id="msg-operateur"></div>
+  </div>
+
+  <!-- Étape 2 : Scan -->
+  <div class="card" id="card-scan" style="display:none">
+    <div class="card-title">Scanner une pièce</div>
+
+    <div id="reader"></div>
+    <button class="main-btn" id="btn-scan" onclick="demarrerScan()">
+      📷 &nbsp; Démarrer la caméra
+    </button>
+
+    <div class="divider">ou saisir manuellement</div>
+
+    <div class="field">
+      <label>ID de la pièce</label>
+      <input type="text" id="input-id" placeholder="Collez l'ID ici...">
+    </div>
+    <button class="main-btn light" onclick="rechercherPiece()">Rechercher</button>
+    <div class="msg" id="msg-scan"></div>
+  </div>
+
+  <!-- Étape 3 : Infos + actions -->
+  <div class="card" id="card-piece" style="display:none">
+    <div class="card-title">Pièce scannée</div>
+    <div class="piece-info" id="piece-info"></div>
+    <div class="actions-title">Action à effectuer</div>
+    <div class="actions-grid" id="actions-grid"></div>
+    <div class="msg" id="msg-action"></div>
+    <button class="main-btn light" onclick="nouveauScan()" style="margin-top:20px">
+      ← Nouvelle pièce
+    </button>
+  </div>
+
+  <!-- Étape 4 : Confirmation -->
+  <div class="card confirm-card" id="card-confirm" style="display:none">
+    <div class="confirm-icon">✓</div>
+    <div class="confirm-title" id="confirm-title"></div>
+    <div class="confirm-sub" id="confirm-sub"></div>
+    <button class="main-btn" onclick="nouveauScan()" style="margin-top:28px">
+      Scanner une autre pièce
+    </button>
+  </div>
+
+</div>
+
+<script src="scan.js"></script>
+<script>
+  const DEPT_ID  = 4
+  const DEPT_NOM = 'Pôle Finition'
+  const ACTIONS  = [
+    {
+      id:     'entree_finition',
+      label:  'Entrée finition',
+      desc:   'Pièce bonne — venant de qualité',
+      style:  'green',
+      requis: ['entree_qualite', 'fin_retouche']
+    },
+    {
+      id:     'a_retoucher',
+      label:  'À retoucher',
+      desc:   'Défaut détecté — retour production',
+      style:  'red',
+      requis: ['entree_finition']
+    },
+    {
+      id:     'retour_retouche',
+      label:  'Retour retouche',
+      desc:   'Renvoi vers l\'atelier',
+      style:  'amber',
+      requis: ['a_retoucher']
+    },
+    {
+      id:     'sortie_finition',
+      label:  'Sortie finition',
+      desc:   'Pièce conforme — envoyée au Packing',
+      style:  'green',
+      requis: ['entree_finition']
+    }
+  ]
+</script>
+
+</body>
+</html>
