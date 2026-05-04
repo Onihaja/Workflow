@@ -3,178 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Akanjo Madagascar</title>
+  <title>Akanjo Madagascar — Coupe</title>
+
+  <link rel="stylesheet" href="style.css">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Georgia', serif;
-      background: #F5F0EA;
-      color: #2a2a2a;
-      min-height: 100vh;
-    }
-
-    /* HEADER */
-    header {
-      background: #fff;
-      text-align: center;
-      padding: 28px 24px 20px;
-      border-bottom: 1px solid #e8e2d9;
-    }
-    .logo-main {
-      font-family: 'Arial', sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 6px;
-      color: #1a1a1a;
-    }
-    .logo-sub {
-      font-size: 11px;
-      letter-spacing: 5px;
-      color: #888;
-      margin-top: 4px;
-      font-family: 'Arial', sans-serif;
-    }
-    .dept-label {
-      margin-top: 10px;
-      font-size: 12px;
-      letter-spacing: 3px;
-      color: #aaa;
-      font-family: 'Arial', sans-serif;
-      text-transform: uppercase;
-    }
-
-    /* CONTAINER */
-    .container {
-      max-width: 560px;
-      margin: 36px auto;
-      padding: 0 20px;
-    }
-
-    /* CARD */
-    .card {
-      background: #fff;
-      border-radius: 4px;
-      padding: 32px;
-      margin-bottom: 24px;
-      border: 1px solid #e8e2d9;
-    }
-
-    .card-title {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: #999;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      font-family: 'Arial', sans-serif;
-    }
-
-    /* FORM */
-    .field { margin-bottom: 18px; }
-    label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: #999;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 6px;
-      font-family: 'Arial', sans-serif;
-    }
-    input {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1px solid #ddd;
-      border-radius: 2px;
-      font-size: 14px;
-      background: #faf8f5;
-      color: #2a2a2a;
-      font-family: 'Arial', sans-serif;
-      transition: border-color 0.2s;
-    }
-    input:focus {
-      outline: none;
-      border-color: #999;
-      background: #fff;
-    }
-
-    /* BUTTON */
-    button.main-btn {
-      width: 100%;
-      padding: 14px;
-      background: #1a1a1a;
-      color: #fff;
-      border: none;
-      border-radius: 2px;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: 'Arial', sans-serif;
-      margin-top: 8px;
-      transition: background 0.2s;
-    }
-    button.main-btn:hover { background: #333; }
-    button.main-btn.light {
-      background: transparent;
-      color: #1a1a1a;
-      border: 1px solid #1a1a1a;
-      margin-top: 16px;
-    }
-    button.main-btn.light:hover { background: #f5f0ea; }
-
-    /* MESSAGES */
-    .msg {
-      margin-top: 14px;
-      font-size: 12px;
-      padding: 10px 14px;
-      border-radius: 2px;
-      display: none;
-      font-family: 'Arial', sans-serif;
-      letter-spacing: 1px;
-    }
-    .msg.success { background: #f0f5e8; color: #3a5a1a; display: block; border-left: 3px solid #7a9a4a; }
-    .msg.error   { background: #fdf0f0; color: #7a2a2a; display: block; border-left: 3px solid #c87a7a; }
-
-    /* QR SECTION */
-    .qr-card { text-align: center; }
-    #qr-box {
-      display: inline-block;
-      margin: 24px auto;
-      padding: 20px;
-      background: #fff;
-      border: 1px solid #e8e2d9;
-    }
-    .qr-meta {
-      margin-top: 8px;
-      font-size: 12px;
-      color: #666;
-      line-height: 2;
-      font-family: 'Arial', sans-serif;
-      letter-spacing: 1px;
-    }
-    .qr-meta strong {
-      color: #1a1a1a;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .qr-id {
-      margin-top: 12px;
-      font-size: 10px;
-      color: #bbb;
-      letter-spacing: 1px;
-      font-family: 'Arial', sans-serif;
-    }
-
-    /* PRINT */
-    @media print {
-      body { background: #fff; }
-      header .dept-label, .card:first-of-type, button.light { display: none; }
-      .card { border: none; box-shadow: none; }
-    }
-  </style>
 </head>
 <body>
 
@@ -185,17 +19,17 @@
 
 <div class="container">
 
-  <!-- Formulaire -->
+  <!-- Formulaire création pièce -->
   <div class="card">
     <div class="card-title">Nouvelle pièce</div>
 
     <div class="field">
       <label>Client *</label>
-      <input type="text" id="client" placeholder="ex: Chloe, ...">
+      <input type="text" id="client" placeholder="ex: Zara, H&M...">
     </div>
     <div class="field">
       <label>Référence *</label>
-      <input type="text" id="reference" placeholder="ex: REF-26UR137-26U001">
+      <input type="text" id="reference" placeholder="ex: REF-2024-001">
     </div>
     <div class="field">
       <label>Désignation *</label>
@@ -203,18 +37,18 @@
     </div>
     <div class="field">
       <label>Couleur</label>
-      <input type="text" id="couleur" placeholder="ex: NR6AQ">
+      <input type="text" id="couleur" placeholder="ex: Bleu marine">
     </div>
     <div class="field">
       <label>Taille</label>
-      <input type="text" id="taille" placeholder="ex: T36, T38, ...">
+      <input type="text" id="taille" placeholder="ex: M, L, XL, 38">
     </div>
 
     <button class="main-btn" onclick="creerPiece()">Générer le QR code</button>
     <div class="msg" id="msg"></div>
   </div>
 
-  <!-- QR Code -->
+  <!-- QR Code généré -->
   <div class="card qr-card" id="qr-card" style="display:none">
     <div class="card-title">QR Code</div>
     <div id="qr-box"></div>
@@ -224,92 +58,7 @@
 
 </div>
 
-<script>
-  const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
-
-  const { createClient } = supabase
-  const db = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-  async function creerPiece() {
-    const client      = document.getElementById('client').value.trim()
-    const reference   = document.getElementById('reference').value.trim()
-    const designation = document.getElementById('designation').value.trim()
-    const couleur     = document.getElementById('couleur').value.trim()
-    const taille      = document.getElementById('taille').value.trim()
-    const msg         = document.getElementById('msg')
-
-    if (!client || !reference || !designation) {
-      msg.className = 'msg error'
-      msg.textContent = 'Client, référence et désignation sont obligatoires.'
-      return
-    }
-
-    const { data, error } = await db.from('produits').insert([{
-      client,
-      reference,
-      designation,
-      couleur:     couleur || null,
-      taille:      taille  || null,
-      etat_actuel: 'créé'
-    }]).select().single()
-
-    if (error) {
-      msg.className = 'msg error'
-      msg.textContent = error.code === '23505'
-        ? 'Cette référence existe déjà.'
-        : 'Erreur : ' + error.message
-      return
-    }
-
-    await db.from('mouvements').insert([{
-      produit_id:     data.id,
-      departement_id: 1,
-      action:         'creation'
-    }])
-
-    msg.className = 'msg success'
-    msg.textContent = 'Pièce créée avec succès.'
-    genererQR(data)
-  }
-
-  function genererQR(piece) {
-    const contenu = JSON.stringify({
-      id:          piece.id,
-      client:      piece.client,
-      reference:   piece.reference,
-      designation: piece.designation,
-      couleur:     piece.couleur || '-',
-      taille:      piece.taille  || '-'
-    })
-
-    const qrBox  = document.getElementById('qr-box')
-    const qrInfo = document.getElementById('qr-info')
-    const qrCard = document.getElementById('qr-card')
-
-    qrBox.innerHTML = ''
-    new QRCode(qrBox, {
-      text: contenu,
-      width: 220,
-      height: 220,
-      colorDark: '#1a1a1a',
-      colorLight: '#ffffff',
-    })
-
-    qrInfo.innerHTML = `
-      <div><strong>Client</strong> &nbsp; ${piece.client}</div>
-      <div><strong>Réf</strong> &nbsp; ${piece.reference}</div>
-      <div><strong>Désignation</strong> &nbsp; ${piece.designation}</div>
-      <div><strong>Couleur</strong> &nbsp; ${piece.couleur || '—'}</div>
-      <div><strong>Taille</strong> &nbsp; ${piece.taille || '—'}</div>
-      <div class="qr-id">ID : ${piece.id}</div>
-    `
-
-    qrCard.style.display = 'block'
-    qrCard.scrollIntoView({ behavior: 'smooth' })
-  }
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
- 
