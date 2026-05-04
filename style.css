@@ -70,9 +70,7 @@ header {
 }
 
 /* ── FORMULAIRE ── */
-.field {
-  margin-bottom: 18px;
-}
+.field { margin-bottom: 18px; }
 
 label {
   font-size: 11px;
@@ -119,9 +117,7 @@ button.main-btn {
   transition: background 0.2s;
 }
 
-button.main-btn:hover {
-  background: #333;
-}
+button.main-btn:hover { background: #333; }
 
 button.main-btn.light {
   background: transparent;
@@ -130,8 +126,11 @@ button.main-btn.light {
   margin-top: 16px;
 }
 
-button.main-btn.light:hover {
-  background: #f5f0ea;
+button.main-btn.light:hover { background: #f5f0ea; }
+
+button.main-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 /* ── MESSAGES ── */
@@ -159,10 +158,8 @@ button.main-btn.light:hover {
   border-left: 3px solid #c87a7a;
 }
 
-/* ── QR CODE ── */
-.qr-card {
-  text-align: center;
-}
+/* ── QR CODE (page Coupe) ── */
+.qr-card { text-align: center; }
 
 #qr-box {
   display: inline-block;
@@ -194,6 +191,192 @@ button.main-btn.light:hover {
   color: #bbb;
   letter-spacing: 1px;
   font-family: 'Arial', sans-serif;
+}
+
+/* ── SCAN CAMÉRA ── */
+#reader {
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid #e8e2d9;
+  display: none;
+}
+
+.divider {
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #ccc;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  margin: 20px 0;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: #e8e2d9;
+}
+
+.divider::before { left: 0; }
+.divider::after  { right: 0; }
+
+/* ── INFOS PIÈCE ── */
+.piece-info {
+  background: #faf8f5;
+  border: 1px solid #e8e2d9;
+  border-radius: 2px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+
+.piece-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0ece6;
+  font-size: 13px;
+  font-family: 'Arial', sans-serif;
+}
+
+.piece-info-row:last-child { border-bottom: none; }
+
+.piece-info-key {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.piece-info-val {
+  color: #1a1a1a;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* ── BADGE STATUT ── */
+.piece-statut {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+}
+
+.statut-cree       { background: #f0ece6; color: #888; }
+.statut-en-cours   { background: #e8f0fb; color: #1a4a8a; }
+.statut-retouche   { background: #fdf0e8; color: #8a3a1a; }
+.statut-conforme   { background: #f0f5e8; color: #3a5a1a; }
+.statut-packing    { background: #1a1a1a; color: #fff; }
+
+/* ── ACTIONS ── */
+.actions-title {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #999;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 12px;
+}
+
+.actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 16px 18px;
+  border-radius: 2px;
+  border: 1px solid;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Arial', sans-serif;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-btn:hover:not(:disabled) { opacity: 0.8; }
+
+.action-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.action-btn-left { flex: 1; }
+
+.action-btn-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.action-btn-desc {
+  font-size: 11px;
+  margin-top: 3px;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+}
+
+.action-btn-arrow {
+  font-size: 18px;
+  opacity: 0.4;
+  margin-left: 12px;
+}
+
+.action-green { background: #f7faf2; border-color: #b8d48a; color: #2a4a0a; }
+.action-red   { background: #fdf5f5; border-color: #e0a8a8; color: #7a1a1a; }
+.action-amber { background: #fdf8f0; border-color: #e0c888; color: #7a4a0a; }
+
+/* ── CONFIRMATION ── */
+.confirm-card {
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.confirm-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f0f5e8;
+  border: 1.5px solid #7a9a4a;
+  color: #3a5a1a;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.confirm-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.confirm-sub {
+  font-size: 13px;
+  color: #999;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.8;
+  letter-spacing: 0.5px;
 }
 
 /* ── IMPRESSION ── */
