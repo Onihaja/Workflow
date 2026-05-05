@@ -702,6 +702,22 @@ select {
   text-shadow: 0 2px 8px rgba(255,255,255,.35);
 }
 
+.login-akanjo {
+  font-family: 'Arial', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #EBE2D6;
+}
+
+.login-mada {
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: #ffffff;
+  margin-top: 4px;
+  font-family: 'Arial', sans-serif;
+}
+
 @media (max-width: 1000px) {
   .login-split { grid-template-columns: 1fr; }
   .login-left { min-height: 42vh; border-right: 0; border-bottom: 2px solid #101010; }
