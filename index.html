@@ -9,6 +9,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -19,36 +20,46 @@
 
 <div class="container">
 
-  <!-- Formulaire création pièce -->
   <div class="card">
     <div class="card-title">Nouvelle pièce</div>
 
+    <div class="field"><label>Client *</label><input type="text" id="client" placeholder="ex: Chloe, Kenzo"></div>
+    <div class="field"><label>Référence *</label><input type="text" id="reference" placeholder="ex: 26TS"></div>
+    <div class="field"><label>Désignation *</label><input type="text" id="designation" placeholder="ex: Robe, Chemise"></div>
+    <div class="field"><label>Couleur</label><input type="text" id="couleur" placeholder="ex: NR001"></div>
+
     <div class="field">
-      <label>Client *</label>
-      <input type="text" id="client" placeholder="ex: Chloe, Kenzo">
-    </div>
-    <div class="field">
-      <label>Référence *</label>
-      <input type="text" id="reference" placeholder="ex: 26UR137, BL442">
-    </div>
-    <div class="field">
-      <label>Désignation *</label>
-      <input type="text" id="designation" placeholder="ex: Robe, Chemise">
-    </div>
-    <div class="field">
-      <label>Couleur</label>
-      <input type="text" id="couleur" placeholder="ex: NR6AQ, NR001">
-    </div>
-    <div class="field">
-      <label>Taille</label>
-      <input type="text" id="taille" placeholder="ex: T38, T40">
+      <label>Chaîne de production *</label>
+      <select id="chaine">
+        <option value="" selected disabled>Sélectionner une chaîne</option>
+        <option value="CH1">CH1</option><option value="CH2">CH2</option><option value="CH3">CH3</option>
+        <option value="CH4">CH4</option><option value="CH5">CH5</option><option value="CH6">CH6</option>
+        <option value="CH7">CH7</option><option value="CH8">CH8</option><option value="CH9">CH9</option>
+        <option value="CH10">CH10</option><option value="CH11">CH11</option><option value="CH12">CH12</option>
+        <option value="CH14">CH14</option><option value="CH15">CH15</option><option value="CH16">CH16</option>
+      </select>
     </div>
 
-    <button class="main-btn" onclick="creerPiece()">Générer le QR code</button>
+    <div class="field">
+      <label>Tailles et quantités *</label>
+      <div class="taille-grid" id="taille-grid">
+        <div class="taille-row"><label class="taille-label" for="qte-T32">T32</label><input id="qte-T32" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T34">T34</label><input id="qte-T34" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T36">T36</label><input id="qte-T36" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T38">T38</label><input id="qte-T38" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T40">T40</label><input id="qte-T40" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T42">T42</label><input id="qte-T42" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T44">T44</label><input id="qte-T44" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T46">T46</label><input id="qte-T46" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T48">T48</label><input id="qte-T48" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T50">T50</label><input id="qte-T50" type="number" min="0" value="0" class="taille-input"></div>
+      </div>
+    </div>
+
+    <button class="main-btn" id="btn-generer-qr" type="button">Générer le QR code</button>
     <div class="msg" id="msg"></div>
   </div>
 
-  <!-- QR Code généré -->
   <div class="card qr-card" id="qr-card" style="display:none">
     <div class="card-title">QR Code</div>
     <div id="qr-box"></div>
