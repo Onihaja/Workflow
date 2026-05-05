@@ -7,7 +7,6 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY)
 const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
 
-
 window.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btn-generer-qr')
   if (btn) {
@@ -92,6 +91,21 @@ async function creerPiece() {
     return
   }
 
+
+
+  if (!client || !reference || !designation || !chaine) {
+    msg.className = 'msg error'
+    msg.textContent = 'Client, référence, désignation et chaîne sont obligatoires.'
+    return
+  }
+
+  if (!taillesQuantites.length) {
+    msg.className = 'msg error'
+    msg.textContent = 'Ajoutez au moins une taille avec une quantité entière > 0.'
+    return
+  }
+
+
   const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
 
   const payloadComplet = {
@@ -173,5 +187,4 @@ function genererQR(piece) {
 
   qrCard.style.display = 'block'
 }
-
 window.creerPiece = creerPiece
