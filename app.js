@@ -1,5 +1,5 @@
-const SUPABASE_URL = window.SUPABASE_CONFIG?.url || window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
-const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url || 'https://VOTRE_URL.supabase.co'
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || 'VOTRE_ANON_KEY'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -7,184 +7,140 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY)
 const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
 
+// ── INIT ──
 window.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('btn-generer-qr')
-  if (btn) {
-    btn.addEventListener('click', (event) => {
-      event.preventDefault()
-      creerPiece()
-    })
-  }
+  document.getElementById('btn-generer-qr')
+    ?.addEventListener('click', (e) => { e.preventDefault(); creerPieces() })
 })
 
-initialiserFormulaire()
-verifierConfigSupabase()
-
-
-function verifierConfigSupabase() {
-  const msg = document.getElementById('msg')
-  const configInvalide = SUPABASE_URL.includes('VOTRE_URL') || SUPABASE_KEY.includes('VOTRE_ANON_KEY')
-
-  if (configInvalide) {
-    msg.className = 'msg error'
-    msg.textContent = 'Configuration Supabase manquante. Renseignez supabase-config.js (url + anonKey).'
-  }
-}
-
-function initialiserFormulaire() {
-  const select = document.getElementById('chaine')
-  if (!select.options.length) {
-    const placeholder = document.createElement('option')
-    placeholder.value = ''
-    placeholder.textContent = 'Sélectionner une chaîne'
-    placeholder.disabled = true
-    placeholder.selected = true
-    select.appendChild(placeholder)
-
-    CHAINES.forEach((chaine) => {
-      const option = document.createElement('option')
-      option.value = chaine
-      option.textContent = chaine
-      select.appendChild(option)
-    })
-  }
-
-  const tailleGrid = document.getElementById('taille-grid')
-  if (!tailleGrid.children.length) {
-    TAILLES.forEach((taille) => {
-      const row = document.createElement('div')
-      row.className = 'taille-row'
-      row.innerHTML = `
-        <label class="taille-label" for="qte-${taille}">${taille}</label>
-        <input id="qte-${taille}" type="number" min="0" value="0" class="taille-input">
-      `
-      tailleGrid.appendChild(row)
-    })
-  }
-}
-
+// ── RÉCUPÉRER TAILLES/QUANTITÉS ──
 function recupererTaillesQuantites() {
-  return TAILLES.map((taille) => ({
-    taille,
-    quantite: Number(document.getElementById(`qte-${taille}`).value || 0)
-  })).filter((item) => Number.isInteger(item.quantite) && item.quantite > 0)
+  return TAILLES
+    .map(t => ({ taille: t, quantite: parseInt(document.getElementById(`qte-${t}`)?.value || 0) }))
+    .filter(item => item.quantite > 0)
 }
 
-async function creerPiece() {
+// ── CRÉATION — UN PRODUIT PAR PIÈCE INDIVIDUELLE ──
+async function creerPieces() {
   const client      = document.getElementById('client').value.trim()
   const reference   = document.getElementById('reference').value.trim()
   const designation = document.getElementById('designation').value.trim()
   const couleur     = document.getElementById('couleur').value.trim()
   const chaine      = document.getElementById('chaine').value
-  const taillesQuantites = recupererTaillesQuantites()
-  const msg = document.getElementById('msg')
+  const taillesQty  = recupererTaillesQuantites()
 
+  // Validations
   if (!client || !reference || !designation || !chaine) {
-    msg.className = 'msg error'
-    msg.textContent = 'Client, référence, désignation et chaîne sont obligatoires.'
+    afficherMsg('error', 'Client, référence, désignation et chaîne sont obligatoires.')
+    return
+  }
+  if (!taillesQty.length) {
+    afficherMsg('error', 'Ajoutez au moins une taille avec une quantité > 0.')
     return
   }
 
-  if (!taillesQuantites.length) {
-    msg.className = 'msg error'
-    msg.textContent = 'Ajoutez au moins une taille avec une quantité entière > 0.'
-    return
-  }
+  const totalPieces = taillesQty.reduce((sum, item) => sum + item.quantite, 0)
+  const btn = document.getElementById('btn-generer-qr')
+  btn.disabled = true
+  btn.textContent = `Création de ${totalPieces} pièce(s)...`
+  afficherMsg('', '')
 
+  const piecesCreees = []
 
+  try {
+    for (const { taille, quantite } of taillesQty) {
+      for (let i = 0; i < quantite; i++) {
+        const { data, error } = await db.from('produits').insert([{
+          client,
+          reference,
+          designation,
+          couleur:           couleur || null,
+          taille,
+          chaine_production: chaine,
+          etat_actuel:       'creation'
+        }]).select().single()
 
-  if (!client || !reference || !designation || !chaine) {
-    msg.className = 'msg error'
-    msg.textContent = 'Client, référence, désignation et chaîne sont obligatoires.'
-    return
-  }
+        if (error) throw new Error(error.message)
 
-  if (!taillesQuantites.length) {
-    msg.className = 'msg error'
-    msg.textContent = 'Ajoutez au moins une taille avec une quantité entière > 0.'
-    return
-  }
+        await db.from('mouvements').insert([{
+          produit_id:     data.id,
+          departement_id: 1,
+          action:         'creation',
+          operateur:      'Coupe'
+        }])
 
-
-  const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
-
-  const payloadComplet = {
-    client,
-    reference,
-    designation,
-    couleur: couleur || null,
-    chaine_production: chaine,
-    tailles_quantites: taillesQuantites,
-    taille: tailleTexte,
-    etat_actuel: 'créé'
-  }
-
-  let { data, error } = await db.from('produits').insert([payloadComplet]).select().single()
-
-  if (error && String(error.message || '').includes("Could not find the 'chaine_production' column")) {
-    const payloadLegacy = {
-      client,
-      reference,
-      designation,
-      couleur: couleur || null,
-      taille: tailleTexte,
-      etat_actuel: 'créé'
+        piecesCreees.push(data)
+      }
     }
 
-    const retry = await db.from('produits').insert([payloadLegacy]).select().single()
-    data = retry.data
-    error = retry.error
+    afficherMsg('success', `✓ ${piecesCreees.length} pièce(s) créée(s).`)
+    afficherQRCodes(piecesCreees, { client, reference, designation, couleur, chaine })
 
-    if (!error) {
-      msg.className = 'msg error'
-      msg.textContent = "Base non migrée: la pièce est créée sans chaîne/tailles structurées. Exécutez supabase/migration_produits.sql."
-    }
+  } catch (e) {
+    afficherMsg('error', 'Erreur : ' + e.message)
+    btn.disabled = false
+    btn.textContent = 'Générer les QR codes'
   }
-
-  if (error) {
-    msg.className = 'msg error'
-    if (String(error.message || '').toLowerCase().includes('invalid api key')) {
-      msg.textContent = "Erreur Supabase: API key invalide. Vérifiez la clé anon dans app.js / SUPABASE_SETUP.md."
-    } else {
-      msg.textContent = 'Erreur : ' + error.message
-    }
-    return
-  }
-
-  await db.from('mouvements').insert([{ produit_id: data.id, departement_id: 1, action: 'creation' }])
-
-  msg.className = 'msg success'
-  msg.textContent = 'Pièce créée avec succès.'
-  genererQR(data)
 }
 
-function genererQR(piece) {
-  const contenu = JSON.stringify({
-    id: piece.id,
-    reference: piece.reference,
-    chaine_production: piece.chaine_production,
-    tailles_quantites: piece.tailles_quantites
-  })
-
-  const qrBox = document.getElementById('qr-box')
-  const qrInfo = document.getElementById('qr-info')
+// ── AFFICHER LES QR CODES ──
+function afficherQRCodes(pieces, meta) {
   const qrCard = document.getElementById('qr-card')
+  const qrBox  = document.getElementById('qr-box')
+  const qrInfo = document.getElementById('qr-info')
 
   qrBox.innerHTML = ''
-  new QRCode(qrBox, { text: contenu, width: 220, height: 220, colorDark: '#1a1a1a', colorLight: '#ffffff' })
 
-  const taillesText = (piece.tailles_quantites || [])
-    .map((item) => `${item.taille}×${item.quantite}`)
+  const taillesResume = [...new Set(pieces.map(p => p.taille))]
+    .map(t => `${t}×${pieces.filter(p => p.taille === t).length}`)
     .join(', ')
 
   qrInfo.innerHTML = `
-    <div><strong>Client</strong> &nbsp; ${piece.client}</div>
-    <div><strong>Réf</strong> &nbsp; ${piece.reference}</div>
-    <div><strong>Chaîne</strong> &nbsp; ${piece.chaine_production || '—'}</div>
-    <div><strong>Tailles</strong> &nbsp; ${taillesText || '—'}</div>
-    <div class="qr-id">ID : ${piece.id}</div>
+    <div><strong>Client</strong> &nbsp; ${meta.client}</div>
+    <div><strong>Réf</strong> &nbsp; ${meta.reference}</div>
+    <div><strong>Désignation</strong> &nbsp; ${meta.designation}</div>
+    ${meta.couleur ? `<div><strong>Couleur</strong> &nbsp; ${meta.couleur}</div>` : ''}
+    <div><strong>Chaîne</strong> &nbsp; ${meta.chaine}</div>
+    <div><strong>Tailles</strong> &nbsp; ${taillesResume}</div>
+    <div class="qr-id">Total : ${pieces.length} QR codes</div>
   `
 
+  const grid = document.createElement('div')
+  grid.className = 'qr-print-grid'
+
+  pieces.forEach((piece, idx) => {
+    const cell = document.createElement('div')
+    cell.className = 'qr-cell'
+    cell.innerHTML = `
+      <div class="qr-canvas" id="qr-canvas-${piece.id}"></div>
+      <div class="qr-cell-ref">${piece.reference}</div>
+      <div class="qr-cell-detail">${piece.taille} · ${meta.chaine}</div>
+      ${meta.couleur ? `<div class="qr-cell-detail">${meta.couleur}</div>` : ''}
+      <div class="qr-cell-client">${piece.client}</div>
+      <div class="qr-cell-id">#${piece.id}</div>
+    `
+    grid.appendChild(cell)
+
+    setTimeout(() => {
+      new QRCode(document.getElementById(`qr-canvas-${piece.id}`), {
+        text:       String(piece.id),
+        width:      120,
+        height:     120,
+        colorDark:  '#1a1a1a',
+        colorLight: '#ffffff'
+      })
+    }, idx * 20)
+  })
+
+  qrBox.appendChild(grid)
   qrCard.style.display = 'block'
+  qrCard.scrollIntoView({ behavior: 'smooth' })
 }
-window.creerPiece = creerPiece
+
+function afficherMsg(type, texte) {
+  const msg = document.getElementById('msg')
+  msg.className = type ? `msg ${type}` : 'msg'
+  msg.textContent = texte
+}
+
+window.creerPieces = creerPieces
