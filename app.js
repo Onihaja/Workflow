@@ -1,5 +1,10 @@
+codex/implement-authentication-for-users-vytvv3
+const SUPABASE_URL = window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
+const SUPABASE_KEY = window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
+=======
 const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
 const SUPABASE_KEY = '...'
+ main
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -8,6 +13,21 @@ const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
 
 initialiserFormulaire()
+codex/implement-authentication-for-users-vytvv3
+verifierConfigSupabase()
+
+
+function verifierConfigSupabase() {
+  const msg = document.getElementById('msg')
+  const configInvalide = SUPABASE_URL.includes('VOTRE_URL') || SUPABASE_KEY.includes('VOTRE_ANON_KEY')
+
+  if (configInvalide) {
+    msg.className = 'msg error'
+    msg.textContent = 'Configuration Supabase manquante. Renseignez SUPABASE_URL et SUPABASE_KEY (anon) dans app.js.'
+  }
+}
+=======
+ main
 
 function initialiserFormulaire() {
   const select = document.getElementById('chaine')
@@ -67,7 +87,11 @@ async function creerPiece() {
 
   const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
 
+ codex/implement-authentication-for-users-vytvv3
+  const payloadComplet = {
+=======
   const { data, error } = await db.from('produits').insert([{
+ main
     client,
     reference,
     designation,
@@ -76,11 +100,41 @@ async function creerPiece() {
     tailles_quantites: taillesQuantites,
     taille: tailleTexte,
     etat_actuel: 'créé'
-  }]).select().single()
+  }
+
+  let { data, error } = await db.from('produits').insert([payloadComplet]).select().single()
+
+  if (error && String(error.message || '').includes("Could not find the 'chaine_production' column")) {
+    const payloadLegacy = {
+      client,
+      reference,
+      designation,
+      couleur: couleur || null,
+      taille: tailleTexte,
+      etat_actuel: 'créé'
+    }
+
+    const retry = await db.from('produits').insert([payloadLegacy]).select().single()
+    data = retry.data
+    error = retry.error
+
+    if (!error) {
+      msg.className = 'msg error'
+      msg.textContent = "Base non migrée: la pièce est créée sans chaîne/tailles structurées. Exécutez supabase/migration_produits.sql."
+    }
+  }
 
   if (error) {
     msg.className = 'msg error'
+codex/implement-authentication-for-users-vytvv3
+    if (String(error.message || '').toLowerCase().includes('invalid api key')) {
+      msg.textContent = "Erreur Supabase: API key invalide. Vérifiez la clé anon dans app.js / SUPABASE_SETUP.md."
+    } else {
+      msg.textContent = 'Erreur : ' + error.message
+    }
+=======
     msg.textContent = 'Erreur : ' + error.message
+main
     return
   }
 
@@ -89,4 +143,38 @@ async function creerPiece() {
   msg.className = 'msg success'
   msg.textContent = 'Pièce créée avec succès.'
   genererQR(data)
+codex/implement-authentication-for-users-vytvv3
 }
+
+function genererQR(piece) {
+  const contenu = JSON.stringify({
+    id: piece.id,
+    reference: piece.reference,
+    chaine_production: piece.chaine_production,
+    tailles_quantites: piece.tailles_quantites
+  })
+
+  const qrBox = document.getElementById('qr-box')
+  const qrInfo = document.getElementById('qr-info')
+  const qrCard = document.getElementById('qr-card')
+
+  qrBox.innerHTML = ''
+  new QRCode(qrBox, { text: contenu, width: 220, height: 220, colorDark: '#1a1a1a', colorLight: '#ffffff' })
+
+  const taillesText = (piece.tailles_quantites || [])
+    .map((item) => `${item.taille}×${item.quantite}`)
+    .join(', ')
+
+  qrInfo.innerHTML = `
+    <div><strong>Client</strong> &nbsp; ${piece.client}</div>
+    <div><strong>Réf</strong> &nbsp; ${piece.reference}</div>
+    <div><strong>Chaîne</strong> &nbsp; ${piece.chaine_production || '—'}</div>
+    <div><strong>Tailles</strong> &nbsp; ${taillesText || '—'}</div>
+    <div class="qr-id">ID : ${piece.id}</div>
+  `
+
+  qrCard.style.display = 'block'
+}
+=======
+}
+ main
