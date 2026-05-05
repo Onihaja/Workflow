@@ -694,6 +694,14 @@ select {
   color: #888;
 }
 
+.login-brand-overlay {
+  position: absolute;
+  left: 12%;
+  top: 38%;
+  color: #0d0f13;
+  text-shadow: 0 2px 8px rgba(255,255,255,.35);
+}
+
 @media (max-width: 1000px) {
   .login-split { grid-template-columns: 1fr; }
   .login-left { min-height: 42vh; border-right: 0; border-bottom: 2px solid #101010; }
