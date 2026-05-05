@@ -148,8 +148,12 @@ function afficherPiece(piece) {
       <span class="piece-info-val">${piece.couleur || '—'}</span>
     </div>
     <div class="piece-info-row">
-      <span class="piece-info-key">Taille</span>
-      <span class="piece-info-val">${piece.taille || '—'}</span>
+      <span class="piece-info-key">Chaîne</span>
+      <span class="piece-info-val">${piece.chaine_production || '—'}</span>
+    </div>
+    <div class="piece-info-row">
+      <span class="piece-info-key">Tailles</span>
+      <span class="piece-info-val">${formatTailles(piece)}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Statut actuel</span>
@@ -226,7 +230,7 @@ async function effectuerAction(action) {
   document.getElementById('confirm-title').textContent = action.label + ' enregistré'
   document.getElementById('confirm-sub').innerHTML = `
     <strong>${pieceEnCours.reference}</strong><br>
-    ${pieceEnCours.designation} — ${pieceEnCours.couleur || ''} ${pieceEnCours.taille || ''}<br><br>
+    ${pieceEnCours.designation} — ${pieceEnCours.couleur || ''} ${formatTailles(pieceEnCours)}<br><br>
     Par ${operateurNom} · ${DEPT_NOM}
   `
   afficher('card-confirm', true)
@@ -294,4 +298,12 @@ function labelStatut(action) {
 function initScan(deptId, deptNom, actions) {
   // Ces variables sont utilisées dans les fonctions ci-dessus
   // Elles sont définies dans chaque page HTML
+}
+
+
+function formatTailles(piece) {
+  if (Array.isArray(piece.tailles_quantites) && piece.tailles_quantites.length) {
+    return piece.tailles_quantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
+  }
+  return piece.taille || '—'
 }

@@ -387,3 +387,35 @@ button.main-btn:disabled {
   button.light { display: none; }
   .card { border: none; box-shadow: none; }
 }
+
+select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-size: 14px;
+  background: #faf8f5;
+  color: #2a2a2a;
+  font-family: 'Arial', sans-serif;
+}
+
+.taille-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.taille-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.taille-label {
+  margin: 0;
+  min-width: 34px;
+}
+
+.taille-input {
+  padding: 8px 10px;
+}
