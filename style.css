@@ -611,7 +611,7 @@ select {
 
 /* carte */
 .login-card {
-  width: min(390px, 92%);
+  width: min(430px, 82%);
   border-radius: 20px;
   overflow: hidden;
   background: #ffffff;
