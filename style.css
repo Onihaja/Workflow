@@ -396,7 +396,6 @@ button.main-btn:disabled {
   button.light { display: none; }
   .card { border: none; box-shadow: none; }
 }
-
 select {
   width: 100%;
   padding: 11px 14px;
