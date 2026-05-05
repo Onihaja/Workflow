@@ -371,6 +371,15 @@ button.main-btn:disabled {
   margin-bottom: 10px;
 }
 
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
 .confirm-sub {
   font-size: 13px;
   color: #999;
@@ -386,98 +395,6 @@ button.main-btn:disabled {
   .card:first-of-type,
   button.light { display: none; }
   .card { border: none; box-shadow: none; }
-}
-
-select {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  font-size: 14px;
-  background: #faf8f5;
-  color: #2a2a2a;
-  font-family: 'Arial', sans-serif;
-}
-
-.taille-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
-}
-
-.taille-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.taille-label {
-  margin: 0;
-  min-width: 34px;
-}
-
-.taille-input {
-  padding: 8px 10px;
-}
-
-
-.main-btn-link {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  background: #1a1a1a;
-  color: #fff;
-  border: none;
-  border-radius: 2px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-family: 'Arial', sans-serif;
-  margin-top: 8px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.main-btn-link:hover { background: #333; }
-.home-link { text-decoration: none; color: inherit; display: inline-block; }
-select {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  font-size: 14px;
-  background: #faf8f5;
-  color: #2a2a2a;
-  font-family: 'Arial', sans-serif;
-}
-
-.taille-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
-}
-
-.taille-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.taille-label {
-  margin: 0;
-  min-width: 34px;
-}
-
-.taille-input {
-  padding: 8px 10px;
-}
-
-.hero-banner {
-  width: 100%;
-  border-radius: 2px;
-  border: 1px solid #e8e2d9;
-  display: block;
 }
 
 select {
@@ -566,3 +483,117 @@ select {
 .kpi-label { font-size: 11px; text-transform: uppercase; color: #7b8395; }
 .kpi-box strong { display: block; font-size: 26px; margin: 6px 0; }
 .kpi-box small { color: #7b8395; }
+
+/* ===== Luxury Home Redesign ===== */
+.lux-body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background: #0f1014;
+  color: #f7f7f7;
+  position: relative;
+}
+
+.lux-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(202,157,92,.18), transparent 38%),
+    radial-gradient(circle at 80% 10%, rgba(255,255,255,.06), transparent 30%),
+    linear-gradient(135deg, #0b0c10, #11131b 45%, #0d0e13);
+  z-index: 0;
+}
+
+.lux-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 54px 22px 36px;
+}
+
+.lux-hero-card,
+.lux-panel {
+  background: rgba(18, 20, 28, 0.72);
+  border: 1px solid rgba(214, 176, 113, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+.lux-hero-card {
+  padding: 40px 34px;
+  margin-bottom: 20px;
+}
+
+.lux-tag {
+  color: #d6b071;
+  letter-spacing: 3px;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.lux-hero-card h1 {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: 0.4px;
+}
+
+.lux-sub {
+  margin-top: 14px;
+  max-width: 760px;
+  color: #d2d5dd;
+  line-height: 1.55;
+}
+
+.lux-actions {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.lux-btn {
+  appearance: none;
+  border: 1px solid #d6b071;
+  background: linear-gradient(120deg, #d6b071, #c89a4f);
+  color: #13151c;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lux-btn[disabled] { opacity: .6; cursor: not-allowed; }
+.lux-btn-outline { background: transparent; color: #e9c88f; }
+
+.lux-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.lux-panel { padding: 24px; }
+.lux-panel h2 { margin: 0 0 6px; font-size: 22px; }
+.lux-panel p { color: #bbc0cc; margin: 0 0 14px; }
+
+.lux-input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(214, 176, 113, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: #eceff7;
+}
+
+.lux-kpi-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.lux-kpi { border: 1px solid rgba(214, 176, 113, 0.28); border-radius: 10px; padding: 12px; background: rgba(255,255,255,.02); }
+.lux-kpi span { display: block; font-size: 11px; color: #b9bfcc; text-transform: uppercase; letter-spacing: 1px; }
+.lux-kpi strong { font-size: 28px; color: #f4d7a5; }
