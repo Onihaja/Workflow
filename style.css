@@ -704,14 +704,14 @@ select {
 
 .login-akanjo {
   font-family: 'Arial', sans-serif;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: 6px;
   color: #EBE2D6;
 }
 
 .login-mada {
-  font-size: 11px;
+  font-size: 15px;
   letter-spacing: 5px;
   color: #ffffff;
   margin-top: 4px;
