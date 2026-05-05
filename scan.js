@@ -1,4 +1,8 @@
 // ⚠️ REMPLACEZ PAR VOS VALEURS SUPABASE
+
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url || 'https://VOTRE_URL.supabase.co'
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || 'VOTRE_ANON_KEY'
+
 const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
 
@@ -9,6 +13,18 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY)
 let operateurNom  = ''
 let pieceEnCours  = null
 let scannerActif  = null
+
+
+if (SUPABASE_URL.includes('VOTRE_URL') || SUPABASE_KEY.includes('VOTRE_ANON_KEY')) {
+  window.addEventListener('DOMContentLoaded', () => {
+    const msg = document.getElementById('msg-operateur')
+    if (msg) {
+      msg.className = 'msg error'
+      msg.textContent = 'Configuration Supabase manquante dans supabase-config.js.'
+    }
+  })
+}
+
 
 // ──────────────────────────────────────────
 // ÉTAPE 1 — Valider l'opérateur

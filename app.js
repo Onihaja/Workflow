@@ -1,10 +1,12 @@
-codex/implement-authentication-for-users-vytvv3
+
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url || window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
+
 const SUPABASE_URL = window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
 const SUPABASE_KEY = window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
-=======
+
 const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
- main
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -14,6 +16,7 @@ const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','C
 
 initialiserFormulaire()
 codex/implement-authentication-for-users-vytvv3
+
 verifierConfigSupabase()
 
 
@@ -23,11 +26,12 @@ function verifierConfigSupabase() {
 
   if (configInvalide) {
     msg.className = 'msg error'
+    msg.textContent = 'Configuration Supabase manquante. Renseignez supabase-config.js (url + anonKey).'
+  }
+}
     msg.textContent = 'Configuration Supabase manquante. Renseignez SUPABASE_URL et SUPABASE_KEY (anon) dans app.js.'
   }
 }
-=======
- main
 
 function initialiserFormulaire() {
   const select = document.getElementById('chaine')
@@ -87,11 +91,11 @@ async function creerPiece() {
 
   const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
 
- codex/implement-authentication-for-users-vytvv3
   const payloadComplet = {
-=======
+
+  const payloadComplet = {
+
   const { data, error } = await db.from('produits').insert([{
- main
     client,
     reference,
     designation,
@@ -126,15 +130,15 @@ async function creerPiece() {
 
   if (error) {
     msg.className = 'msg error'
-codex/implement-authentication-for-users-vytvv3
+
     if (String(error.message || '').toLowerCase().includes('invalid api key')) {
       msg.textContent = "Erreur Supabase: API key invalide. Vérifiez la clé anon dans app.js / SUPABASE_SETUP.md."
     } else {
       msg.textContent = 'Erreur : ' + error.message
     }
-=======
+
     msg.textContent = 'Erreur : ' + error.message
-main
+
     return
   }
 
@@ -143,7 +147,7 @@ main
   msg.className = 'msg success'
   msg.textContent = 'Pièce créée avec succès.'
   genererQR(data)
-codex/implement-authentication-for-users-vytvv3
+
 }
 
 function genererQR(piece) {
@@ -172,9 +176,7 @@ function genererQR(piece) {
     <div><strong>Tailles</strong> &nbsp; ${taillesText || '—'}</div>
     <div class="qr-id">ID : ${piece.id}</div>
   `
-
   qrCard.style.display = 'block'
 }
-=======
 }
- main
+
