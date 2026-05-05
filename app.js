@@ -1,12 +1,5 @@
-
 const SUPABASE_URL = window.SUPABASE_CONFIG?.url || window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
 const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
-
-const SUPABASE_URL = window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
-const SUPABASE_KEY = window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
-
-const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -15,8 +8,6 @@ const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
 
 initialiserFormulaire()
-codex/implement-authentication-for-users-vytvv3
-
 verifierConfigSupabase()
 
 
@@ -29,36 +20,37 @@ function verifierConfigSupabase() {
     msg.textContent = 'Configuration Supabase manquante. Renseignez supabase-config.js (url + anonKey).'
   }
 }
-    msg.textContent = 'Configuration Supabase manquante. Renseignez SUPABASE_URL et SUPABASE_KEY (anon) dans app.js.'
-  }
-}
 
 function initialiserFormulaire() {
   const select = document.getElementById('chaine')
-  const placeholder = document.createElement('option')
-  placeholder.value = ''
-  placeholder.textContent = 'Sélectionner une chaîne'
-  placeholder.disabled = true
-  placeholder.selected = true
-  select.appendChild(placeholder)
+  if (!select.options.length) {
+    const placeholder = document.createElement('option')
+    placeholder.value = ''
+    placeholder.textContent = 'Sélectionner une chaîne'
+    placeholder.disabled = true
+    placeholder.selected = true
+    select.appendChild(placeholder)
 
-  CHAINES.forEach((chaine) => {
-    const option = document.createElement('option')
-    option.value = chaine
-    option.textContent = chaine
-    select.appendChild(option)
-  })
+    CHAINES.forEach((chaine) => {
+      const option = document.createElement('option')
+      option.value = chaine
+      option.textContent = chaine
+      select.appendChild(option)
+    })
+  }
 
   const tailleGrid = document.getElementById('taille-grid')
-  TAILLES.forEach((taille) => {
-    const row = document.createElement('div')
-    row.className = 'taille-row'
-    row.innerHTML = `
-      <label class="taille-label" for="qte-${taille}">${taille}</label>
-      <input id="qte-${taille}" type="number" min="0" value="0" class="taille-input">
-    `
-    tailleGrid.appendChild(row)
-  })
+  if (!tailleGrid.children.length) {
+    TAILLES.forEach((taille) => {
+      const row = document.createElement('div')
+      row.className = 'taille-row'
+      row.innerHTML = `
+        <label class="taille-label" for="qte-${taille}">${taille}</label>
+        <input id="qte-${taille}" type="number" min="0" value="0" class="taille-input">
+      `
+      tailleGrid.appendChild(row)
+    })
+  }
 }
 
 function recupererTaillesQuantites() {
@@ -92,10 +84,6 @@ async function creerPiece() {
   const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
 
   const payloadComplet = {
-
-  const payloadComplet = {
-
-  const { data, error } = await db.from('produits').insert([{
     client,
     reference,
     designation,
@@ -130,15 +118,11 @@ async function creerPiece() {
 
   if (error) {
     msg.className = 'msg error'
-
     if (String(error.message || '').toLowerCase().includes('invalid api key')) {
       msg.textContent = "Erreur Supabase: API key invalide. Vérifiez la clé anon dans app.js / SUPABASE_SETUP.md."
     } else {
       msg.textContent = 'Erreur : ' + error.message
     }
-
-    msg.textContent = 'Erreur : ' + error.message
-
     return
   }
 
@@ -147,7 +131,6 @@ async function creerPiece() {
   msg.className = 'msg success'
   msg.textContent = 'Pièce créée avec succès.'
   genererQR(data)
-
 }
 
 function genererQR(piece) {
@@ -176,7 +159,6 @@ function genererQR(piece) {
     <div><strong>Tailles</strong> &nbsp; ${taillesText || '—'}</div>
     <div class="qr-id">ID : ${piece.id}</div>
   `
+
   qrCard.style.display = 'block'
 }
-}
-
