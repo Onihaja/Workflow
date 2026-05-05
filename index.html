@@ -3,46 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AKANJO — Accueil</title>
+  <title>AKANJO — Login</title>
   <link rel="stylesheet" href="style.css">
   <script src="supabase-config.js"></script>
 </head>
-<body class="lux-body">
+<body class="login-body">
 
-<div class="lux-bg"></div>
-
-<main class="lux-shell">
-  <section class="lux-hero-card">
-    <p class="lux-tag">AKANJO MADAGASCAR</p>
-
-    <div class="lux-actions">
-      <a class="lux-btn lux-btn-outline" href="coupe.html">Coupe</a>
-      <a class="lux-btn" href="atelier.html">Atelier</a>
-      <a class="lux-btn" href="qualite.html">Pôle Qualité</a>
-      <a class="lux-btn" href="finition.html">Finition</a>
+<div class="login-split">
+  <section class="login-left" aria-label="Visuel confection Akanjo">
+    <div class="login-brand-overlay">
+      <div class="brand-main">AKANJO</div>
+      <div class="brand-sub">MADAGASCAR</div>
     </div>
   </section>
 
-  <section class="lux-grid">
-    <article class="lux-panel">
-      <h2>Login</h2>
-      <p>Connexion sécurisée (phase suivante)</p>
-      <input class="lux-input" type="text" placeholder="Matricule" disabled>
-      <input class="lux-input" type="password" placeholder="Mot de passe" disabled>
-      <button class="lux-btn" disabled>Se connecter</button>
-    </article>
-
-    <article class="lux-panel">
-      <h2>Dashboard</h2>
-      <p>Vue usine temps réel en préparation.</p>
-      <div class="lux-kpi-wrap">
-        <div class="lux-kpi"><span>Chaînes actives</span><strong>15</strong></div>
-        <div class="lux-kpi"><span>Mode</span><strong>LIVE</strong></div>
-      </div>
-      <button class="lux-btn" onclick="alert('Dashboard live en cours de développement')">Ouvrir dashboard</button>
-    </article>
+  <section class="login-right">
+    <div class="login-card">
+      <h1>LOGIN</h1>
+      <input class="login-input" type="text" placeholder="Utilisateur" disabled>
+      <input class="login-input" type="password" placeholder="Mot de passe" disabled>
+      <button class="login-submit" disabled>Se connecter</button>
+      <p class="login-note">Version UI uniquement — Authentification en cours d’intégration.</p>
+    </div>
   </section>
-</main>
+</div>
 
 </body>
 </html>
