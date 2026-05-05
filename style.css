@@ -613,7 +613,7 @@ select {
 
 .login-left {
   position: relative;
-  background-image: linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.1)), url('https://www.akanjo.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbanner_confection.063568a9.jpg&w=3840&q=75');
+  background-image: linear-gradient(rgba(0,0,0,.48), rgba(0,0,0,.38)), url('https://www.akanjo.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbanner_confection.063568a9.jpg&w=3840&q=75');
   background-size: cover;
   background-position: center;
   border-right: 2px solid #101010;
@@ -628,14 +628,14 @@ select {
 }
 
 .brand-main {
-  font-size: 84px;
+  font-size: 62px;
   letter-spacing: 5px;
   font-weight: 500;
   line-height: 1;
 }
 
 .brand-sub {
-  font-size: 58px;
+  font-size: 40px;
   letter-spacing: 10px;
   font-weight: 300;
   line-height: 1;
@@ -656,7 +656,7 @@ select {
 }
 
 .login-card h1 {
-  font-size: 86px;
+  font-size: 56px;
   margin: 0 0 34px;
   letter-spacing: 3px;
   color: #000;
@@ -666,10 +666,10 @@ select {
   width: 100%;
   margin: 14px 0;
   border-radius: 20px;
-  border: 4px solid #0c3f97;
+  border: 3px solid #0c3f97;
   background: #ececec;
-  padding: 20px 22px;
-  font-size: 30px;
+  padding: 14px 16px;
+  font-size: 20px;
 }
 
 .login-submit {
@@ -678,8 +678,8 @@ select {
   color: #1f1f1f;
   background: #f7f7f7;
   border-radius: 16px;
-  font-size: 50px;
-  padding: 16px 34px;
+  font-size: 30px;
+  padding: 12px 24px;
 }
 
 .login-note {
@@ -692,9 +692,9 @@ select {
   .login-split { grid-template-columns: 1fr; }
   .login-left { min-height: 42vh; border-right: 0; border-bottom: 2px solid #101010; }
   .login-brand-overlay { left: 8%; top: auto; bottom: 10%; }
-  .brand-main { font-size: 56px; }
-  .brand-sub { font-size: 38px; }
-  .login-card h1 { font-size: 52px; }
-  .login-input { font-size: 22px; }
-  .login-submit { font-size: 32px; }
+  .brand-main { font-size: 46px; }
+  .brand-sub { font-size: 30px; }
+  .login-card h1 { font-size: 40px; }
+  .login-input { font-size: 18px; }
+  .login-submit { font-size: 24px; }
 }
