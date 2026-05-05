@@ -1,10 +1,5 @@
-// ⚠️ REMPLACEZ PAR VOS VALEURS SUPABASE
-
 const SUPABASE_URL = window.SUPABASE_CONFIG?.url || 'https://VOTRE_URL.supabase.co'
 const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || 'VOTRE_ANON_KEY'
-
-const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -51,94 +46,7 @@ function demarrerScan() {
   const reader  = document.getElementById('reader')
   const btnScan = document.getElementById('btn-scan')
 
-  reader.style.display = 'block'
-  btnScan.style.display = 'none'
-
-  scannerActif = new Html5Qrcode('reader')
-  scannerActif.start(
-    { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    (texte) => {
-      scannerActif.stop()
-      reader.style.display = 'none'
-      traiterQR(texte)
-    },
-    () => {} // erreur silencieuse pendant scan
-  ).catch(() => {
-    const msg = document.getElementById('msg-scan')
-    msg.className = 'msg error'
-    msg.textContent = 'Impossible d\'accéder à la caméra. Vérifiez les permissions.'
-    reader.style.display = 'none'
-    btnScan.style.display = 'block'
-  })
-}
-
-// ──────────────────────────────────────────
-// Traiter le résultat du QR code
-// ──────────────────────────────────────────
-function traiterQR(texte) {
-  try {
-    const data = JSON.parse(texte)
-    if (data.id) {
-      document.getElementById('input-id').value = data.id
-      rechercherPiece()
-    } else {
-      afficherMsgScan('error', 'QR code invalide — aucun ID trouvé.')
-    }
-  } catch {
-    // QR code contient directement l'ID
-    document.getElementById('input-id').value = texte.trim()
-    rechercherPiece()
-  }
-}
-
-// ──────────────────────────────────────────
-// Recherche manuelle par ID
-// ──────────────────────────────────────────
-async function rechercherPiece() {
-  const id  = document.getElementById('input-id').value.trim()
-  const msg = document.getElementById('msg-scan')
-
-  if (!id) {
-    msg.className = 'msg error'
-    msg.textContent = 'Veuillez saisir ou scanner un ID.'
-    return
-  }
-
-  msg.className = 'msg'
-  msg.style.display = 'block'
-  msg.textContent = 'Recherche en cours...'
-
-  // Recherche dans Supabase
-  const { data: piece, error } = await db
-    .from('produits')
-    .select('*')
-    .eq('id', id)
-    .single()
-
-  if (error || !piece) {
-    msg.className = 'msg error'
-    msg.textContent = '❌ Produit introuvable.'
-    return
-  }
-
-  // Récupérer le dernier mouvement
-  const { data: mouvements } = await db
-    .from('mouvements')
-    .select('*')
-    .eq('produit_id', id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-
-  piece.dernierMouvement = mouvements?.[0] || null
-  pieceEnCours = piece
-
-  msg.className = 'msg'
-  msg.style.display = 'none'
-
-  afficherPiece(piece)
-}
-
+@@ -126,52 +138,56 @@ async function rechercherPiece() {
 // ──────────────────────────────────────────
 // Afficher les infos de la pièce + actions
 // ──────────────────────────────────────────
@@ -195,32 +103,7 @@ function afficherPiece(piece) {
       </div>
       <span class="action-btn-arrow">→</span>
     `
-    if (disponible) {
-      btn.onclick = () => effectuerAction(action)
-    }
-    grid.appendChild(btn)
-  })
-
-  afficher('card-scan', false)
-  afficher('card-piece', true)
-}
-
-// ──────────────────────────────────────────
-// Enregistrer l'action
-// ──────────────────────────────────────────
-async function effectuerAction(action) {
-  const msg = document.getElementById('msg-action')
-  msg.className = 'msg'
-  msg.style.display = 'block'
-  msg.textContent = 'Enregistrement...'
-
-  // Vérification double scan
-  const dernierAction = pieceEnCours.dernierMouvement?.action || 'creation'
-  if (dernierAction === action.id) {
-    msg.className = 'msg error'
-    msg.textContent = '⚠️ Double scan détecté — action déjà enregistrée.'
-    return
-  }
+@@ -204,51 +220,51 @@ async function effectuerAction(action) {
 
   // Enregistrer le mouvement
   const { error } = await db.from('mouvements').insert([{
@@ -272,24 +155,7 @@ function nouveauScan() {
 // ──────────────────────────────────────────
 function afficher(id, visible) {
   document.getElementById(id).style.display = visible ? 'block' : 'none'
-}
-
-function afficherMsgScan(type, texte) {
-  const msg = document.getElementById('msg-scan')
-  msg.className = 'msg ' + type
-  msg.textContent = texte
-}
-
-function classeStatut(action) {
-  const map = {
-    creation:        'statut-cree',
-    sortie_chaine:   'statut-en-cours',
-    fin_retouche:    'statut-en-cours',
-    entree_qualite:  'statut-en-cours',
-    a_retoucher:     'statut-retouche',
-    retour_retouche: 'statut-retouche',
-    entree_finition: 'statut-en-cours',
-    sortie_finition: 'statut-packing',
+@@ -273,25 +289,33 @@ function classeStatut(action) {
   }
   return map[action] || 'statut-cree'
 }
