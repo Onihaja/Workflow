@@ -473,4 +473,9 @@ select {
   padding: 8px 10px;
 }
 
-
+.hero-banner {
+  width: 100%;
+  border-radius: 2px;
+  border: 1px solid #e8e2d9;
+  display: block;
+}
