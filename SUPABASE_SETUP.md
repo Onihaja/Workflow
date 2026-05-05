@@ -39,7 +39,7 @@ En prod:
 3. Passer par Supabase Auth + table `profiles`.
 
 ## 5) Vérification rapide (tests manuels)
-1. Créer une pièce depuis `index.html` avec:
+1. Créer une pièce depuis `coupe.html` avec:
    - chaîne CHx
    - au moins une taille avec quantité > 0
 2. Vérifier dans `produits`:
