@@ -473,3 +473,4 @@ select {
   padding: 8px 10px;
 }
 
+.home-link { text-decoration: none; color: inherit; display: inline-block; }
