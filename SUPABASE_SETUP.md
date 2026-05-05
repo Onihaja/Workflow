@@ -8,13 +8,13 @@ Ce guide couvre **ce que vous devez faire côté Supabase** pour aligner le back
 3. Copier **tout le SQL** (pas le chemin du fichier).
 4. Coller dans SQL Editor puis cliquer **Run**.
 
+
 2. Ouvrir le fichier `supabase/migration_produits.sql`.
 3. Copier **tout le SQL** (pas le chemin du fichier).
 4. Coller dans SQL Editor puis cliquer **Run**.
 
 2. Coller le contenu de `supabase/migration_produits.sql`.
 3. Cliquer **Run**.
-
 
 Ce script ajoute:
 - `produits.chaine_production` (`text`)
@@ -28,7 +28,11 @@ Vous devez avoir au minimum:
 
 ## 3) Configurer les clés dans le front
 ### Ce que je **ne peux pas faire à votre place**
+
+- Remplir vos vraies clés Supabase en production.
+
 - Remplir vos vraies clés Supabase dans `scan.js` en production.
+
 - Sécuriser la clé/service role (ne jamais exposer service role dans le front).
 
 ### Ce que vous devez faire
@@ -38,6 +42,7 @@ Vous devez avoir au minimum:
 - Utiliser la clé **anon** (jamais service_role côté frontend).
 - Vérifier que toutes les pages chargent `supabase-config.js` et pointent vers le **même projet Supabase**.
 - Si vous changez de projet Supabase, mettez à jour ces 2 valeurs en priorité.
+
 
  codex/implement-authentication-for-users-vytvv3
 - Dans `app.js` **et** `scan.js`, remplacer:
@@ -51,7 +56,6 @@ Vous devez avoir au minimum:
 
 - Vérifier que `app.js` et `scan.js` pointent vers le **même projet Supabase**.
 
-
 ## 4) Politiques RLS (développement puis prod)
 En dev, RLS peut rester désactivé.
 En prod:
@@ -60,7 +64,11 @@ En prod:
 3. Passer par Supabase Auth + table `profiles`.
 
 ## 5) Vérification rapide (tests manuels)
+
+1. Créer une pièce depuis `coupe.html` avec:
+
 1. Créer une pièce depuis `index.html` avec:
+
    - chaîne CHx
    - au moins une taille avec quantité > 0
 2. Vérifier dans `produits`:
@@ -79,4 +87,8 @@ En prod:
 - Erreur `42601 ... supabase/migration_produits.sql` : vous avez collé le **nom du fichier** au lieu du SQL.
 - Erreur `42703 column chaine_production does not exist` : utilisez la version actuelle de `supabase/migration_produits.sql` (elle vérifie la table et ajoute les colonnes avant contraintes).
 
+
+## Dépannage rapide
+- Erreur `42601 ... supabase/migration_produits.sql` : vous avez collé le **nom du fichier** au lieu du SQL.
+- Erreur `42703 column chaine_production does not exist` : utilisez la version actuelle de `supabase/migration_produits.sql` (elle vérifie la table et ajoute les colonnes avant contraintes).
 - Erreur `Invalid API key` : la clé `SUPABASE_KEY` est invalide/expirée ou n'appartient pas au projet ciblé.

@@ -420,6 +420,27 @@ select {
   padding: 8px 10px;
 }
 
+
+.main-btn-link {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  margin-top: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.main-btn-link:hover { background: #333; }
+=======
 select {
   width: 100%;
   padding: 11px 14px;
@@ -451,3 +472,4 @@ select {
 .taille-input {
   padding: 8px 10px;
 }
+

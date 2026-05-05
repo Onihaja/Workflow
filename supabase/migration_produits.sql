@@ -1,3 +1,4 @@
+
 DO $$
 BEGIN
   IF to_regclass('public.produits') IS NULL THEN
@@ -52,6 +53,7 @@ BEGIN
 END
 $$;
 
+
 alter table public.produits
   add column if not exists chaine_production text,
   add column if not exists tailles_quantites jsonb default '[]'::jsonb;
@@ -85,3 +87,4 @@ create index if not exists idx_mouvements_produit_created_at
 -- Index utiles dashboard/filtrage
 create index if not exists idx_produits_chaine_production on public.produits(chaine_production);
 create index if not exists idx_mouvements_produit_created_at on public.mouvements(produit_id, created_at desc);
+
