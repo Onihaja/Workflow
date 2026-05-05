@@ -10,7 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="supabase-config.js"></script>
-
 </head>
 <body>
 
@@ -31,12 +30,30 @@
 
     <div class="field">
       <label>Chaîne de production *</label>
-      <select id="chaine"></select>
+      <select id="chaine">
+        <option value="" selected disabled>Sélectionner une chaîne</option>
+        <option value="CH1">CH1</option><option value="CH2">CH2</option><option value="CH3">CH3</option>
+        <option value="CH4">CH4</option><option value="CH5">CH5</option><option value="CH6">CH6</option>
+        <option value="CH7">CH7</option><option value="CH8">CH8</option><option value="CH9">CH9</option>
+        <option value="CH10">CH10</option><option value="CH11">CH11</option><option value="CH12">CH12</option>
+        <option value="CH14">CH14</option><option value="CH15">CH15</option><option value="CH16">CH16</option>
+      </select>
     </div>
 
     <div class="field">
       <label>Tailles et quantités *</label>
-      <div class="taille-grid" id="taille-grid"></div>
+      <div class="taille-grid" id="taille-grid">
+        <div class="taille-row"><label class="taille-label" for="qte-T32">T32</label><input id="qte-T32" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T34">T34</label><input id="qte-T34" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T36">T36</label><input id="qte-T36" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T38">T38</label><input id="qte-T38" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T40">T40</label><input id="qte-T40" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T42">T42</label><input id="qte-T42" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T44">T44</label><input id="qte-T44" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T46">T46</label><input id="qte-T46" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T48">T48</label><input id="qte-T48" type="number" min="0" value="0" class="taille-input"></div>
+        <div class="taille-row"><label class="taille-label" for="qte-T50">T50</label><input id="qte-T50" type="number" min="0" value="0" class="taille-input"></div>
+      </div>
     </div>
 
     <button class="main-btn" onclick="creerPiece()">Générer le QR code</button>
