@@ -1,5 +1,5 @@
 const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
+const SUPABASE_KEY = '...'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -89,34 +89,4 @@ async function creerPiece() {
   msg.className = 'msg success'
   msg.textContent = 'Pièce créée avec succès.'
   genererQR(data)
-}
-
-function genererQR(piece) {
-  const contenu = JSON.stringify({
-    id: piece.id,
-    reference: piece.reference,
-    chaine_production: piece.chaine_production,
-    tailles_quantites: piece.tailles_quantites
-  })
-
-  const qrBox = document.getElementById('qr-box')
-  const qrInfo = document.getElementById('qr-info')
-  const qrCard = document.getElementById('qr-card')
-
-  qrBox.innerHTML = ''
-  new QRCode(qrBox, { text: contenu, width: 220, height: 220, colorDark: '#1a1a1a', colorLight: '#ffffff' })
-
-  const taillesText = (piece.tailles_quantites || [])
-    .map((item) => `${item.taille}×${item.quantite}`)
-    .join(', ')
-
-  qrInfo.innerHTML = `
-    <div><strong>Client</strong> &nbsp; ${piece.client}</div>
-    <div><strong>Réf</strong> &nbsp; ${piece.reference}</div>
-    <div><strong>Chaîne</strong> &nbsp; ${piece.chaine_production || '—'}</div>
-    <div><strong>Tailles</strong> &nbsp; ${taillesText || '—'}</div>
-    <div class="qr-id">ID : ${piece.id}</div>
-  `
-
-  qrCard.style.display = 'block'
 }
