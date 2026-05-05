@@ -9,6 +9,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="supabase-config.js"></script>
 </head>
 <body>
 
@@ -19,36 +20,28 @@
 
 <div class="container">
 
-  <!-- Formulaire création pièce -->
   <div class="card">
     <div class="card-title">Nouvelle pièce</div>
 
+    <div class="field"><label>Client *</label><input type="text" id="client" placeholder="ex: Chloe, Kenzo"></div>
+    <div class="field"><label>Référence *</label><input type="text" id="reference" placeholder="ex: 26TS"></div>
+    <div class="field"><label>Désignation *</label><input type="text" id="designation" placeholder="ex: Robe, Chemise"></div>
+    <div class="field"><label>Couleur</label><input type="text" id="couleur" placeholder="ex: NR001"></div>
+
     <div class="field">
-      <label>Client *</label>
-      <input type="text" id="client" placeholder="ex: Chloe, Kenzo">
+      <label>Chaîne de production *</label>
+      <select id="chaine"></select>
     </div>
+
     <div class="field">
-      <label>Référence *</label>
-      <input type="text" id="reference" placeholder="ex: 26UR137, BL442">
-    </div>
-    <div class="field">
-      <label>Désignation *</label>
-      <input type="text" id="designation" placeholder="ex: Robe, Chemise">
-    </div>
-    <div class="field">
-      <label>Couleur</label>
-      <input type="text" id="couleur" placeholder="ex: NR6AQ, NR001">
-    </div>
-    <div class="field">
-      <label>Taille</label>
-      <input type="text" id="taille" placeholder="ex: T38, T40">
+      <label>Tailles et quantités *</label>
+      <div class="taille-grid" id="taille-grid"></div>
     </div>
 
     <button class="main-btn" onclick="creerPiece()">Générer le QR code</button>
     <div class="msg" id="msg"></div>
   </div>
 
-  <!-- QR Code généré -->
   <div class="card qr-card" id="qr-card" style="display:none">
     <div class="card-title">QR Code</div>
     <div id="qr-box"></div>
