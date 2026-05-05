@@ -1,31 +1,48 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AKANJO — Accueil</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
 </head>
-<body>
+<body class="lux-body">
 
-<header>
-  <div class="logo-main">AKANJO</div>
-  <div class="logo-sub">MADAGASCAR</div>
-</header>
+<div class="lux-bg"></div>
 
-<div class="container">
-  <div class="card">
-    <div class="card-title">AKANJO · Confection</div>
-    <img class="hero-banner" src="https://www.akanjo.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbanner_confection.063568a9.jpg&w=3840&q=75" alt="Atelier de confection Akanjo">
-  </div>
-  <div class="card">
-    <div class="field">
-      <label>Login utilisateur</label>
-      <input type="text" placeholder="Email ou matricule" disabled>
-      <a class="main-btn-link" href="finition.html">Login</a>
+<main class="lux-shell">
+  <section class="lux-hero-card">
+    <p class="lux-tag">AKANJO MADAGASCAR</p>
+
+    <div class="lux-actions">
+      <a class="lux-btn lux-btn-outline" href="coupe.html">Coupe</a>
+      <a class="lux-btn" href="atelier.html">Atelier</a>
+      <a class="lux-btn" href="qualite.html">Pôle Qualité</a>
+      <a class="lux-btn" href="finition.html">Finition</a>
     </div>
-  </div>
+  </section>
 
+  <section class="lux-grid">
+    <article class="lux-panel">
+      <h2>Login</h2>
+      <p>Connexion sécurisée (phase suivante)</p>
+      <input class="lux-input" type="text" placeholder="Matricule" disabled>
+      <input class="lux-input" type="password" placeholder="Mot de passe" disabled>
+      <button class="lux-btn" disabled>Se connecter</button>
+    </article>
 
-</div>
+    <article class="lux-panel">
+      <h2>Dashboard</h2>
+      <p>Vue usine temps réel en préparation.</p>
+      <div class="lux-kpi-wrap">
+        <div class="lux-kpi"><span>Chaînes actives</span><strong>15</strong></div>
+        <div class="lux-kpi"><span>Mode</span><strong>LIVE</strong></div>
+      </div>
+      <button class="lux-btn" onclick="alert('Dashboard live en cours de développement')">Ouvrir dashboard</button>
+    </article>
+  </section>
+</main>
+
+</body>
+</html>
