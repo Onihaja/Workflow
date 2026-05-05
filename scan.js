@@ -1,6 +1,10 @@
 // ⚠️ REMPLACEZ PAR VOS VALEURS SUPABASE
+
 const SUPABASE_URL = window.SUPABASE_CONFIG?.url || 'https://VOTRE_URL.supabase.co'
 const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || 'VOTRE_ANON_KEY'
+
+const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2ampkZWhyYmJ4bG5kYXlkc2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NzI5NDMsImV4cCI6MjA5MzQ0ODk0M30.47jN0OxtNqMdQBxei8yajtDrd_KrBfwaf2SNaFMJFX8'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)

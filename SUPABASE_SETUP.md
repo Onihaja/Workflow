@@ -8,6 +8,14 @@ Ce guide couvre **ce que vous devez faire côté Supabase** pour aligner le back
 3. Copier **tout le SQL** (pas le chemin du fichier).
 4. Coller dans SQL Editor puis cliquer **Run**.
 
+2. Ouvrir le fichier `supabase/migration_produits.sql`.
+3. Copier **tout le SQL** (pas le chemin du fichier).
+4. Coller dans SQL Editor puis cliquer **Run**.
+
+2. Coller le contenu de `supabase/migration_produits.sql`.
+3. Cliquer **Run**.
+
+
 Ce script ajoute:
 - `produits.chaine_production` (`text`)
 - `produits.tailles_quantites` (`jsonb`)
@@ -31,6 +39,19 @@ Vous devez avoir au minimum:
 - Vérifier que toutes les pages chargent `supabase-config.js` et pointent vers le **même projet Supabase**.
 - Si vous changez de projet Supabase, mettez à jour ces 2 valeurs en priorité.
 
+ codex/implement-authentication-for-users-vytvv3
+- Dans `app.js` **et** `scan.js`, remplacer:
+  - `SUPABASE_URL = 'https://VOTRE_URL.supabase.co'`
+  - `SUPABASE_KEY = 'VOTRE_ANON_KEY'`
+- Utiliser la clé **anon** (jamais service_role côté frontend).
+
+- Dans `scan.js`, remplacer:
+  - `SUPABASE_URL = 'https://VOTRE_URL.supabase.co'`
+  - `SUPABASE_KEY = 'VOTRE_ANON_KEY'`
+
+- Vérifier que `app.js` et `scan.js` pointent vers le **même projet Supabase**.
+
+
 ## 4) Politiques RLS (développement puis prod)
 En dev, RLS peut rester désactivé.
 En prod:
@@ -52,6 +73,7 @@ En prod:
 - Ajouter un script SQL complet pour Auth (`profiles`, rôles, policies RLS).
 - Ajouter page dashboard temps réel (Supabase Realtime + Chart.js).
 - Préparer impression A4 9 QR par feuille.
+
 
 ## Dépannage rapide
 - Erreur `42601 ... supabase/migration_produits.sql` : vous avez collé le **nom du fichier** au lieu du SQL.
