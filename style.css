@@ -440,7 +440,7 @@ select {
 }
 
 .main-btn-link:hover { background: #333; }
-=======
+.home-link { text-decoration: none; color: inherit; display: inline-block; }
 select {
   width: 100%;
   padding: 11px 14px;
@@ -473,4 +473,4 @@ select {
   padding: 8px 10px;
 }
 
-.home-link { text-decoration: none; color: inherit; display: inline-block; }
+
