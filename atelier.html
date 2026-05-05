@@ -3,49 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AKANJO — Accueil</title>
+  <title>Akanjo Madagascar — Finition</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="supabase-config.js"></script>
 </head>
-<body class="home-body">
+<body>
 
-<section class="home-hero">
-  <img class="home-hero-img" src="https://www.akanjo.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbanner_confection.063568a9.jpg&w=3840&q=75" alt="Atelier Akanjo">
-  <div class="home-hero-overlay"></div>
-  <div class="home-hero-content">
-    <div class="logo-main">AKANJO</div>
-    <div class="logo-sub">MADAGASCAR</div>
+<header>
+  <a class="home-link" href="index.html"><div class="logo-main">AKANJO</div><div class="logo-sub">MADAGASCAR</div></a>
+  <div class="dept-label">Pôle Atelier</div>
+</header>
+
+<div class="container">
+<a class="main-btn-link" href="index.html">← Retour accueil</a>
+  <!-- Étape 1 : Opérateur -->
+  <div class="card" id="card-operateur">
+    <div class="card-title">Opérateur</div>
+    <div class="field">
+      <label>Votre nom *</label>
+      <input type="text" id="operateur" placeholder="ex: Paul Martin">
+    </div>
+    <button class="main-btn" onclick="validerOperateur()">Continuer</button>
+    <div class="msg" id="msg-operateur"></div>
   </div>
-</section>
 
-<main class="home-layout">
-  <section class="home-panel">
-    <h2>Accès rapide</h2>
-    <div class="home-login-placeholder">
-      <label>Connexion</label>
-      <input type="text" placeholder="Email / matricule" disabled>
-    </div>
-
-  </section>
-
-  <section class="home-panel">
-    <h2>Dashboard usine</h2>
-    <div class="home-kpis">
-      <div class="kpi-box">
-        <span class="kpi-label">Chaînes actives</span>
-        <strong>15</strong>
-        <small>CH1 → CH16 (hors CH13)</small>
-      </div>
-      <div class="kpi-box">
-        <span class="kpi-label">Mode</span>
-        <strong>Live</strong>
-        <small>Prochaine étape</small>
-      </div>
-    </div>
-
-    <a class="home-link-btn" href="#" onclick="alert('Le dashboard temps réel sera ajouté à l\'étape suivante.')">Ouvrir le dashboard</a>
-  </section>
-</main>
-
-</body>
-</html>
+  <!-- Étape 2 : Scan -->
+  <div class="card" id="card-scan" style="display:none">
+    <div class="card-title">Scanner une pièce</div>
