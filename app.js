@@ -1,5 +1,10 @@
+codex/implement-authentication-for-users-vytvv3
 const SUPABASE_URL = window.SUPABASE_URL || 'https://VOTRE_URL.supabase.co'
 const SUPABASE_KEY = window.SUPABASE_KEY || 'VOTRE_ANON_KEY'
+=======
+const SUPABASE_URL = 'https://rvjjdehrbbxlndaydscb.supabase.co'
+const SUPABASE_KEY = '...'
+ main
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -8,6 +13,7 @@ const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
 
 initialiserFormulaire()
+codex/implement-authentication-for-users-vytvv3
 verifierConfigSupabase()
 
 
@@ -20,6 +26,8 @@ function verifierConfigSupabase() {
     msg.textContent = 'Configuration Supabase manquante. Renseignez SUPABASE_URL et SUPABASE_KEY (anon) dans app.js.'
   }
 }
+=======
+ main
 
 function initialiserFormulaire() {
   const select = document.getElementById('chaine')
@@ -79,7 +87,11 @@ async function creerPiece() {
 
   const tailleTexte = taillesQuantites.map((item) => `${item.taille}×${item.quantite}`).join(', ')
 
+ codex/implement-authentication-for-users-vytvv3
   const payloadComplet = {
+=======
+  const { data, error } = await db.from('produits').insert([{
+ main
     client,
     reference,
     designation,
@@ -114,11 +126,15 @@ async function creerPiece() {
 
   if (error) {
     msg.className = 'msg error'
+codex/implement-authentication-for-users-vytvv3
     if (String(error.message || '').toLowerCase().includes('invalid api key')) {
       msg.textContent = "Erreur Supabase: API key invalide. Vérifiez la clé anon dans app.js / SUPABASE_SETUP.md."
     } else {
       msg.textContent = 'Erreur : ' + error.message
     }
+=======
+    msg.textContent = 'Erreur : ' + error.message
+main
     return
   }
 
@@ -127,6 +143,7 @@ async function creerPiece() {
   msg.className = 'msg success'
   msg.textContent = 'Pièce créée avec succès.'
   genererQR(data)
+codex/implement-authentication-for-users-vytvv3
 }
 
 function genererQR(piece) {
@@ -158,3 +175,6 @@ function genererQR(piece) {
 
   qrCard.style.display = 'block'
 }
+=======
+}
+ main
