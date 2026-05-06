@@ -775,12 +775,21 @@ select {
 }
 
 /* ═══════════════════════════════════════
-   DASHBOARD FULL FIT — NO SCROLL
+   DASHBOARD 1920x1080 — ZERO SCROLL
 ═══════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
 
 .dashboard-prod {
   --bg:#f4f6f8;
-  --card:#fff;
+  --card:#ffffff;
   --border:#e2e6ea;
 
   --text:#111827;
@@ -794,19 +803,21 @@ select {
 
   font-family:'DM Sans',sans-serif;
   background:var(--bg);
+
   height:100vh;
-  overflow:hidden;
   display:flex;
   flex-direction:column;
 }
 
-/* HEADER ↓ réduit */
+/* ───────── HEADER ───────── */
 .dashboard-prod .header{
   height:70px;
   padding:0 30px;
+
   display:flex;
   justify-content:space-between;
   align-items:center;
+
   background:#0f172a;
   color:#fff;
 }
@@ -815,58 +826,78 @@ select {
 .header-clock{font-size:24px;font-weight:900;}
 .header-date{font-size:14px;opacity:.8;}
 
-/* BODY prend tout l’espace */
+/* ───────── BODY ───────── */
 .dashboard-prod .dash-body{
   flex:1;
+  height:calc(100vh - 70px - 70px);
+
   display:grid;
-  grid-template-columns:1fr 320px;
+  grid-template-columns: 1fr 300px;
   gap:12px;
   padding:12px;
 }
 
-/* CHAÎNES */
+/* ───────── CHAÎNES (ZONE PRINCIPALE) ───────── */
 .zone-chaines{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr); /* 12 cartes = 4 lignes */
+  gap:10px;
+  height:100%;
 }
 
-/* CARTES ↓ plus petites */
-.chain-card,.poste-card{
+/* ───────── CARTES ───────── */
+.chain-card,
+.poste-card{
   background:var(--card);
   border-radius:12px;
   border:1px solid var(--border);
-  height:150px;
+
+  height:100%;
+  min-height:0;
+
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+
   padding:6px;
 }
 
-/* TITRES ↓ */
-.chain-name,.section-title{
+/* ───────── TITRES ───────── */
+.chain-name,
+.section-title{
   text-align:center;
-  font-size:16px;
+  font-size:14px;
   font-weight:900;
-  margin-bottom:2px;
+  margin:0;
 }
 
-/* REF */
+/* ───────── RÉF ───────── */
 .chain-refs-row{
   display:flex;
   border-bottom:1px solid var(--primary);
 }
 
-.ref-col{width:50%;text-align:center;}
-.ref-col-value,.poste-ref-value{
-  font-size:16px;
+.ref-col{
+  width:50%;
+  text-align:center;
+}
+
+.ref-col-value,
+.poste-ref-value{
+  font-size:14px;
   font-weight:900;
 }
 
-/* STRUCTURE */
-.chain-data,.poste-data{display:flex;flex:1;}
+/* ───────── STRUCTURE ───────── */
+.chain-data,
+.poste-data{
+  display:flex;
+  flex:1;
+}
 
-.ref-data-col,.poste-data{
+.ref-data-col,
+.poste-data{
   width:50%;
   display:flex;
   flex-direction:column;
@@ -875,61 +906,77 @@ select {
   padding:4px;
 }
 
-/* OBJECTIF */
-.ref-data-top,.poste-top{
+/* ───────── OBJECTIF ───────── */
+.ref-data-top,
+.poste-top{
   display:flex;
   justify-content:space-between;
-  font-size:12px;
+  font-size:11px;
   font-weight:800;
 }
 
 .val-obj{color:var(--blue);}
 .val-taux{color:var(--green);}
 
-/* COMPTEURS ↓ beaucoup plus petits */
-.ref-counter,.poste-counter{
-  font-size:42px;
+/* ───────── COMPTEURS ───────── */
+.ref-counter,
+.poste-counter{
+  font-size:32px;
   font-weight:900;
   text-align:center;
   line-height:1;
 }
 
-/* COULEURS */
-.ok{color:var(--green);}
-.nok{color:var(--red);}
-.neutral{color:#9ca3af;}
+.ref-counter.ok,
+.poste-counter.ok{color:var(--green);}
 
-/* CUMUL */
-.ref-cumul,.poste-cumul{
+.ref-counter.nok,
+.poste-counter.nok{color:var(--red);}
+
+.ref-counter.neutral,
+.poste-counter.neutral{color:#9ca3af;}
+
+/* ───────── CUMUL ───────── */
+.ref-cumul,
+.poste-cumul{
   font-size:11px;
   font-weight:800;
   text-align:right;
   color:var(--orange);
 }
 
-/* ZONE DROITE */
+/* ───────── ZONE DROITE ───────── */
 .zone-speciale{
   display:flex;
   flex-direction:column;
   gap:10px;
+  height:100%;
 }
 
+/* BLOCS */
 .section-block{
   background:#f9fafb;
   border-radius:12px;
   border:1px solid var(--border);
   padding:8px;
+
+  flex:1;
+  display:flex;
+  flex-direction:column;
 }
 
+/* GRID POSTES */
 .section-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap:8px;
+  flex:1;
 }
 
-/* FOOTER ↓ réduit */
+/* ───────── FOOTER ───────── */
 .dash-footer{
   height:70px;
+
   display:flex;
   justify-content:center;
   gap:30px;
@@ -944,6 +991,16 @@ select {
   text-align:center;
 }
 
-.global-label{font-size:12px;opacity:.7;}
-.global-val{font-size:28px;font-weight:900;}
-.global-val.has-data{color:#22c55e;}
+.global-label{
+  font-size:12px;
+  opacity:.7;
+}
+
+.global-val{
+  font-size:28px;
+  font-weight:900;
+}
+
+.global-val.has-data{
+  color:#22c55e;
+}
