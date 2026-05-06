@@ -3,37 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AKANJO — Login</title>
+  <title>AKANJO — Connexion</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <link rel="stylesheet" href="style.css">
-  <script src="supabase-config.js" defer></script>
+  <style>
+    /* Redirect si déjà connecté — overlay invisible */
+    .auth-checking {
+      position: fixed;
+      inset: 0;
+      background: #F5F0EA;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #aaa;
+    }
+  </style>
 </head>
 <body class="login-body">
-  <div class="login-card">
+
+  <!-- Vérification session en cours -->
+  <div class="auth-checking" id="auth-checking">Vérification...</div>
+
+  <div class="login-card" id="login-card" style="display:none">
+
     <!-- Image header -->
     <div class="login-image">
       <div class="login-brand-overlay">
-      <a class="home-link" href="index.html"><div class="login-akanjo">AKANJO</div><div class="login-mada">MADAGASCAR</div></a>
-    </div>
+        <div class="login-akanjo">AKANJO</div>
+        <div class="login-mada">MADAGASCAR</div>
+      </div>
     </div>
 
     <!-- Contenu -->
     <div class="login-content">
-      
-      <input 
-        class="login-input" 
-        type="text" 
-        placeholder="Utilisateur" 
-        disabled>
 
-      <input 
-        class="login-input" 
-        type="password" 
-        placeholder="Mot de passe" 
-        disabled>
-      <button class="login-submit" disabled>
+      <input
+        class="login-input"
+        type="email"
+        id="login-email"
+        placeholder="Email"
+        autocomplete="email">
+
+      <input
+        class="login-input"
+        type="password"
+        id="login-password"
+        placeholder="Mot de passe"
+        autocomplete="current-password">
+
+      <div class="msg" id="login-msg"></div>
+
+      <button class="login-submit" id="login-btn" onclick="seConnecter()">
         Se connecter
       </button>
+
     </div>
   </div>
+
+<script>
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey
+const { createClient } = supabase
+const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+// ── Vérifier si déjà connecté ──
+;(async () => {
+  const { data: { session } } = await db.auth.getSession()
+
+  if (session) {
+    // Récupérer le profil pour rediriger vers la bonne page
+    const { data: profile } = await db
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single()
+
+    if (profile) {
+      redirectParRole(profile.role)
+      return
+    }
+  }
+
+  // Pas de session → afficher le formulaire
+  document.getElementById('auth-checking').style.display = 'none'
+  document.getElementById('login-card').style.display = 'block'
+})()
+
+// ── Connexion ──
+async function seConnecter() {
+  const email    = document.getElementById('login-email').value.trim()
+  const password = document.getElementById('login-password').value
+  const msg      = document.getElementById('login-msg')
+  const btn      = document.getElementById('login-btn')
+
+  if (!email || !password) {
+    afficherMsg('error', 'Veuillez saisir votre email et mot de passe.')
+    return
+  }
+
+  btn.disabled = true
+  btn.textContent = 'Connexion...'
+  msg.className = 'msg'
+
+  const { data, error } = await db.auth.signInWithPassword({ email, password })
+
+  if (error) {
+    btn.disabled = false
+    btn.textContent = 'Se connecter'
+    afficherMsg('error', 'Email ou mot de passe incorrect.')
+    return
+  }
+
+  // Récupérer le profil
+  const { data: profile } = await db
+    .from('profiles')
+    .select('role, nom')
+    .eq('id', data.user.id)
+    .single()
+
+  if (!profile) {
+    await db.auth.signOut()
+    btn.disabled = false
+    btn.textContent = 'Se connecter'
+    afficherMsg('error', 'Compte non configuré. Contactez l\'administrateur.')
+    return
+  }
+
+  redirectParRole(profile.role)
+}
+
+function redirectParRole(role) {
+  const map = {
+    admin:       'admin.html',
+    it:          'coupe.html',
+    superviseur: 'objectifs.html'
+  }
+  window.location.href = map[role] || 'dashboard.html'
+}
+
+function afficherMsg(type, texte) {
+  const msg = document.getElementById('login-msg')
+  msg.className = `msg ${type}`
+  msg.textContent = texte
+}
+
+// Connexion avec Entrée
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') seConnecter()
+})
+</script>
 </body>
 </html>
