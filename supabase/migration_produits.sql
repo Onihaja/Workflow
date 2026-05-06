@@ -1,4 +1,3 @@
-
 DO $$
 BEGIN
   IF to_regclass('public.produits') IS NULL THEN
@@ -7,18 +6,17 @@ BEGIN
 END
 $$;
 
-alter table public.produits
-  add column if not exists chaine_production text,
-  add column if not exists tailles_quantites jsonb;
+ALTER TABLE public.produits
+  ADD COLUMN IF NOT EXISTS chaine_production text,
+  ADD COLUMN IF NOT EXISTS tailles_quantites jsonb;
 
-update public.produits
-set tailles_quantites = '[]'::jsonb
-where tailles_quantites is null;
+UPDATE public.produits
+SET tailles_quantites = '[]'::jsonb
+WHERE tailles_quantites IS NULL;
 
-alter table public.produits
-  alter column tailles_quantites set default '[]'::jsonb;
+ALTER TABLE public.produits
+  ALTER COLUMN tailles_quantites SET DEFAULT '[]'::jsonb;
 
--- Contraintes ajoutées seulement si absentes ET si colonnes présentes
 DO $$
 BEGIN
   IF EXISTS (
@@ -53,38 +51,16 @@ BEGIN
 END
 $$;
 
-
-alter table public.produits
-  add column if not exists chaine_production text,
-  add column if not exists tailles_quantites jsonb default '[]'::jsonb;
-
--- Contraintes de base
-alter table public.produits
-  add constraint produits_chaine_chk
-  check (chaine_production is null or chaine_production in (
-    'CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16'
-  ));
-
-alter table public.produits
-  add constraint produits_tailles_quantites_is_array_chk
-  check (jsonb_typeof(tailles_quantites) = 'array');
-
-update public.produits
-set tailles_quantites = jsonb_build_array(
+UPDATE public.produits
+SET tailles_quantites = jsonb_build_array(
   jsonb_build_object('taille', taille, 'quantite', 1)
 )
-where (tailles_quantites is null or tailles_quantites = '[]'::jsonb)
-  and taille is not null
-  and btrim(taille) <> '';
+WHERE (tailles_quantites IS NULL OR tailles_quantites = '[]'::jsonb)
+  AND taille IS NOT NULL
+  AND btrim(taille) <> '';
 
-create index if not exists idx_produits_chaine_production
-  on public.produits(chaine_production);
+CREATE INDEX IF NOT EXISTS idx_produits_chaine_production
+  ON public.produits(chaine_production);
 
-create index if not exists idx_mouvements_produit_created_at
-  on public.mouvements(produit_id, created_at desc);
-
-
--- Index utiles dashboard/filtrage
-create index if not exists idx_produits_chaine_production on public.produits(chaine_production);
-create index if not exists idx_mouvements_produit_created_at on public.mouvements(produit_id, created_at desc);
-
+CREATE INDEX IF NOT EXISTS idx_mouvements_produit_created_at
+  ON public.mouvements(produit_id, created_at DESC);
