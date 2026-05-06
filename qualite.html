@@ -8,17 +8,19 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
 </head>
 <body>
-
 <header>
-  <a class="home-link" href="index.html"><div class="logo-main">AKANJO</div><div class="logo-sub">MADAGASCAR</div></a>
-  <div class="dept-label">Pôle Qualité</div>
+  <a class="home-link" href="index.html">
+    <div class="logo-main">AKANJO</div>
+    <div class="logo-sub">MADAGASCAR</div>
+  </a>
+  <div class="dept-label">Pôle Qualité — S2 / S3</div>
 </header>
-
 <div class="container">
-<a class="main-btn-link" href="index.html">← Retour accueil</a>
-  <!-- Étape 1 : Opérateur -->
+  <a class="main-btn-link" href="index.html">← Retour accueil</a>
+
   <div class="card" id="card-operateur">
     <div class="card-title">Opérateur</div>
     <div class="field">
@@ -29,17 +31,11 @@
     <div class="msg" id="msg-operateur"></div>
   </div>
 
-  <!-- Étape 2 : Scan -->
   <div class="card" id="card-scan" style="display:none">
     <div class="card-title">Scanner une pièce</div>
-
     <div id="reader"></div>
-    <button class="main-btn" id="btn-scan" onclick="demarrerScan()">
-      📷 &nbsp; Démarrer la caméra
-    </button>
-
+    <button class="main-btn" id="btn-scan" onclick="demarrerScan()">📷 &nbsp; Démarrer la caméra</button>
     <div class="divider">ou saisir manuellement</div>
-
     <div class="field">
       <label>ID de la pièce</label>
       <input type="text" id="input-id" placeholder="Collez l'ID ici...">
@@ -48,30 +44,22 @@
     <div class="msg" id="msg-scan"></div>
   </div>
 
-  <!-- Étape 3 : Infos + actions -->
   <div class="card" id="card-piece" style="display:none">
     <div class="card-title">Pièce scannée</div>
     <div class="piece-info" id="piece-info"></div>
     <div class="actions-title">Action à effectuer</div>
     <div class="actions-grid" id="actions-grid"></div>
     <div class="msg" id="msg-action"></div>
-    <button class="main-btn light" onclick="nouveauScan()" style="margin-top:20px">
-      ← Nouvelle pièce
-    </button>
+    <button class="main-btn light" onclick="nouveauScan()" style="margin-top:20px">← Nouvelle pièce</button>
   </div>
 
-  <!-- Étape 4 : Confirmation -->
   <div class="card confirm-card" id="card-confirm" style="display:none">
     <div class="confirm-icon">✓</div>
     <div class="confirm-title" id="confirm-title"></div>
     <div class="confirm-sub" id="confirm-sub"></div>
-    <button class="main-btn" onclick="nouveauScan()" style="margin-top:28px">
-      Scanner une autre pièce
-    </button>
+    <button class="main-btn" onclick="nouveauScan()" style="margin-top:28px">Scanner une autre pièce</button>
   </div>
-
 </div>
-
 <script src="scan.js"></script>
 <script>
   const DEPT_ID  = 3
@@ -79,14 +67,21 @@
   const ACTIONS  = [
     {
       id:     'entree_qualite',
-      label:  'Entrée qualité',
-      desc:   'Pièce bonne — venant de sortie chaîne',
+      label:  'S2 — Entrée qualité',
+      desc:   'Pièce reçue — venant de sortie chaîne ou fin retouche',
       style:  'green',
       requis: ['sortie_chaine', 'fin_retouche']
     },
     {
+      id:     'sortie_qualite',
+      label:  'S3 — Sortie qualité',
+      desc:   'Pièce conforme — envoyée en finition',
+      style:  'green',
+      requis: ['entree_qualite']
+    },
+    {
       id:     'a_retoucher',
-      label:  'À retoucher',
+      label:  'S3b — À retoucher',
       desc:   'Défaut détecté — retour production',
       style:  'red',
       requis: ['entree_qualite']
@@ -100,6 +95,5 @@
     }
   ]
 </script>
-
 </body>
 </html>
