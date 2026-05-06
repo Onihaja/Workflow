@@ -826,7 +826,7 @@ body {
 .header-clock{font-size:24px;font-weight:900;}
 .header-date{font-size:14px;opacity:.8;}
 
-/* ───────── BODY ───────── */
+/* ───────── BODY ───────── 
 .dashboard-prod .dash-body{
   flex:1;
   height:calc(100vh - 70px - 70px);
@@ -835,8 +835,18 @@ body {
   grid-template-columns: 1fr 300px;
   gap:12px;
   padding:12px;
+}*/
+.dashboard-prod {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
+.dash-body {
+  flex: 1;
+  min-height: 0;
+}
 /* ───────── CHAÎNES (ZONE PRINCIPALE) ───────── */
 .zone-chaines{
   display:grid;
@@ -1003,4 +1013,21 @@ body {
 
 .global-val.has-data{
   color:#22c55e;
+}
+
+/* ───────── BRODERIE MAIN BAS ───────── */
+.zone-broderie-main {
+  padding: 8px 12px;
+}
+
+/* pleine largeur + 1 seule ligne */
+.zone-broderie-main .section-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 8 postes sur une ligne */
+  gap: 8px;
+}
+
+/* éviter qu'elle pousse le layout */
+.zone-broderie-main .poste-card {
+  height: 120px;
 }
