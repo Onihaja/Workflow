@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AKANJO — Dashboard Production</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #F7F4EE;
+      --card-bg:   #FFFFFF;
+      --border:    #E2DAD0;
+      --text:      #1A1A1A;
+      --muted:     #999;
+      --blue:      #2563EB;
+      --green:     #16A34A;
+      --red:       #DC2626;
+      --amber:     #D97706;
+      --gold:      #B8860B;
+      --header-bg: #1A1A1A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .dash-header {
+      background: var(--header-bg);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      height: 52px;
+    }
+
+    .dash-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 5px;
+      color: #fff;
+    }
+
+    .dash-brand span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: #888;
+      margin-left: 10px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+
+    .dash-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .dash-clock {
+      font-size: 18px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .dash-date {
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 1px;
+    }
+
+    .dash-live {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #4ade80;
+      letter-spacing: 1px;
+    }
+
+    .dash-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ── GRILLE ── */
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 10px;
+      padding: 10px;
+      height: calc(100vh - 52px);
+    }
+
+    /* ── CARTE CHAÎNE ── */
+    .chain-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+
+    .chain-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    /* titre chaîne */
+    .chain-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      text-align: center;
+      padding: 6px 0 5px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    /* zone références */
+    .chain-refs {
+      display: flex;
+      border-bottom: 2px solid var(--blue);
+      flex-shrink: 0;
+    }
+
+    .chain-ref-col {
+      flex: 1;
+      padding: 4px 8px;
+      border-right: 1px solid var(--border);
+    }
+
+    .chain-ref-col:last-child { border-right: none; }
+
+    .ref-label {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .ref-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.5px;
+    }
+
+    .ref-value.empty { color: #ccc; font-weight: 400; font-style: italic; }
+
+    /* zone données */
+    .chain-data {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* bloc par référence */
+    .ref-block {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      padding: 4px 8px 6px;
+      border-bottom: 1px dashed var(--border);
+      min-height: 0;
+    }
+
+    .ref-block:last-child { border-bottom: none; }
+
+    /* ligne top : objectif + taux */
+    .ref-top {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .ref-objectif {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .ref-taux {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* compteur central */
+    .ref-counter-wrap {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .ref-counter {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1;
+      transition: color 0.5s;
+    }
+
+    .ref-counter.ok      { color: var(--green); }
+    .ref-counter.nok     { color: var(--red); }
+    .ref-counter.neutral { color: var(--text); }
+
+    /* avancement cumulé */
+    .ref-cumul {
+      grid-column: 1 / -1;
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--amber);
+    }
+
+    /* barre de progression */
+    .ref-bar {
+      grid-column: 1 / -1;
+      height: 3px;
+      background: #f0ece6;
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .ref-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.8s ease;
+    }
+
+    .ref-bar-fill.ok  { background: var(--green); }
+    .ref-bar-fill.nok { background: var(--red); }
+
+    /* ── CARTE VIDE ── */
+    .chain-card.empty-slot {
+      background: transparent;
+      border: 1px dashed #ddd;
+      pointer-events: none;
+    }
+
+    /* ── LOADING ── */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .loading-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 8px;
+      color: var(--text);
+    }
+
+    .loading-sub {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .loading-spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #e8e2d9;
+      border-top-color: var(--text);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE (petits écrans) ── */
+    @media (max-width: 1200px) {
+      .dash-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .dash-grid {
+        grid-template-columns: repeat(2, 1fr);
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-title">AKANJO</div>
+  <div class="loading-spinner"></div>
+  <div class="loading-sub">Chargement du tableau de bord...</div>
+</div>
+
+<!-- Header -->
+<header class="dash-header">
+  <div class="dash-brand">
+    AKANJO <span>Madagascar — Production</span>
+  </div>
+  <div class="dash-meta">
+    <div>
+      <div class="dash-clock" id="clock">--:--:--</div>
+      <div class="dash-date" id="date-display"></div>
+    </div>
+    <div class="dash-live">
+      <div class="dash-live-dot"></div>
+      LIVE
+    </div>
+    <a href="objectifs.html" style="color:#888;font-size:11px;letter-spacing:1px;text-decoration:none;">⚙ Objectifs</a>
+  </div>
+</header>
+
+<!-- Grille -->
+<div class="dash-grid" id="dash-grid"></div>
+
+<script>
+// ── CONFIG ──
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey
+const { createClient } = supabase
+const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
+
+// ── HORLOGE ──
+function majHorloge() {
+  const now = new Date()
+  document.getElementById('clock').textContent =
+    now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  document.getElementById('date-display').textContent =
+    now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+}
+setInterval(majHorloge, 1000)
+majHorloge()
+
+// ── ÉTAT GLOBAL ──
+let etatDashboard = {} // { [chaine]: { refs: [...], objectifs: {...} } }
+
+// ── DATE DU JOUR ──
+function dateAujourdhui() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+// ── CHARGER TOUTES LES DONNÉES ──
+async function chargerDonnees() {
+  const today = dateAujourdhui()
+
+  // 1. Objectifs du jour
+  const { data: objectifs } = await db
+    .from('objectifs_journaliers')
+    .select('*')
+    .eq('date', today)
+
+  // 2. Mouvements du jour (sortie_chaine = pièce produite sans retouche)
+  const { data: mouvementsJour } = await db
+    .from('mouvements')
+    .select('produit_id, action, created_at')
+    .eq('action', 'sortie_chaine')
+    .gte('created_at', today + 'T00:00:00')
+
+  // 3. Tous les produits actifs (avec leur chaîne et référence)
+  const { data: produits } = await db
+    .from('produits')
+    .select('id, reference, chaine_production, etat_actuel')
+    .not('chaine_production', 'is', null)
+
+  // 4. Toutes les sorties (cumulées, pas juste aujourd'hui)
+  const { data: toutesLesProductions } = await db
+    .from('mouvements')
+    .select('produit_id, action')
+    .eq('action', 'sortie_chaine')
+
+  // Construire l'état par chaîne
+  const nouvelEtat = {}
+
+  CHAINES.forEach(chaine => {
+    // Produits de cette chaîne
+    const produitsDeLaChaine = (produits || []).filter(p => p.chaine_production === chaine)
+
+    // Références distinctes sur cette chaîne
+    const refs = [...new Set(produitsDeLaChaine.map(p => p.reference))].filter(Boolean)
+
+    // IDs des produits scannés aujourd'hui (sortie_chaine)
+    const idsProduitsAujourdhui = new Set((mouvementsJour || []).map(m => m.produit_id))
+
+    // IDs de toutes les productions (cumulé)
+    const tousLesIdsProduction = new Set((toutesLesProductions || []).map(m => m.produit_id))
+
+    const refsData = refs.map(ref => {
+      const produitsDeLaRef = produitsDeLaChaine.filter(p => p.reference === ref)
+      const idsDeLaRef = new Set(produitsDeLaRef.map(p => p.id))
+
+      // Pièces produites aujourd'hui pour cette ref (sans retouche)
+      const produitsAujourdhuiRef = produitsDeLaRef.filter(p => idsProduitsAujourdhui.has(p.id)).length
+
+      // Total cumulé pour cette ref
+      const cumulRef = produitsDeLaRef.filter(p => tousLesIdsProduction.has(p.id)).length
+
+      // Total commandé (toutes pièces créées pour cette ref sur cette chaîne)
+      const totalCommande = produitsDeLaRef.length
+
+      // Taux d'avancement = cumulé / total commandé
+      const taux = totalCommande > 0 ? Math.round((cumulRef / totalCommande) * 100) : 0
+
+      // Objectif du jour
+      const obj = (objectifs || []).find(o => o.chaine === chaine && o.reference === ref)
+      const objectifJour = obj?.objectif || 0
+
+      return {
+        reference:        ref,
+        produitsAujourdhui: produitsAujourdhuiRef,
+        cumulRef,
+        totalCommande,
+        taux,
+        objectifJour
+      }
+    })
+
+    nouvelEtat[chaine] = { refs: refsData }
+  })
+
+  etatDashboard = nouvelEtat
+  rendreGrille()
+  document.getElementById('loading').style.display = 'none'
+}
+
+// ── RENDU GRILLE ──
+function rendreGrille() {
+  const grid = document.getElementById('dash-grid')
+  grid.innerHTML = ''
+
+  CHAINES.forEach(chaine => {
+    const data = etatDashboard[chaine] || { refs: [] }
+    const card = creerCarteChaine(chaine, data.refs)
+    grid.appendChild(card)
+  })
+}
+
+// ── CRÉER UNE CARTE CHAÎNE ──
+function creerCarteChaine(chaine, refs) {
+  const card = document.createElement('div')
+  card.className = 'chain-card'
+  card.id = `card-${chaine}`
+
+  // Titre
+  const titre = document.createElement('div')
+  titre.className = 'chain-title'
+  titre.textContent = chaine
+  card.appendChild(titre)
+
+  if (refs.length === 0) {
+    // Carte vide
+    const refRow = document.createElement('div')
+    refRow.className = 'chain-refs'
+    refRow.innerHTML = `
+      <div class="chain-ref-col">
+        <div class="ref-label">Réf :</div>
+        <div class="ref-value empty">—</div>
+      </div>
+      <div class="chain-ref-col">
+        <div class="ref-label">Réf :</div>
+        <div class="ref-value empty">—</div>
+      </div>
+    `
+    card.appendChild(refRow)
+
+    const data = document.createElement('div')
+    data.className = 'chain-data'
+    data.innerHTML = `
+      <div class="ref-block">
+        <div class="ref-top">
+          <span class="ref-objectif">0</span>
+          <span class="ref-taux">0%</span>
+        </div>
+        <div class="ref-counter-wrap">
+          <div class="ref-counter neutral">0</div>
+        </div>
+        <div class="ref-cumul">0</div>
+      </div>
+    `
+    card.appendChild(data)
+    return card
+  }
+
+  // Ligne des références
+  const refRow = document.createElement('div')
+  refRow.className = 'chain-refs'
+  const refsAAfficher = refs.length >= 2 ? refs : [...refs, ...Array(2 - refs.length).fill(null)]
+  refsAAfficher.slice(0, Math.max(refs.length, 2)).forEach(r => {
+    const col = document.createElement('div')
+    col.className = 'chain-ref-col'
+    col.innerHTML = `
+      <div class="ref-label">Réf :</div>
+      <div class="ref-value ${r ? '' : 'empty'}">${r ? r.reference : '—'}</div>
+    `
+    refRow.appendChild(col)
+  })
+  card.appendChild(refRow)
+
+  // Données par référence
+  const dataZone = document.createElement('div')
+  dataZone.className = 'chain-data'
+
+  refs.forEach(r => {
+    const atteint = r.objectifJour > 0 && r.produitsAujourdhui >= r.objectifJour
+    const classCouleur = r.objectifJour === 0 ? 'neutral' : (atteint ? 'ok' : 'nok')
+    const largeurBarre = r.totalCommande > 0
+      ? Math.min(100, Math.round((r.cumulRef / r.totalCommande) * 100))
+      : 0
+
+    const bloc = document.createElement('div')
+    bloc.className = 'ref-block'
+    bloc.innerHTML = `
+      <div class="ref-top">
+        <span class="ref-objectif">${r.objectifJour}</span>
+        <span class="ref-taux">${r.taux}%</span>
+      </div>
+      <div class="ref-counter-wrap">
+        <div class="ref-counter ${classCouleur}">${r.produitsAujourdhui}</div>
+      </div>
+      <div class="ref-cumul">${r.cumulRef}</div>
+      <div class="ref-bar">
+        <div class="ref-bar-fill ${atteint ? 'ok' : 'nok'}" style="width:${largeurBarre}%"></div>
+      </div>
+    `
+    dataZone.appendChild(bloc)
+  })
+
+  card.appendChild(dataZone)
+  return card
+}
+
+// ── REALTIME ──
+function abonnerRealtime() {
+  db.channel('dashboard-live')
+    .on('postgres_changes', {
+      event:  '*',
+      schema: 'public',
+      table:  'mouvements'
+    }, () => chargerDonnees())
+    .on('postgres_changes', {
+      event:  '*',
+      schema: 'public',
+      table:  'objectifs_journaliers'
+    }, () => chargerDonnees())
+    .subscribe()
+}
+
+// ── INIT ──
+chargerDonnees()
+abonnerRealtime()
+// Rafraîchissement toutes les 60s en fallback
+setInterval(chargerDonnees, 60000)
+</script>
+</body>
+</html>
