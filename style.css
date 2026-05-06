@@ -778,42 +778,28 @@ select {
    DASHBOARD TV USINE — LISIBLE 5M
 ═══════════════════════════════════════ */
 
+/* GLOBAL */
 *{box-sizing:border-box}
 body{margin:0;overflow:hidden}
 
 .dashboard-prod{
-  --bg:#0b0f1a;
-  --card:#111827;
-  --border:#1f2937;
-
-  --text:#ffffff;
-  --blue:#3b82f6;
-  --green:#22c55e;
-  --red:#ef4444;
-  --orange:#f59e0b;
-
-  font-family:'DM Sans',sans-serif;
-  background:var(--bg);
-
   height:100vh;
   display:flex;
   flex-direction:column;
+  background:#0b0f1a;
+  font-family:'DM Sans',sans-serif;
 }
 
 /* HEADER */
 .header{
-  height:80px;
-  padding:0 30px;
+  height:70px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  padding:0 30px;
   background:#020617;
   color:#fff;
 }
-
-.header-brand{font-size:32px;font-weight:900}
-.header-clock{font-size:28px;font-weight:900}
-.header-date{font-size:16px}
 
 /* BODY */
 .dash-body{
@@ -833,15 +819,34 @@ body{margin:0;overflow:hidden}
   gap:10px;
 }
 
-/* COLONNE DROITE */
+/* DROITE */
 .zone-speciale{
   display:flex;
   flex-direction:column;
   gap:10px;
 }
 
+/* BLOCS DROITE */
+.section-block{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  background:#111827;
+  border-radius:10px;
+  padding:6px;
+}
+
+/* GRID INTERNE */
+.section-grid{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
 /* BRODERIE MAIN BAS */
 .zone-broderie-main{
+  height:160px; /* 🔥 contrôlé */
   padding:10px;
 }
 
@@ -854,114 +859,65 @@ body{margin:0;overflow:hidden}
 /* CARTES UNIFIÉES */
 .chain-card,
 .poste-card{
-  background:var(--card);
-  border:1px solid var(--border);
+  background:#1f2937;
   border-radius:10px;
+  padding:6px;
 
   display:flex;
   flex-direction:column;
   justify-content:space-between;
 
-  padding:8px;
   height:100%;
 }
 
-/* TITRE */
+/* TITRES */
 .chain-name,
 .section-title{
   text-align:center;
-  font-size:18px;
+  font-size:16px;
   font-weight:900;
+  color:#fff;
 }
 
-/* REF */
-.chain-refs-row,
-.poste-ref-bar{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-}
-
-/* DONNÉES */
-.chain-data,
-.poste-data{
-  display:flex;
-  flex:1;
-}
-
-/* BLOCS */
-.ref-data-col,
-.poste-data{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-/* OBJECTIF */
-.ref-data-top,
-.poste-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  font-weight:700;
-}
-
-/* COMPTEUR GÉANT */
+/* COMPTEURS */
 .ref-counter,
 .poste-counter{
-  font-size:64px;
+  font-size:48px;
   font-weight:900;
   text-align:center;
-  line-height:1;
+  color:#fff;
+}
+
+/* PETIT TEXTE */
+.ref-data-top,
+.poste-top{
+  font-size:12px;
+  display:flex;
+  justify-content:space-between;
 }
 
 /* COULEURS */
-.ok{color:var(--green)}
-.nok{color:var(--red)}
+.ok{color:#22c55e}
+.nok{color:#ef4444}
 .neutral{color:#6b7280}
-
-/* CUMUL */
-.ref-cumul,
-.poste-cumul{
-  font-size:14px;
-  text-align:right;
-  color:var(--orange);
-}
-
-/* BLOCS DROITE */
-.section-block{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  background:#020617;
-  border-radius:10px;
-  padding:6px;
-}
-
-.section-grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
 
 /* FOOTER */
 .dash-footer{
-  height:80px;
+  height:70px;
   display:flex;
   justify-content:center;
-  gap:40px;
   align-items:center;
+  gap:30px;
 }
 
 .global-counter{
   background:#000;
-  padding:10px 30px;
+  padding:10px 20px;
   border-radius:10px;
-  text-align:center;
+  color:#fff;
 }
 
-.global-label{font-size:14px}
-.global-val{font-size:36px;font-weight:900}
-.global-val.has-data{color:#22c55e}
+.global-val{
+  font-size:28px;
+  font-weight:900;
+}
