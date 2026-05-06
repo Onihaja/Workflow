@@ -774,102 +774,128 @@ select {
   to { transform: rotate(360deg); }
 }
 /* ═══════════════════════════════════════
-   DASHBOARD TV USINE — LISIBLE 5M
+   DASHBOARD ULTRA INDUSTRIEL — 55"
 ═══════════════════════════════════════ */
 
-*{box-sizing:border-box}
-body{margin:0;overflow:hidden}
+*{box-sizing:border-box;margin:0;padding:0}
 
-.dashboard-prod{
-  --bg:#F5F0EA;        /* beige principal */
-  --card:#FFFFFF;      /* cartes */
-  --border:#E6DED3;
-
-  --text:#2a2a2a;
-  --muted:#7a7a7a;
-
-  --primary:#C8A97E;   /* beige luxe */
-  --green:#4CAF50;
-  --red:#D64545;
-  --orange:#E6A23C;
-
-  background:var(--bg);
+body{
+  font-family:'Arial',sans-serif;
+  background:#F2ECE3;
+  color:#1a1a1a;
+  overflow:hidden;
 }
 
-/* ───────── HEADER 1 LIGNE ───────── */
+/* ───────── CONTAINER GLOBAL ───────── */
+.dashboard-prod{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+
+  --bg:#F2ECE3;
+  --card:#ffffff;
+  --border:#d6cdc2;
+
+  --text:#1a1a1a;
+  --muted:#777;
+
+  --green:#2e7d32;
+  --red:#c62828;
+  --orange:#ed6c02;
+}
+
+/* ───────── HEADER (1 LIGNE) ───────── */
 .header{
-  height:80px;
+  height:90px;
   padding:0 40px;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  background:#EDE4D8; /* beige propre */
-  border-bottom:1px solid #d8cfc2;
+  background:#e6ded2;
+  border-bottom:2px solid #d6cdc2;
 }
 
-/* bloc gauche */
 .header-left{
   display:flex;
   align-items:center;
-  gap:20px;
+  gap:30px;
 }
 
 .header-brand{
-  font-size:32px;
+  font-size:38px;
   font-weight:900;
-  letter-spacing:4px;
-  color:#2a2a2a;
+  letter-spacing:5px;
 }
 
-/* bloc droite */
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:25px;
-}
-
-/* horloge */
-.header-clock{
-  font-size:34px;
-  font-weight:900;
-  color:#1a1a1a;
-}
-
-/* date */
 .header-date{
-  font-size:18px;
+  font-size:20px;
   color:#555;
 }
 
-/* BODY */
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:30px;
+}
+
+.header-clock{
+  font-size:42px;
+  font-weight:900;
+}
+
+/* ───────── BODY ───────── */
 .dash-body{
   flex:1;
   display:grid;
   grid-template-columns: 1fr 320px;
-  gap:10px;
-  padding:10px;
-  min-height:0;
+  gap:12px;
+  padding:12px;
 }
 
-/* CHAÎNES */
+/* ───────── CHAÎNES ───────── */
 .zone-chaines{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   grid-template-rows:repeat(4,1fr);
-  gap:10px;
+  gap:12px;
 }
 
-/* COLONNE DROITE */
+/* ───────── COLONNE DROITE ───────── */
 .zone-speciale{
   display:flex;
   flex-direction:column;
+  gap:12px;
+}
+
+.section-block{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  background:#ede7dc;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:8px;
+}
+
+.section-title{
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+  margin-bottom:4px;
+}
+
+.section-grid{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
   gap:10px;
 }
 
-/* BRODERIE MAIN BAS */
+/* ───────── BRODERIE MAIN (BAS) ───────── */
 .zone-broderie-main{
+  height:170px;
   padding:10px;
 }
 
@@ -879,7 +905,7 @@ body{margin:0;overflow:hidden}
   gap:10px;
 }
 
-/* CARTES UNIFIÉES */
+/* ───────── CARTES UNIFIÉES ───────── */
 .chain-card,
 .poste-card{
   background:var(--card);
@@ -891,33 +917,22 @@ body{margin:0;overflow:hidden}
   justify-content:space-between;
 
   padding:8px;
-  height:100%;
 }
 
-/* TITRE */
-.chain-name,
-.section-title{
+/* ───────── TITRES ───────── */
+.chain-name{
   text-align:center;
-  font-size:18px;
+  font-size:20px;
   font-weight:900;
 }
 
-/* REF */
-.chain-refs-row,
-.poste-ref-bar{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-}
-
-/* DONNÉES */
+/* ───────── STRUCTURE ───────── */
 .chain-data,
 .poste-data{
   display:flex;
   flex:1;
 }
 
-/* BLOCS */
 .ref-data-col,
 .poste-data{
   flex:1;
@@ -926,70 +941,65 @@ body{margin:0;overflow:hidden}
   justify-content:space-between;
 }
 
-/* OBJECTIF */
+/* ───────── OBJECTIF ───────── */
 .ref-data-top,
 .poste-top{
   display:flex;
   justify-content:space-between;
-  font-size:14px;
+  font-size:16px;
   font-weight:700;
 }
 
-/* COMPTEUR GÉANT */
+/* ───────── COMPTEURS (TRÈS GROS) ───────── */
 .ref-counter,
 .poste-counter{
-  font-size:64px;
+  font-size:72px;
   font-weight:900;
   text-align:center;
   line-height:1;
 }
 
-/* COULEURS */
+/* ───────── COULEURS STATUT ───────── */
 .ok{color:var(--green)}
 .nok{color:var(--red)}
-.neutral{color:#6b7280}
+.neutral{color:#999}
 
-/* CUMUL */
+/* ───────── CUMUL ───────── */
 .ref-cumul,
 .poste-cumul{
-  font-size:14px;
+  font-size:16px;
   text-align:right;
   color:var(--orange);
 }
 
-/* BLOCS DROITE */
-.section-block{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  background:#020617;
-  border-radius:10px;
-  padding:6px;
-}
-
-.section-grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-/* FOOTER */
+/* ───────── FOOTER KPI ───────── */
 .dash-footer{
-  height:80px;
+  height:90px;
+
   display:flex;
   justify-content:center;
-  gap:40px;
   align-items:center;
+  gap:50px;
 }
 
 .global-counter{
-  background:#000;
-  padding:10px 30px;
+  background:#1a1a1a;
+  color:#fff;
+  padding:12px 30px;
   border-radius:10px;
   text-align:center;
 }
 
-.global-label{font-size:14px}
-.global-val{font-size:36px;font-weight:900}
-.global-val.has-data{color:#22c55e}
+.global-label{
+  font-size:16px;
+  opacity:.7;
+}
+
+.global-val{
+  font-size:40px;
+  font-weight:900;
+}
+
+.global-val.has-data{
+  color:#4caf50;
+}
