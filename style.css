@@ -824,13 +824,13 @@ body{
 }
 
 .header-brand{
-  font-size:38px;
+  font-size:32px;
   font-weight:900;
   letter-spacing:5px;
 }
 
 .header-date{
-  font-size:20px;
+  font-size:16px;
   color:#555;
 }
 
@@ -841,7 +841,7 @@ body{
 }
 
 .header-clock{
-  font-size:42px;
+  font-size:38px;
   font-weight:900;
 }
 
