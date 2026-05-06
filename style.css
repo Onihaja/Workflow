@@ -719,6 +719,55 @@ select {
   font-family: 'Arial', sans-serif;
 }
 
+/* ── BANDEAU UTILISATEUR (injecté par auth.js) ── */
+.user-bandeau {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: #faf8f5;
+  border-top: 1px solid #e8e2d9;
+  font-family: 'Arial', sans-serif;
+}
+
+.user-bandeau-nom {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 1px;
+}
+
+.user-bandeau-role {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #aaa;
+  padding: 2px 8px;
+  background: #f0ece6;
+  border-radius: 2px;
+}
+
+.user-bandeau-logout {
+  margin-left: auto;
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+  color: #888;
+  transition: all 0.2s;
+}
+
+.user-bandeau-logout:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
 @media (max-width: 1000px) {
   .login-split { grid-template-columns: 1fr; }
   .login-left { min-height: 42vh; border-right: 0; border-bottom: 2px solid #101010; }
