@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AKANJO — Objectifs journaliers</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .obj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .obj-date {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #aaa;
+      font-family: 'Arial', sans-serif;
+      text-transform: uppercase;
+    }
+
+    .chaine-section {
+      margin-bottom: 20px;
+      border: 1px solid #e8e2d9;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .chaine-header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 10px 16px;
+      font-family: 'Arial', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chaine-header-refs {
+      font-size: 10px;
+      color: #888;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+
+    .obj-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .obj-table th {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #aaa;
+      font-family: 'Arial', sans-serif;
+      font-weight: 400;
+      padding: 10px 14px;
+      text-align: left;
+      background: #faf8f5;
+      border-bottom: 1px solid #e8e2d9;
+    }
+
+    .obj-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0ece6;
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+    }
+
+    .obj-table tr:last-child td { border-bottom: none; }
+
+    .obj-table tr:hover td { background: #faf8f5; }
+
+    .obj-input {
+      width: 100px;
+      padding: 7px 10px;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      font-size: 14px;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background: #fff;
+    }
+
+    .obj-input:focus {
+      outline: none;
+      border-color: #1a1a1a;
+    }
+
+    .ref-tag {
+      display: inline-block;
+      background: #f0ece6;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1a1a1a;
+    }
+
+    .cumul-info {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .taux-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+    }
+
+    .taux-ok  { background: #f0f5e8; color: #3a5a1a; }
+    .taux-nok { background: #fdf0f0; color: #7a2a2a; }
+    .taux-neu { background: #f0ece6; color: #888; }
+
+    .save-bar {
+      position: sticky;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid #e8e2d9;
+      padding: 16px 0;
+      margin-top: 8px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .empty-chaine {
+      padding: 14px;
+      font-size: 12px;
+      color: #ccc;
+      font-family: 'Arial', sans-serif;
+      font-style: italic;
+    }
+
+    .msg-save {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a class="home-link" href="index.html">
+    <div class="logo-main">AKANJO</div>
+    <div class="logo-sub">MADAGASCAR</div>
+  </a>
+  <div class="dept-label">Objectifs journaliers — Superviseur</div>
+</header>
+
+<div class="container" style="max-width:720px">
+  <a class="main-btn-link" href="dashboard.html">→ Voir le dashboard TV</a>
+
+  <div class="card" style="margin-top:16px">
+    <div class="obj-header">
+      <div class="card-title" style="margin-bottom:0">Objectifs du jour</div>
+      <div class="obj-date" id="obj-date"></div>
+    </div>
+    <p style="font-size:12px;color:#aaa;font-family:Arial,sans-serif;margin-top:4px;margin-bottom:20px;letter-spacing:0.5px;">
+      Saisissez l'objectif journalier pour chaque référence active par chaîne.
+    </p>
+
+    <div id="obj-content">
+      <div style="text-align:center;padding:40px;color:#aaa;font-family:Arial,sans-serif;font-size:12px;">
+        Chargement...
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <button class="main-btn" style="margin-top:0" onclick="sauvegarderObjectifs()">
+        Enregistrer tous les objectifs
+      </button>
+      <a class="main-btn light" href="dashboard.html" style="margin-top:0;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;">
+        Voir le dashboard
+      </a>
+    </div>
+    <div class="msg msg-save" id="msg-save"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = window.SUPABASE_CONFIG?.url
+const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey
+const { createClient } = supabase
+const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
+
+let donneesActuelles = [] // { chaine, reference, objectif, cumul, total, taux }
+
+function dateAujourdhui() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function afficherDate() {
+  const d = new Date()
+  document.getElementById('obj-date').textContent =
+    d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+async function chargerDonnees() {
+  const today = dateAujourdhui()
+
+  // Objectifs existants pour aujourd'hui
+  const { data: objectifs } = await db
+    .from('objectifs_journaliers')
+    .select('*')
+    .eq('date', today)
+
+  // Tous les produits avec chaîne
+  const { data: produits } = await db
+    .from('produits')
+    .select('id, reference, chaine_production')
+    .not('chaine_production', 'is', null)
+
+  // Toutes les productions cumulées
+  const { data: productions } = await db
+    .from('mouvements')
+    .select('produit_id')
+    .eq('action', 'sortie_chaine')
+
+  const idsProds = new Set((productions || []).map(p => p.produit_id))
+
+  // Construire les données
+  donneesActuelles = []
+
+  CHAINES.forEach(chaine => {
+    const prodsDeLaChaine = (produits || []).filter(p => p.chaine_production === chaine)
+    const refs = [...new Set(prodsDeLaChaine.map(p => p.reference))].filter(Boolean)
+
+    refs.forEach(ref => {
+      const prodsDeLaRef = prodsDeLaChaine.filter(p => p.reference === ref)
+      const total  = prodsDeLaRef.length
+      const cumul  = prodsDeLaRef.filter(p => idsProds.has(p.id)).length
+      const taux   = total > 0 ? Math.round((cumul / total) * 100) : 0
+      const objRow = (objectifs || []).find(o => o.chaine === chaine && o.reference === ref)
+
+      donneesActuelles.push({
+        chaine,
+        reference: ref,
+        objectif:  objRow?.objectif || 0,
+        objectif_id: objRow?.id || null,
+        cumul,
+        total,
+        taux
+      })
+    })
+  })
+
+  rendreFormulaire()
+}
+
+function rendreFormulaire() {
+  const content = document.getElementById('obj-content')
+  content.innerHTML = ''
+
+  CHAINES.forEach(chaine => {
+    const refsChaine = donneesActuelles.filter(d => d.chaine === chaine)
+
+    const section = document.createElement('div')
+    section.className = 'chaine-section'
+
+    const header = document.createElement('div')
+    header.className = 'chaine-header'
+    header.innerHTML = `
+      <span>${chaine}</span>
+      <span class="chaine-header-refs">${refsChaine.length} référence(s)</span>
+    `
+    section.appendChild(header)
+
+    if (refsChaine.length === 0) {
+      section.innerHTML += `<div class="empty-chaine">Aucune référence active sur cette chaîne</div>`
+    } else {
+      const table = document.createElement('table')
+      table.className = 'obj-table'
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Objectif / jour</th>
+            <th>Cumulé</th>
+            <th>Total commandé</th>
+            <th>Avancement</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      `
+      const tbody = table.querySelector('tbody')
+
+      refsChaine.forEach(d => {
+        const classTaux = d.taux >= 100 ? 'taux-ok' : d.taux > 0 ? 'taux-nok' : 'taux-neu'
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td><span class="ref-tag">${d.reference}</span></td>
+          <td>
+            <input
+              class="obj-input"
+              type="number"
+              min="0"
+              value="${d.objectif}"
+              id="obj-${chaine}-${d.reference}"
+              data-chaine="${chaine}"
+              data-reference="${d.reference}"
+              data-id="${d.objectif_id || ''}"
+            >
+          </td>
+          <td><strong>${d.cumul}</strong></td>
+          <td class="cumul-info">${d.total} pcs</td>
+          <td><span class="taux-badge ${classTaux}">${d.taux}%</span></td>
+        `
+        tbody.appendChild(tr)
+      })
+
+      section.appendChild(table)
+    }
+
+    content.appendChild(section)
+  })
+}
+
+async function sauvegarderObjectifs() {
+  const today = dateAujourdhui()
+  const inputs = document.querySelectorAll('.obj-input')
+  const msg = document.getElementById('msg-save')
+
+  msg.className = 'msg'
+  msg.style.display = 'block'
+  msg.textContent = 'Enregistrement...'
+
+  let erreurs = 0
+
+  for (const input of inputs) {
+    const chaine    = input.dataset.chaine
+    const reference = input.dataset.reference
+    const objectif  = parseInt(input.value) || 0
+    const id        = input.dataset.id
+
+    if (id) {
+      // Mettre à jour
+      const { error } = await db
+        .from('objectifs_journaliers')
+        .update({ objectif })
+        .eq('id', id)
+      if (error) erreurs++
+    } else {
+      // Insérer
+      const { data, error } = await db
+        .from('objectifs_journaliers')
+        .insert([{ chaine, reference, objectif, date: today }])
+        .select()
+        .single()
+      if (error) erreurs++
+      else input.dataset.id = data.id
+    }
+  }
+
+  if (erreurs > 0) {
+    msg.className = 'msg error'
+    msg.textContent = `${erreurs} erreur(s) lors de l'enregistrement.`
+  } else {
+    msg.className = 'msg success'
+    msg.textContent = '✓ Objectifs enregistrés avec succès.'
+    setTimeout(() => {
+      msg.className = 'msg'
+      msg.style.display = 'none'
+    }, 3000)
+  }
+}
+
+// ── INIT ──
+afficherDate()
+chargerDonnees()
+</script>
+</body>
+</html>
