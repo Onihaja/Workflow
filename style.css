@@ -775,232 +775,175 @@ select {
 }
 
 /* ═══════════════════════════════════════
-   DASHBOARD — VERSION INDUSTRIELLE PRO
+   DASHBOARD FULL FIT — NO SCROLL
 ═══════════════════════════════════════ */
 
 .dashboard-prod {
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --border: #e2e6ea;
+  --bg:#f4f6f8;
+  --card:#fff;
+  --border:#e2e6ea;
 
-  --text: #111827;
-  --muted: #6b7280;
+  --text:#111827;
+  --muted:#6b7280;
 
-  --primary: #c8a97e;
-  --blue: #2563eb;
-  --green: #16a34a;
-  --red: #dc2626;
-  --orange: #f59e0b;
+  --primary:#c8a97e;
+  --blue:#2563eb;
+  --green:#16a34a;
+  --red:#dc2626;
+  --orange:#f59e0b;
 
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
 
-/* ───────── HEADER ───────── */
-.dashboard-prod .header {
-  height: 100px;
-  padding: 0 50px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: #0f172a;
-  color: #fff;
+/* HEADER ↓ réduit */
+.dashboard-prod .header{
+  height:70px;
+  padding:0 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#0f172a;
+  color:#fff;
 }
 
-.header-brand {
-  font-size: 36px;
-  font-weight: 900;
+.header-brand{font-size:26px;font-weight:900;}
+.header-clock{font-size:24px;font-weight:900;}
+.header-date{font-size:14px;opacity:.8;}
+
+/* BODY prend tout l’espace */
+.dashboard-prod .dash-body{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:12px;
+  padding:12px;
 }
 
-.header-clock {
-  font-size: 34px;
-  font-weight: 900;
+/* CHAÎNES */
+.zone-chaines{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
-.header-date {
-  font-size: 20px;
-  opacity: 0.8;
+/* CARTES ↓ plus petites */
+.chain-card,.poste-card{
+  background:var(--card);
+  border-radius:12px;
+  border:1px solid var(--border);
+  height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:6px;
 }
 
-/* ───────── LAYOUT ───────── */
-.dashboard-prod .dash-body {
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 20px;
-  padding: 20px;
+/* TITRES ↓ */
+.chain-name,.section-title{
+  text-align:center;
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:2px;
 }
 
-/* ───────── CHAÎNES ───────── */
-.zone-chaines {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+/* REF */
+.chain-refs-row{
+  display:flex;
+  border-bottom:1px solid var(--primary);
 }
 
-/* ───────── CARTES UNIFIÉES ───────── */
-.chain-card,
-.poste-card {
-  background: var(--card);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-
-  height: 200px;
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  padding: 10px;
+.ref-col{width:50%;text-align:center;}
+.ref-col-value,.poste-ref-value{
+  font-size:16px;
+  font-weight:900;
 }
 
-/* ───────── TITRES ───────── */
-.chain-name,
-.section-title {
-  text-align: center;
-  font-size: 20px;
-  font-weight: 900;
-  margin-bottom: 6px;
-  letter-spacing: 1px;
+/* STRUCTURE */
+.chain-data,.poste-data{display:flex;flex:1;}
+
+.ref-data-col,.poste-data{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-left:1px solid #e5e7eb;
+  padding:4px;
 }
 
-/* ───────── RÉFÉRENCES ───────── */
-.chain-refs-row {
-  display: flex;
-  border-bottom: 2px solid var(--primary);
+/* OBJECTIF */
+.ref-data-top,.poste-top{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  font-weight:800;
 }
 
-.ref-col {
-  width: 50%;
-  text-align: center;
+.val-obj{color:var(--blue);}
+.val-taux{color:var(--green);}
+
+/* COMPTEURS ↓ beaucoup plus petits */
+.ref-counter,.poste-counter{
+  font-size:42px;
+  font-weight:900;
+  text-align:center;
+  line-height:1;
 }
 
-.ref-col-value,
-.poste-ref-value {
-  font-size: 20px;
-  font-weight: 900;
+/* COULEURS */
+.ok{color:var(--green);}
+.nok{color:var(--red);}
+.neutral{color:#9ca3af;}
+
+/* CUMUL */
+.ref-cumul,.poste-cumul{
+  font-size:11px;
+  font-weight:800;
+  text-align:right;
+  color:var(--orange);
 }
 
-/* ───────── STRUCTURE INTERNE ───────── */
-.chain-data,
-.poste-data {
-  display: flex;
-  flex: 1;
+/* ZONE DROITE */
+.zone-speciale{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.ref-data-col,
-.poste-data {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-left: 1px solid #e5e7eb;
-  padding: 6px;
+.section-block{
+  background:#f9fafb;
+  border-radius:12px;
+  border:1px solid var(--border);
+  padding:8px;
 }
 
-/* ───────── OBJECTIF + TAUX ───────── */
-.ref-data-top,
-.poste-top {
-  display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-  font-weight: 800;
+.section-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
 }
 
-.val-obj { color: var(--blue); }
-.val-taux { color: var(--green); }
-
-/* ───────── COMPTEURS ───────── */
-.ref-counter,
-.poste-counter {
-  font-size: 68px;
-  font-weight: 900;
-  text-align: center;
-  line-height: 1;
+/* FOOTER ↓ réduit */
+.dash-footer{
+  height:70px;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  align-items:center;
 }
 
-.ref-counter.ok,
-.poste-counter.ok { color: var(--green); }
-
-.ref-counter.nok,
-.poste-counter.nok { color: var(--red); }
-
-.ref-counter.neutral,
-.poste-counter.neutral { color: #9ca3af; }
-
-/* ───────── CUMUL ───────── */
-.ref-cumul,
-.poste-cumul {
-  font-size: 15px;
-  font-weight: 800;
-  text-align: right;
-  color: var(--orange);
+.global-counter{
+  background:#111827;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:10px;
+  text-align:center;
 }
 
-/* ───────── ZONE SPÉCIALE ───────── */
-.zone-speciale {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* STYLE SOBRE MAIS DISTINCT */
-.section-block {
-  background: #f9fafb;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  padding: 12px;
-}
-
-/* GRID POSTES */
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-/* ───────── FOOTER KPI ───────── */
-.dash-footer {
-  height: 110px;
-
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  align-items: center;
-
-  background: transparent;
-}
-
-.global-counter {
-  background: #111827;
-  color: #fff;
-  padding: 18px 40px;
-  border-radius: 14px;
-  text-align: center;
-}
-
-.global-label {
-  font-size: 16px;
-  opacity: 0.7;
-}
-
-.global-val {
-  font-size: 54px;
-  font-weight: 900;
-}
-
-.global-val.has-data {
-  color: #22c55e;
-}
-
-/* ───────── LOADING ───────── */
-.loading {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.global-label{font-size:12px;opacity:.7;}
+.global-val{font-size:28px;font-weight:900;}
+.global-val.has-data{color:#22c55e;}
