@@ -20,6 +20,15 @@ function recupererTaillesQuantites() {
     .filter(item => item.quantite > 0)
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('\"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
 // ── CRÉATION — UN PRODUIT PAR PIÈCE INDIVIDUELLE ──
 async function creerPieces() {
   const client      = document.getElementById('client').value.trim()
@@ -45,39 +54,45 @@ async function creerPieces() {
   btn.textContent = `Création de ${totalPieces} pièce(s)...`
   afficherMsg('', '')
 
-  const piecesCreees = []
+  const produitsPayload = []
+  for (const { taille, quantite } of taillesQty) {
+    for (let i = 0; i < quantite; i++) {
+      produitsPayload.push({
+        client,
+        reference,
+        designation,
+        couleur:           couleur || null,
+        taille,
+        chaine_production: chaine,
+        etat_actuel:       'creation'
+      })
+    }
+  }
 
   try {
-    for (const { taille, quantite } of taillesQty) {
-      for (let i = 0; i < quantite; i++) {
-        const { data, error } = await db.from('produits').insert([{
-          client,
-          reference,
-          designation,
-          couleur:           couleur || null,
-          taille,
-          chaine_production: chaine,
-          etat_actuel:       'creation'
-        }]).select().single()
+    const { data: piecesCreees, error: errorProduits } = await db
+      .from('produits')
+      .insert(produitsPayload)
+      .select()
 
-        if (error) throw new Error(error.message)
+    if (errorProduits) throw new Error(errorProduits.message)
 
-        await db.from('mouvements').insert([{
-          produit_id:     data.id,
-          departement_id: 1,
-          action:         'creation',
-          operateur:      'Coupe'
-        }])
+    const mouvementsPayload = piecesCreees.map((piece) => ({
+      produit_id:     piece.id,
+      departement_id: 1,
+      action:         'creation',
+      operateur:      'Coupe'
+    }))
 
-        piecesCreees.push(data)
-      }
-    }
+    const { error: errorMouvements } = await db.from('mouvements').insert(mouvementsPayload)
+    if (errorMouvements) throw new Error(errorMouvements.message)
 
     afficherMsg('success', `✓ ${piecesCreees.length} pièce(s) créée(s).`)
     afficherQRCodes(piecesCreees, { client, reference, designation, couleur, chaine })
 
   } catch (e) {
     afficherMsg('error', 'Erreur : ' + e.message)
+  } finally {
     btn.disabled = false
     btn.textContent = 'Générer les QR codes'
   }
@@ -96,12 +111,12 @@ function afficherQRCodes(pieces, meta) {
     .join(', ')
 
   qrInfo.innerHTML = `
-    <div><strong>Client</strong> &nbsp; ${meta.client}</div>
-    <div><strong>Réf</strong> &nbsp; ${meta.reference}</div>
-    <div><strong>Désignation</strong> &nbsp; ${meta.designation}</div>
-    ${meta.couleur ? `<div><strong>Couleur</strong> &nbsp; ${meta.couleur}</div>` : ''}
-    <div><strong>Chaîne</strong> &nbsp; ${meta.chaine}</div>
-    <div><strong>Tailles</strong> &nbsp; ${taillesResume}</div>
+    <div><strong>Client</strong> &nbsp; ${escapeHtml(meta.client)}</div>
+    <div><strong>Réf</strong> &nbsp; ${escapeHtml(meta.reference)}</div>
+    <div><strong>Désignation</strong> &nbsp; ${escapeHtml(meta.designation)}</div>
+    ${meta.couleur ? `<div><strong>Couleur</strong> &nbsp; ${escapeHtml(meta.couleur)}</div>` : ''}
+    <div><strong>Chaîne</strong> &nbsp; ${escapeHtml(meta.chaine)}</div>
+    <div><strong>Tailles</strong> &nbsp; ${escapeHtml(taillesResume)}</div>
     <div class="qr-id">Total : ${pieces.length} QR codes</div>
   `
 
@@ -113,10 +128,10 @@ function afficherQRCodes(pieces, meta) {
     cell.className = 'qr-cell'
     cell.innerHTML = `
       <div class="qr-canvas" id="qr-canvas-${piece.id}"></div>
-      <div class="qr-cell-ref">${piece.reference}</div>
-      <div class="qr-cell-detail">${piece.taille} · ${meta.chaine}</div>
-      ${meta.couleur ? `<div class="qr-cell-detail">${meta.couleur}</div>` : ''}
-      <div class="qr-cell-client">${piece.client}</div>
+      <div class="qr-cell-ref">${escapeHtml(piece.reference)}</div>
+      <div class="qr-cell-detail">${escapeHtml(piece.taille)} · ${escapeHtml(meta.chaine)}</div>
+      ${meta.couleur ? `<div class="qr-cell-detail">${escapeHtml(meta.couleur)}</div>` : ''}
+      <div class="qr-cell-client">${escapeHtml(piece.client)}</div>
       <div class="qr-cell-id">#${piece.id}</div>
     `
     grid.appendChild(cell)
@@ -142,5 +157,3 @@ function afficherMsg(type, texte) {
   msg.className = type ? `msg ${type}` : 'msg'
   msg.textContent = texte
 }
-
-window.creerPieces = creerPieces
