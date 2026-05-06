@@ -8,7 +8,6 @@
   <script src="supabase-config.js"></script>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Redirect si déjà connecté — overlay invisible */
     .auth-checking {
       position: fixed;
       inset: 0;
@@ -21,17 +20,16 @@
       font-size: 12px;
       letter-spacing: 2px;
       color: #aaa;
+      text-transform: uppercase;
     }
   </style>
 </head>
 <body class="login-body">
 
-  <!-- Vérification session en cours -->
   <div class="auth-checking" id="auth-checking">Vérification...</div>
 
   <div class="login-card" id="login-card" style="display:none">
 
-    <!-- Image header -->
     <div class="login-image">
       <div class="login-brand-overlay">
         <div class="login-akanjo">AKANJO</div>
@@ -39,7 +37,6 @@
       </div>
     </div>
 
-    <!-- Contenu -->
     <div class="login-content">
 
       <input
@@ -56,7 +53,7 @@
         placeholder="Mot de passe"
         autocomplete="current-password">
 
-      <div class="msg" id="login-msg"></div>
+      <div class="msg" id="login-msg" style="text-align:left"></div>
 
       <button class="login-submit" id="login-btn" onclick="seConnecter()">
         Se connecter
@@ -66,35 +63,28 @@
   </div>
 
 <script>
-const SUPABASE_URL = window.SUPABASE_CONFIG?.url
-const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey
 const { createClient } = supabase
-const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+const db = createClient(
+  window.SUPABASE_CONFIG.url,
+  window.SUPABASE_CONFIG.anonKey
+)
 
-// ── Vérifier si déjà connecté ──
+// Vérifier si déjà connecté
 ;(async () => {
   const { data: { session } } = await db.auth.getSession()
-
   if (session) {
-    // Récupérer le profil pour rediriger vers la bonne page
     const { data: profile } = await db
       .from('profiles')
       .select('role')
       .eq('id', session.user.id)
       .single()
-
-    if (profile) {
-      redirectParRole(profile.role)
-      return
-    }
+    if (profile) { redirectParRole(profile.role); return }
   }
-
-  // Pas de session → afficher le formulaire
   document.getElementById('auth-checking').style.display = 'none'
   document.getElementById('login-card').style.display = 'block'
+  document.getElementById('login-email').focus()
 })()
 
-// ── Connexion ──
 async function seConnecter() {
   const email    = document.getElementById('login-email').value.trim()
   const password = document.getElementById('login-password').value
@@ -102,7 +92,8 @@ async function seConnecter() {
   const btn      = document.getElementById('login-btn')
 
   if (!email || !password) {
-    afficherMsg('error', 'Veuillez saisir votre email et mot de passe.')
+    msg.className = 'msg error'
+    msg.textContent = 'Veuillez saisir votre email et mot de passe.'
     return
   }
 
@@ -115,11 +106,11 @@ async function seConnecter() {
   if (error) {
     btn.disabled = false
     btn.textContent = 'Se connecter'
-    afficherMsg('error', 'Email ou mot de passe incorrect.')
+    msg.className = 'msg error'
+    msg.textContent = 'Email ou mot de passe incorrect.'
     return
   }
 
-  // Récupérer le profil
   const { data: profile } = await db
     .from('profiles')
     .select('role, nom')
@@ -130,7 +121,8 @@ async function seConnecter() {
     await db.auth.signOut()
     btn.disabled = false
     btn.textContent = 'Se connecter'
-    afficherMsg('error', 'Compte non configuré. Contactez l\'administrateur.')
+    msg.className = 'msg error'
+    msg.textContent = 'Compte non configuré. Contactez l\'administrateur.'
     return
   }
 
@@ -146,13 +138,7 @@ function redirectParRole(role) {
   window.location.href = map[role] || 'dashboard.html'
 }
 
-function afficherMsg(type, texte) {
-  const msg = document.getElementById('login-msg')
-  msg.className = `msg ${type}`
-  msg.textContent = texte
-}
-
-// Connexion avec Entrée
+// Connexion avec la touche Entrée
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') seConnecter()
 })
