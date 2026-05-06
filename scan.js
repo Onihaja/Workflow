@@ -101,6 +101,15 @@ async function rechercherPiece() {
   afficherPiece(piece)
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('\"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
 // ── AFFICHER PIÈCE + ACTIONS ──
 function afficherPiece(piece) {
   const dernierAction = piece.dernierMouvement?.action || 'creation'
@@ -108,32 +117,32 @@ function afficherPiece(piece) {
   document.getElementById('piece-info').innerHTML = `
     <div class="piece-info-row">
       <span class="piece-info-key">Client</span>
-      <span class="piece-info-val">${piece.client}</span>
+      <span class="piece-info-val">${escapeHtml(piece.client)}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Référence</span>
-      <span class="piece-info-val">${piece.reference}</span>
+      <span class="piece-info-val">${escapeHtml(piece.reference)}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Désignation</span>
-      <span class="piece-info-val">${piece.designation}</span>
+      <span class="piece-info-val">${escapeHtml(piece.designation)}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Couleur</span>
-      <span class="piece-info-val">${piece.couleur || '—'}</span>
+      <span class="piece-info-val">${escapeHtml(piece.couleur || '—')}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Taille</span>
-      <span class="piece-info-val">${piece.taille || '—'}</span>
+      <span class="piece-info-val">${escapeHtml(piece.taille || '—')}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Chaîne</span>
-      <span class="piece-info-val">${piece.chaine_production || '—'}</span>
+      <span class="piece-info-val">${escapeHtml(piece.chaine_production || '—')}</span>
     </div>
     <div class="piece-info-row">
       <span class="piece-info-key">Statut</span>
       <span class="piece-info-val">
-        <span class="piece-statut ${classeStatut(dernierAction)}">${labelStatut(dernierAction)}</span>
+        <span class="piece-statut ${classeStatut(dernierAction)}">${escapeHtml(labelStatut(dernierAction))}</span>
       </span>
     </div>
   `
@@ -159,17 +168,7 @@ function afficherPiece(piece) {
 
   afficher('card-scan', false)
   afficher('card-piece', true)
-}
-
-// ── ENREGISTRER ACTION ──
-async function effectuerAction(action) {
-  const msg = document.getElementById('msg-action')
-  msg.className = 'msg'
-  msg.style.display = 'block'
-  msg.textContent = 'Enregistrement...'
-
-  const dernierAction = pieceEnCours.dernierMouvement?.action || 'creation'
-  if (dernierAction === action.id) {
+@@ -173,54 +182,54 @@ async function effectuerAction(action) {
     msg.className = 'msg error'
     msg.textContent = '⚠️ Double scan détecté — action déjà enregistrée.'
     return
@@ -195,10 +194,10 @@ async function effectuerAction(action) {
   afficher('card-piece', false)
   document.getElementById('confirm-title').textContent = action.label + ' enregistré'
   document.getElementById('confirm-sub').innerHTML = `
-    <strong>${pieceEnCours.reference}</strong><br>
-    ${pieceEnCours.designation} · ${pieceEnCours.taille || ''} · ${pieceEnCours.couleur || ''}<br>
-    ${pieceEnCours.chaine_production ? `Chaîne ${pieceEnCours.chaine_production}<br>` : ''}
-    <br>Par ${operateurNom} · ${DEPT_NOM}
+    <strong>${escapeHtml(pieceEnCours.reference)}</strong><br>
+    ${escapeHtml(pieceEnCours.designation)} · ${escapeHtml(pieceEnCours.taille || '')} · ${escapeHtml(pieceEnCours.couleur || '')}<br>
+    ${pieceEnCours.chaine_production ? `Chaîne ${escapeHtml(pieceEnCours.chaine_production)}<br>` : ''}
+    <br>Par ${escapeHtml(operateurNom)} · ${escapeHtml(DEPT_NOM)}
   `
   afficher('card-confirm', true)
 }
