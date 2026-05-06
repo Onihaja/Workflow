@@ -773,85 +773,87 @@ select {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 /* ═══════════════════════════════════════
-   DASHBOARD PRODUCTION — VERSION INDUSTRIELLE
+   DASHBOARD — VERSION INDUSTRIELLE PRO
 ═══════════════════════════════════════ */
 
 .dashboard-prod {
-  --bg: #ffffff;
-  --card: #EFE6D2;
-  --border: #c8bfae;
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --border: #e2e6ea;
 
-  --text: #1A1A1A;
-  --muted: #6b6b6b;
+  --text: #111827;
+  --muted: #6b7280;
 
-  --blue: #1f6feb;
-  --green: #2da44e;
-  --red: #d32f2f;
+  --primary: #c8a97e;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --red: #dc2626;
   --orange: #f59e0b;
 
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
 }
 
-/* ───────── HEADER (GROS ÉCRAN) ───────── */
+/* ───────── HEADER ───────── */
 .dashboard-prod .header {
-  height: 75px;
-  padding: 0 40px;
+  height: 100px;
+  padding: 0 50px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #111;
+
+  background: #0f172a;
   color: #fff;
 }
 
 .header-brand {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 29px;
-  font-weight: 800;
-  letter-spacing: 2px;
+  font-size: 36px;
+  font-weight: 900;
 }
 
 .header-clock {
-  font-size: 20px;
-  font-weight: 650;
+  font-size: 34px;
+  font-weight: 900;
 }
 
 .header-date {
-  font-size: 16px;
-  opacity: 0.7;
+  font-size: 20px;
+  opacity: 0.8;
 }
 
 /* ───────── LAYOUT ───────── */
 .dashboard-prod .dash-body {
   display: grid;
   grid-template-columns: 1fr 380px;
-  gap: 18px;
-  padding: 18px;
+  gap: 20px;
+  padding: 20px;
 }
 
 /* ───────── CHAÎNES ───────── */
 .zone-chaines {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
-/* ───────── CARTES (UNIFIÉES) ───────── */
+/* ───────── CARTES UNIFIÉES ───────── */
 .chain-card,
 .poste-card {
   background: var(--card);
   border-radius: 16px;
   border: 1px solid var(--border);
 
-  height: 190px;
+  height: 200px;
   width: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  padding: 8px;
+  padding: 10px;
 }
 
 /* ───────── TITRES ───────── */
@@ -860,13 +862,14 @@ select {
   text-align: center;
   font-size: 20px;
   font-weight: 900;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
 }
 
 /* ───────── RÉFÉRENCES ───────── */
 .chain-refs-row {
   display: flex;
-  border-bottom: 2px solid #999;
+  border-bottom: 2px solid var(--primary);
 }
 
 .ref-col {
@@ -893,8 +896,8 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-left: 1px solid #bbb;
-  padding: 4px;
+  border-left: 1px solid #e5e7eb;
+  padding: 6px;
 }
 
 /* ───────── OBJECTIF + TAUX ───────── */
@@ -902,7 +905,7 @@ select {
 .poste-top {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -912,7 +915,7 @@ select {
 /* ───────── COMPTEURS ───────── */
 .ref-counter,
 .poste-counter {
-  font-size: 64px;
+  font-size: 68px;
   font-weight: 900;
   text-align: center;
   line-height: 1;
@@ -924,10 +927,13 @@ select {
 .ref-counter.nok,
 .poste-counter.nok { color: var(--red); }
 
+.ref-counter.neutral,
+.poste-counter.neutral { color: #9ca3af; }
+
 /* ───────── CUMUL ───────── */
 .ref-cumul,
 .poste-cumul {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   text-align: right;
   color: var(--orange);
@@ -937,56 +943,56 @@ select {
 .zone-speciale {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
-/* BLOCS COULEUR */
-.brod-main { background: #cfe5e3; }
-.hva { background: #d8e8c8; }
-.brod-mach { background: #ead3d3; }
-
+/* STYLE SOBRE MAIS DISTINCT */
 .section-block {
+  background: #f9fafb;
   border-radius: 16px;
   border: 1px solid var(--border);
-  padding: 10px;
+  padding: 12px;
 }
 
 /* GRID POSTES */
 .section-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
-/* ───────── FOOTER (KPI) ───────── */
+/* ───────── FOOTER KPI ───────── */
 .dash-footer {
   height: 110px;
 
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 60px;
   align-items: center;
 
   background: transparent;
 }
 
 .global-counter {
-  background: #e5c7da;
-  padding: 18px 35px;
+  background: #111827;
+  color: #fff;
+  padding: 18px 40px;
   border-radius: 14px;
-  border: 1px solid #caa5b8;
   text-align: center;
 }
 
 .global-label {
   font-size: 16px;
-  font-weight: 700;
+  opacity: 0.7;
 }
 
 .global-val {
-  font-size: 52px;
+  font-size: 54px;
   font-weight: 900;
-  color: #c62828;
+}
+
+.global-val.has-data {
+  color: #22c55e;
 }
 
 /* ───────── LOADING ───────── */
