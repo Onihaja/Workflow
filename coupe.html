@@ -3,27 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Akanjo Madagascar</title>
-
+  <title>Akanjo Madagascar — Coupe</title>
   <link rel="stylesheet" href="style.css">
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
 </head>
 <body>
-
 <header>
-  <a class="home-link" href="index.html"><div class="logo-main">Akanjo</div><div class="logo-sub">MADAGASCAR</div></a>
+  <a class="home-link" href="index.html">
+    <div class="logo-main">AKANJO</div>
+    <div class="logo-sub">MADAGASCAR</div>
+  </a>
+  <div class="dept-label">Département Coupe</div>
 </header>
 
 <div class="container">
-<a class="main-btn-link" href="index.html">← Retour accueil</a>
-  
+  <a class="main-btn-link" href="index.html">← Retour accueil</a>
+
   <div class="card">
     <div class="card-title">Nouvelle pièce</div>
 
-    <div class="field"><label>Client *</label><input type="text" id="client" placeholder="ex: Chloe, Kenzo"></div>
+    <div class="field"><label>Client *</label><input type="text" id="client" placeholder="ex: Chloé, Kenzo"></div>
     <div class="field"><label>Référence *</label><input type="text" id="reference" placeholder="ex: 26TS"></div>
     <div class="field"><label>Désignation *</label><input type="text" id="designation" placeholder="ex: Robe, Chemise"></div>
     <div class="field"><label>Couleur</label><input type="text" id="couleur" placeholder="ex: NR001"></div>
@@ -56,20 +58,18 @@
       </div>
     </div>
 
-    <button class="main-btn" id="btn-generer-qr" type="button">Générer le QR code</button>
+    <button class="main-btn" id="btn-generer-qr" type="button">Générer les QR codes</button>
     <div class="msg" id="msg"></div>
   </div>
 
   <div class="card qr-card" id="qr-card" style="display:none">
-    <div class="card-title">QR Code</div>
+    <div class="card-title">QR Codes générés</div>
+    <div id="qr-info" class="qr-meta"></div>
     <div id="qr-box"></div>
-    <div class="qr-meta" id="qr-info"></div>
-    <button class="main-btn light" onclick="window.print()">Imprimer</button>
+    <button class="main-btn light" onclick="window.print()">🖨 Imprimer</button>
   </div>
-
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>
