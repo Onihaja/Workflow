@@ -781,25 +781,19 @@ select {
 body{margin:0;overflow:hidden}
 
 .dashboard-prod{
-  --bg:#f4f6f8;
-  --card:#fff;
-  --border:#e2e6ea;
+  --bg:#F5F0EA;        /* beige principal */
+  --card:#FFFFFF;      /* cartes */
+  --border:#E6DED3;
 
-  --text:#111827;
-  --muted:#6b7280;
+  --text:#2a2a2a;
+  --muted:#7a7a7a;
 
-  --primary:#c8a97e;
-  --blue:#2563eb;
-  --green:#16a34a;
-  --red:#dc2626;
-  --orange:#f59e0b;
+  --primary:#C8A97E;   /* beige luxe */
+  --green:#4CAF50;
+  --red:#D64545;
+  --orange:#E6A23C;
 
-  font-family:'DM Sans',sans-serif;
   background:var(--bg);
-
-  height:100vh;
-  display:flex;
-  flex-direction:column;
 }
 
 /* HEADER */
