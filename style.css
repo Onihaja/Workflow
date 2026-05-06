@@ -796,20 +796,52 @@ body{margin:0;overflow:hidden}
   background:var(--bg);
 }
 
-/* HEADER */
+/* ───────── HEADER 1 LIGNE ───────── */
 .header{
   height:80px;
-  padding:0 30px;
+  padding:0 40px;
+
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  background:#020617;
-  color:#fff;
+  justify-content:space-between;
+
+  background:#EDE4D8; /* beige propre */
+  border-bottom:1px solid #d8cfc2;
 }
 
-.header-brand{font-size:32px;font-weight:900}
-.header-clock{font-size:28px;font-weight:900}
-.header-date{font-size:16px}
+/* bloc gauche */
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.header-brand{
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:4px;
+  color:#2a2a2a;
+}
+
+/* bloc droite */
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+/* horloge */
+.header-clock{
+  font-size:34px;
+  font-weight:900;
+  color:#1a1a1a;
+}
+
+/* date */
+.header-date{
+  font-size:18px;
+  color:#555;
+}
 
 /* BODY */
 .dash-body{
