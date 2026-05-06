@@ -775,30 +775,21 @@ select {
 }
 
 /* ═══════════════════════════════════════
-   DASHBOARD 1920x1080 — ZERO SCROLL
+   DASHBOARD TV USINE — LISIBLE 5M
 ═══════════════════════════════════════ */
 
-* {
-  box-sizing: border-box;
-}
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden}
 
-body {
-  margin: 0;
-  overflow: hidden;
-}
+.dashboard-prod{
+  --bg:#0b0f1a;
+  --card:#111827;
+  --border:#1f2937;
 
-.dashboard-prod {
-  --bg:#f4f6f8;
-  --card:#ffffff;
-  --border:#e2e6ea;
-
-  --text:#111827;
-  --muted:#6b7280;
-
-  --primary:#c8a97e;
-  --blue:#2563eb;
-  --green:#16a34a;
-  --red:#dc2626;
+  --text:#ffffff;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --red:#ef4444;
   --orange:#f59e0b;
 
   font-family:'DM Sans',sans-serif;
@@ -809,225 +800,168 @@ body {
   flex-direction:column;
 }
 
-/* ───────── HEADER ───────── */
-.dashboard-prod .header{
-  height:70px;
+/* HEADER */
+.header{
+  height:80px;
   padding:0 30px;
-
   display:flex;
   justify-content:space-between;
   align-items:center;
-
-  background:#0f172a;
+  background:#020617;
   color:#fff;
 }
 
-.header-brand{font-size:26px;font-weight:900;}
-.header-clock{font-size:24px;font-weight:900;}
-.header-date{font-size:14px;opacity:.8;}
+.header-brand{font-size:32px;font-weight:900}
+.header-clock{font-size:28px;font-weight:900}
+.header-date{font-size:16px}
 
-/* ───────── BODY ───────── 
-.dashboard-prod .dash-body{
+/* BODY */
+.dash-body{
   flex:1;
-  height:calc(100vh - 70px - 70px);
-
   display:grid;
-  grid-template-columns: 1fr 300px;
-  gap:12px;
-  padding:12px;
-}*/
-.dashboard-prod {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  grid-template-columns: 1fr 320px;
+  gap:10px;
+  padding:10px;
+  min-height:0;
 }
 
-.dash-body {
-  flex: 1;
-  min-height: 0;
-}
-/* ───────── CHAÎNES (ZONE PRINCIPALE) ───────── */
+/* CHAÎNES */
 .zone-chaines{
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 1fr); /* 12 cartes = 4 lignes */
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(4,1fr);
   gap:10px;
-  height:100%;
 }
 
-/* ───────── CARTES ───────── */
+/* COLONNE DROITE */
+.zone-speciale{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* BRODERIE MAIN BAS */
+.zone-broderie-main{
+  padding:10px;
+}
+
+.zone-broderie-main .section-grid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:10px;
+}
+
+/* CARTES UNIFIÉES */
 .chain-card,
 .poste-card{
   background:var(--card);
-  border-radius:12px;
   border:1px solid var(--border);
-
-  height:100%;
-  min-height:0;
+  border-radius:10px;
 
   display:flex;
   flex-direction:column;
   justify-content:space-between;
 
-  padding:6px;
+  padding:8px;
+  height:100%;
 }
 
-/* ───────── TITRES ───────── */
+/* TITRE */
 .chain-name,
 .section-title{
   text-align:center;
-  font-size:14px;
+  font-size:18px;
   font-weight:900;
-  margin:0;
 }
 
-/* ───────── RÉF ───────── */
-.chain-refs-row{
+/* REF */
+.chain-refs-row,
+.poste-ref-bar{
   display:flex;
-  border-bottom:1px solid var(--primary);
-}
-
-.ref-col{
-  width:50%;
-  text-align:center;
-}
-
-.ref-col-value,
-.poste-ref-value{
+  justify-content:space-between;
   font-size:14px;
-  font-weight:900;
 }
 
-/* ───────── STRUCTURE ───────── */
+/* DONNÉES */
 .chain-data,
 .poste-data{
   display:flex;
   flex:1;
 }
 
+/* BLOCS */
 .ref-data-col,
 .poste-data{
-  width:50%;
+  flex:1;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  border-left:1px solid #e5e7eb;
-  padding:4px;
 }
 
-/* ───────── OBJECTIF ───────── */
+/* OBJECTIF */
 .ref-data-top,
 .poste-top{
   display:flex;
   justify-content:space-between;
-  font-size:11px;
-  font-weight:800;
+  font-size:14px;
+  font-weight:700;
 }
 
-.val-obj{color:var(--blue);}
-.val-taux{color:var(--green);}
-
-/* ───────── COMPTEURS ───────── */
+/* COMPTEUR GÉANT */
 .ref-counter,
 .poste-counter{
-  font-size:32px;
+  font-size:64px;
   font-weight:900;
   text-align:center;
   line-height:1;
 }
 
-.ref-counter.ok,
-.poste-counter.ok{color:var(--green);}
+/* COULEURS */
+.ok{color:var(--green)}
+.nok{color:var(--red)}
+.neutral{color:#6b7280}
 
-.ref-counter.nok,
-.poste-counter.nok{color:var(--red);}
-
-.ref-counter.neutral,
-.poste-counter.neutral{color:#9ca3af;}
-
-/* ───────── CUMUL ───────── */
+/* CUMUL */
 .ref-cumul,
 .poste-cumul{
-  font-size:11px;
-  font-weight:800;
+  font-size:14px;
   text-align:right;
   color:var(--orange);
 }
 
-/* ───────── ZONE DROITE ───────── */
-.zone-speciale{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  height:100%;
-}
-
-/* BLOCS */
+/* BLOCS DROITE */
 .section-block{
-  background:#f9fafb;
-  border-radius:12px;
-  border:1px solid var(--border);
-  padding:8px;
-
   flex:1;
   display:flex;
   flex-direction:column;
+  background:#020617;
+  border-radius:10px;
+  padding:6px;
 }
 
-/* GRID POSTES */
 .section-grid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:8px;
   flex:1;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
 
-/* ───────── FOOTER ───────── */
+/* FOOTER */
 .dash-footer{
-  height:70px;
-
+  height:80px;
   display:flex;
   justify-content:center;
-  gap:30px;
+  gap:40px;
   align-items:center;
 }
 
 .global-counter{
-  background:#111827;
-  color:#fff;
-  padding:10px 20px;
+  background:#000;
+  padding:10px 30px;
   border-radius:10px;
   text-align:center;
 }
 
-.global-label{
-  font-size:12px;
-  opacity:.7;
-}
-
-.global-val{
-  font-size:28px;
-  font-weight:900;
-}
-
-.global-val.has-data{
-  color:#22c55e;
-}
-
-/* ───────── BRODERIE MAIN BAS ───────── */
-.zone-broderie-main {
-  padding: 8px 12px;
-}
-
-/* pleine largeur + 1 seule ligne */
-.zone-broderie-main .section-grid {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr); /* 8 postes sur une ligne */
-  gap: 8px;
-}
-
-/* éviter qu'elle pousse le layout */
-.zone-broderie-main .poste-card {
-  height: 120px;
-}
+.global-label{font-size:14px}
+.global-val{font-size:36px;font-weight:900}
+.global-val.has-data{color:#22c55e}
