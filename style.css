@@ -788,9 +788,10 @@ body{margin:0;overflow:hidden}
   --text:#111827;
   --muted:#6b7280;
 
-  --blue:#3b82f6;
-  --green:#22c55e;
-  --red:#ef4444;
+  --primary:#c8a97e;
+  --blue:#2563eb;
+  --green:#16a34a;
+  --red:#dc2626;
   --orange:#f59e0b;
 
   font-family:'DM Sans',sans-serif;
