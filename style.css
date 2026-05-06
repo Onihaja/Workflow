@@ -778,146 +778,227 @@ select {
    DASHBOARD TV USINE — LISIBLE 5M
 ═══════════════════════════════════════ */
 
-/* GLOBAL */
-*{box-sizing:border-box}
-body{margin:0;overflow:hidden}
+/* ═══════════════════════════════════════
+   DASHBOARD PRODUCTION — FINAL UNIFIÉ
+═══════════════════════════════════════ */
 
-.dashboard-prod{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  background:#0b0f1a;
-  font-family:'DM Sans',sans-serif;
+.dashboard-prod {
+  --bg: #EDE6C8;
+  --card: #EFE6D2;
+  --border: #c8bfae;
+
+  --text: #1A1A1A;
+  --muted: #6b6b6b;
+
+  --blue: #1f6feb;
+  --green: #2da44e;
+  --red: #d32f2f;
+  --orange: #f59e0b;
+
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
 }
 
-/* HEADER */
-.header{
-  height:70px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 30px;
-  background:#020617;
-  color:#fff;
+/* ───────── HEADER (TV READY) ───────── */
+.dashboard-prod .header {
+  height: 100px;
+  padding: 0 50px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #111;
+  color: #fff;
 }
 
-/* BODY */
-.dash-body{
-  flex:1;
-  display:grid;
-  grid-template-columns: 1fr 320px;
-  gap:10px;
-  padding:10px;
-  min-height:0;
+.header-brand {
+  font-size: 36px;
+  font-weight: 900;
 }
 
-/* CHAÎNES */
-.zone-chaines{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(4,1fr);
-  gap:10px;
+.header-clock {
+  font-size: 34px;
+  font-weight: 900;
 }
 
-/* DROITE */
-.zone-speciale{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+.header-date {
+  font-size: 20px;
 }
 
-/* BLOCS DROITE */
-.section-block{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  background:#111827;
-  border-radius:10px;
-  padding:6px;
+/* ───────── LAYOUT ───────── */
+.dashboard-prod .dash-body {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 18px;
+  padding: 18px;
 }
 
-/* GRID INTERNE */
-.section-grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+/* ───────── CHAÎNES ───────── */
+.zone-chaines {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
 }
 
-/* BRODERIE MAIN BAS */
-.zone-broderie-main{
-  height:160px; /* 🔥 contrôlé */
-  padding:10px;
-}
-
-.zone-broderie-main .section-grid{
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  gap:10px;
-}
-
-/* CARTES UNIFIÉES */
+/* ───────── CARTES (UNIFIÉES) ───────── */
 .chain-card,
-.poste-card{
-  background:#1f2937;
-  border-radius:10px;
-  padding:6px;
+.poste-card {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
 
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  height: 190px;
+  width: 100%;
 
-  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 8px;
 }
 
-/* TITRES */
+/* ───────── TITRES ───────── */
 .chain-name,
-.section-title{
-  text-align:center;
-  font-size:16px;
-  font-weight:900;
-  color:#fff;
+.section-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 4px;
 }
 
-/* COMPTEURS */
-.ref-counter,
-.poste-counter{
-  font-size:48px;
-  font-weight:900;
-  text-align:center;
-  color:#fff;
+/* ───────── RÉFÉRENCES ───────── */
+.chain-refs-row {
+  display: flex;
+  border-bottom: 2px solid #999;
 }
 
-/* PETIT TEXTE */
+.ref-col {
+  width: 50%;
+  text-align: center;
+}
+
+.ref-col-value,
+.poste-ref-value {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+/* ───────── STRUCTURE INTERNE ───────── */
+.chain-data,
+.poste-data {
+  display: flex;
+  flex: 1;
+}
+
+.ref-data-col,
+.poste-data {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #bbb;
+  padding: 4px;
+}
+
+/* ───────── OBJECTIF + TAUX ───────── */
 .ref-data-top,
-.poste-top{
-  font-size:12px;
-  display:flex;
-  justify-content:space-between;
+.poste-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 800;
 }
 
-/* COULEURS */
-.ok{color:#22c55e}
-.nok{color:#ef4444}
-.neutral{color:#6b7280}
+.val-obj { color: var(--blue); }
+.val-taux { color: var(--green); }
 
-/* FOOTER */
-.dash-footer{
-  height:70px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:30px;
+/* ───────── COMPTEURS ───────── */
+.ref-counter,
+.poste-counter {
+  font-size: 64px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1;
 }
 
-.global-counter{
-  background:#000;
-  padding:10px 20px;
-  border-radius:10px;
-  color:#fff;
+.ref-counter.ok,
+.poste-counter.ok { color: var(--green); }
+
+.ref-counter.nok,
+.poste-counter.nok { color: var(--red); }
+
+/* ───────── CUMUL ───────── */
+.ref-cumul,
+.poste-cumul {
+  font-size: 14px;
+  font-weight: 800;
+  text-align: right;
+  color: var(--orange);
 }
 
-.global-val{
-  font-size:28px;
-  font-weight:900;
+/* ───────── ZONE SPÉCIALE ───────── */
+.zone-speciale {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* BLOCS COULEUR */
+.brod-main { background: #cfe5e3; }
+.hva { background: #d8e8c8; }
+.brod-mach { background: #ead3d3; }
+
+.section-block {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 10px;
+}
+
+/* GRID POSTES */
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* ───────── FOOTER (KPI) ───────── */
+.dash-footer {
+  height: 110px;
+
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  align-items: center;
+
+  background: transparent;
+}
+
+.global-counter {
+  background: #e5c7da;
+  padding: 18px 35px;
+  border-radius: 14px;
+  border: 1px solid #caa5b8;
+  text-align: center;
+}
+
+.global-label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.global-val {
+  font-size: 52px;
+  font-weight: 900;
+  color: #c62828;
+}
+
+/* ───────── LOADING ───────── */
+.loading {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
