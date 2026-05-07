@@ -773,3 +773,501 @@ select {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+    :root {
+      --bg:       #F0EDE6;
+      --panel:    #E8E0D4;
+      --card:     #FAFAF8;
+      --border:   #DDD1CB;
+      --text:     #171717;
+      --muted:    #888;
+      --blue:     #2463EB;
+      --green:    #1A9A3C;
+      --orange:   #E07800;
+      --red:      #D32F2F;
+      --neutral:  #9B9B9B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ══ PAGE WRAPPER ══ */
+    .page {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ══ HEADER ══ */
+    .header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+
+    .header-brand {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #111;
+    }
+
+    .header-brand span {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-left: 8px;
+      opacity: .85;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .header-clock {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .header-date {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .header-live {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1.8s infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .header-link {
+      font-size: 14px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .header-link:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════════════
+       LAYOUT : grille maître 8 col × 4 lignes
+       Gauche col 1-4 : chaînes 4×4
+       Droite col 5-8 :
+         ligne 1   → Broderie Machine (4col × 1lig)
+         ligne 2   → HVA              (4col × 1lig)
+         lignes 3-4→ Broderie Main    (4col × 2lig)
+    ══════════════════════════════════════════ */
+
+    .dash-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 7px;
+      padding: 7px;
+      min-height: 0;
+    }
+
+    /* Gauche : chaînes 4×4 */
+    .zone-chaines {
+      grid-column: 1 / 5;
+      grid-row: 1 / 5;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    /* Droite : conteneur 4col × 4lig */
+    .zone-speciale {
+      grid-column: 5 / 9;
+      grid-row: 1 / 5;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr 2fr;
+      gap: 7px;
+      min-height: 0;
+    }
+
+    /* ══ BLOCS SPÉCIAUX ══ */
+    .section-block {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 7px;
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .section-title .icon { font-size: 16px; }
+
+    /* Broderie Machine : 4 col × 1 ligne */
+    .brod-mach .section-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+      gap: 6px;
+      min-height: 0;
+    }
+
+    /* HVA : 4 col × 1 ligne */
+    .hva .section-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+      gap: 6px;
+      min-height: 0;
+    }
+
+    /* Broderie Main : 4 col × 2 lignes */
+    .brod-main .section-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 6px;
+      min-height: 0;
+    }
+
+    /* garde .zone-brod-main vide pour ne pas casser le HTML */
+    .zone-brod-main { display: none; }
+
+    /* placeholder pour éviter erreur JS */
+    .brod-main-placeholder .section-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 7px;
+    }
+
+    /* ══ CARTE CHAÎNE NORMALE ══ */
+    .chain-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .chain-name {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    /* ligne refs */
+    .chain-refs-row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+      gap: 0;
+    }
+
+    .ref-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .ref-col:first-child {
+      border-right: 1px solid #ddd;
+      padding-right: 6px;
+    }
+
+    .ref-col:last-child { padding-left: 6px; }
+
+    .ref-col-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .ref-col-value {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ref-col-value.empty { color: #bbb; font-weight: 400; }
+
+    /* ligne données : compteur | %obj | %taux | cumul */
+    .chain-data {
+      display: flex;
+      gap: 0;
+    }
+
+    .ref-data-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 0;
+    }
+
+    .ref-data-col:first-child {
+      border-right: 1px solid #eee;
+      padding-right: 6px;
+    }
+
+    .ref-data-col:last-child { padding-left: 6px; }
+
+    /* compteur principal */
+    .val-counter {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      min-width: 24px;
+    }
+
+    .val-counter.ok      { color: var(--green); }
+    .val-counter.nok     { color: var(--red); }
+    .val-counter.neutral { color: var(--neutral); }
+
+    /* taux objectif (bleu) */
+    .val-obj-pct {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    /* taux commande (vert) */
+    .val-taux {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* cumul (orange) */
+    .val-cumul {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-left: auto;
+    }
+
+    /* ══ POSTE SECTION SPÉCIALE ══ */
+    .poste-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    /* refs poste */
+    .poste-refs-row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 3px;
+      gap: 0;
+    }
+
+    .poste-ref-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .poste-ref-col:first-child {
+      border-right: 1px solid #ddd;
+      padding-right: 5px;
+    }
+
+    .poste-ref-col:last-child { padding-left: 5px; }
+
+    .poste-ref-label {
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .poste-ref-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .poste-ref-value.empty { color: #bbb; font-weight: 400; }
+
+    /* données poste */
+    .poste-data-row {
+      display: flex;
+      gap: 0;
+    }
+
+    .poste-data-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .poste-data-col:first-child {
+      border-right: 1px solid #eee;
+      padding-right: 5px;
+    }
+
+    .poste-data-col:last-child { padding-left: 5px; }
+
+    /* compteur poste */
+    .poste-counter {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .poste-counter.ok      { color: var(--green); }
+    .poste-counter.nok     { color: var(--red); }
+    .poste-counter.neutral { color: var(--neutral); }
+
+    .poste-val-obj  { font-size: 10px; font-weight: 700; color: var(--blue); }
+    .poste-val-taux { font-size: 10px; font-weight: 700; color: var(--green); }
+    .poste-val-cumul {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-left: auto;
+    }
+
+    /* ══ FOOTER ══ */
+    .dash-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 20px 10px;
+      flex-shrink: 0;
+    }
+
+    .global-counter {
+      width: 250px;
+      height: 90px;
+      background: #151515;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    }
+
+    .global-icon { font-size: 22px; }
+
+    .global-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .global-label {
+      font-size: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #aaa;
+      font-weight: 600;
+    }
+
+    .global-val {
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--neutral);
+    }
+
+    .global-val.has-data-green  { color: var(--green); }
+    .global-val.has-data-orange { color: var(--orange); }
+
+    /* ══ LOADING ══ */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .loading-brand {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 8px;
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #ddd;
+      border-top-color: #111;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
