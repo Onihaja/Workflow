@@ -855,19 +855,21 @@ body{
 }
 
 /* ───────── CHAÎNES ───────── */
-.zone-chaines .zone-speciale{
+.zone-chaines{
   display:grid;
+  height:127.5px;
   grid-template-columns:repeat(3,1fr);
   grid-template-rows:repeat(4,1fr);
   gap:12px;
 }
 
-/* ───────── COLONNE DROITE ───────── 
+/* ───────── COLONNE DROITE ───────── */
 .zone-speciale{
+  height:42.5px;
   display:flex;
   flex-direction:column;
   gap:12px;
-}*/
+}
 
 .section-block{
   flex:1;
