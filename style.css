@@ -773,47 +773,24 @@ select {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-/* ═══════════════════════════════════════
-   DASHBOARD ULTRA INDUSTRIEL — TV 55"
-   VERSION CORRIGÉE + COMMENTÉE
+corrige cette style et comment pour chaque ligne : /* ═══════════════════════════════════════
+   DASHBOARD ULTRA INDUSTRIEL — 55"
 ═══════════════════════════════════════ */
 
+*{box-sizing:border-box;margin:0;padding:0}
 
-/* ──────────────────────────────────────
-   RESET GLOBAL
-   Supprime marges/paddings par défaut
-────────────────────────────────────── */
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-
-/* ──────────────────────────────────────
-   BODY PRINCIPAL
-   Fond général + police globale
-────────────────────────────────────── */
 body{
-  font-family:'DM Sans',sans-serif;
+  font-family:'Arial',sans-serif;
   background:#F2ECE3;
   color:#1a1a1a;
 }
 
-
-/* ──────────────────────────────────────
-   CONTAINER PRINCIPAL DASHBOARD
-────────────────────────────────────── */
+/* ───────── CONTAINER GLOBAL ───────── */
 .dashboard-prod{
-
-  /* Dashboard plein écran */
   height:100vh;
-
-  /* Organisation verticale */
   display:flex;
   flex-direction:column;
 
-  /* Variables couleurs */
   --bg:#F2ECE3;
   --card:#ffffff;
   --border:#d6cdc2;
@@ -826,422 +803,245 @@ body{
   --orange:#ed6c02;
 }
 
-
-/* ═══════════════════════════════════════
-   HEADER
-═══════════════════════════════════════ */
-
-/* Barre du haut */
+/* ───────── HEADER (1 LIGNE) ───────── */
 .header{
-
-  /* Grande hauteur pour écran TV */
-  height:100px;
-
-  /* Espacement intérieur */
+  height:90px;
   padding:0 40px;
 
-  /* Alignement horizontal */
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  /* Style */
   background:#e6ded2;
   border-bottom:2px solid #d6cdc2;
 }
 
-
-/* Partie gauche du header */
 .header-left{
   display:flex;
   align-items:center;
   gap:30px;
 }
 
-
-/* Logo AKANJO */
 .header-brand{
-  font-size:34px;
-  font-weight:900;
+  font-size:26px;
+  font-weight:700;
   letter-spacing:5px;
 }
 
-
-/* Date */
 .header-date{
-  font-size:18px;
+  font-size:16px;
   color:#555;
 }
 
-
-/* Partie droite */
 .header-right{
   display:flex;
   align-items:center;
   gap:30px;
 }
 
-
-/* Horloge */
 .header-clock{
-  font-size:34px;
-  font-weight:900;
+  font-size:28px;
+  font-weight:700;
 }
 
-
-/* ═══════════════════════════════════════
-   BODY PRINCIPAL
-═══════════════════════════════════════ */
-
+/* ───────── BODY ───────── */
 .dash-body{
-
-  /* Prend tout l’espace restant */
   flex:1;
-
-  /* Layout principal */
   display:grid;
-
-  /* Colonne gauche + droite */
-  grid-template-columns:1fr 340px;
-
-  /* Espacement */
-  gap:14px;
-  padding:14px;
-
-  /* IMPORTANT :
-     évite débordement vertical */
-  min-height:0;
+  grid-template-columns: 1fr 320px;
+  gap:12px;
+  padding:12px;
 }
 
-
-/* ═══════════════════════════════════════
-   ZONE DES CHAÎNES
-═══════════════════════════════════════ */
-
+/* ───────── CHAÎNES ───────── */
 .zone-chaines{
-
-  /* Layout en grille */
   display:grid;
-
-  /* 3 colonnes fixes */
+  height:127.5px;
   grid-template-columns:repeat(3,1fr);
-
-  /* 5 lignes automatiques */
-  grid-auto-rows:1fr;
-
-  /* Espacement cartes */
-  gap:14px;
-
-  /* IMPORTANT :
-     prend toute la hauteur */
-  height:100%;
+  grid-template-rows:repeat(4,1fr);
+  gap:12px;
 }
 
-
-/* ═══════════════════════════════════════
-   ZONE SPÉCIALE (DROITE)
-═══════════════════════════════════════ */
-
+/* ───────── COLONNE DROITE ───────── */
 .zone-speciale{
-
+  height:42.5px;
   display:flex;
   flex-direction:column;
-
-  gap:14px;
-
-  /* IMPORTANT :
-     prend toute la hauteur */
-  height:100%;
+  gap:12px;
 }
 
-
-/* Bloc spécial */
 .section-block{
-
-  /* Répartition égale */
   flex:1;
-
   display:flex;
   flex-direction:column;
-
   background:#ede7dc;
-
   border:1px solid var(--border);
-  border-radius:12px;
-
-  padding:10px;
-
-  overflow:hidden;
+  border-radius:10px;
+  padding:8px;
 }
 
-
-/* Titre des sections */
 .section-title{
-
   text-align:center;
-
   font-size:20px;
   font-weight:900;
-
-  margin-bottom:8px;
-}
-
-
-/* Grille interne des postes */
-.section-grid{
-
-  flex:1;
-
-  display:grid;
-
-  grid-template-columns:repeat(2,1fr);
-
-  gap:10px;
-}
-
-
-/* ═══════════════════════════════════════
-   CARTES UNIFIÉES
-   CHAÎNES + POSTES
-═══════════════════════════════════════ */
-
-.chain-card,
-.poste-card{
-
-  background:var(--card);
-
-  border:1px solid var(--border);
-  border-radius:12px;
-
-  /* Structure verticale */
-  display:flex;
-  flex-direction:column;
-
-  /* Répartition verticale */
-  justify-content:space-between;
-
-  /* Taille uniforme */
-  min-height:180px;
-
-  padding:10px;
-
-  overflow:hidden;
-}
-
-
-/* ═══════════════════════════════════════
-   TITRE CHAÎNE
-═══════════════════════════════════════ */
-
-.chain-name{
-
-  text-align:center;
-
-  font-size:22px;
-  font-weight:900;
-
-  margin-bottom:6px;
-}
-
-
-/* ═══════════════════════════════════════
-   BARRE RÉFÉRENCE
-═══════════════════════════════════════ */
-
-.chain-refs-row{
-
-  display:flex;
-
-  border-bottom:2px solid #ddd;
-
-  padding-bottom:4px;
-
   margin-bottom:4px;
 }
 
-
-/* Colonne référence */
-.ref-col{
-
+.section-grid{
   flex:1;
-
-  text-align:center;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
 
-
-/* Label REF */
-.ref-col-label{
-
-  font-size:12px;
-  color:#777;
+/* ───────── BRODERIE MAIN (BAS) ───────── */
+.zone-broderie-main{
+  height:170px;
+  padding:10px;
 }
 
-
-/* Valeur REF */
-.ref-col-value{
-
-  font-size:22px;
-  font-weight:900;
+.zone-broderie-main .section-grid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:10px;
 }
 
-
-/* ═══════════════════════════════════════
-   STRUCTURE INTERNE
-═══════════════════════════════════════ */
-
-.chain-data,
-.poste-data{
-
-  display:flex;
-
-  flex:1;
-}
-
-
-/* Colonnes internes */
-.ref-data-col{
-
-  flex:1;
+/* ───────── CARTES UNIFIÉES ───────── */
+.chain-card,
+.poste-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
 
   display:flex;
   flex-direction:column;
-
   justify-content:space-between;
 
-  padding:4px;
+  padding:8px;
 }
 
-
-/* Séparation verticale */
-.ref-data-col:first-child{
-  border-right:1px solid #ddd;
+/* ───────── TITRES ───────── */
+.chain-name{
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
 }
 
+/* ───────── STRUCTURE ───────── */
+.chain-data,
+.poste-data{
+  display:flex;
+  flex:1;
+}
 
-/* ═══════════════════════════════════════
-   OBJECTIF + TAUX
-═══════════════════════════════════════ */
+.ref-data-col,
+.poste-data{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
 
+/* ───────── OBJECTIF ───────── */
 .ref-data-top,
 .poste-top{
-
   display:flex;
-
   justify-content:space-between;
-
   font-size:16px;
   font-weight:700;
 }
 
-
-/* ═══════════════════════════════════════
-   GROS COMPTEURS
-═══════════════════════════════════════ */
-
+/* ───────── COMPTEURS (TRÈS GROS) ───────── */
 .ref-counter,
 .poste-counter{
-
   font-size:72px;
-
   font-weight:900;
-
   text-align:center;
-
   line-height:1;
 }
 
+/* ───────── COULEURS STATUT ───────── */
+.ok{color:var(--green)}
+.nok{color:var(--red)}
+.neutral{color:#999}
 
-/* ═══════════════════════════════════════
-   COULEURS ÉTAT
-═══════════════════════════════════════ */
-
-.ok{
-  color:var(--green);
-}
-
-.nok{
-  color:var(--red);
-}
-
-.neutral{
-  color:#999;
-}
-
-
-/* ═══════════════════════════════════════
-   CUMUL
-═══════════════════════════════════════ */
-
+/* ───────── CUMUL ───────── */
 .ref-cumul,
 .poste-cumul{
-
   font-size:16px;
-
-  font-weight:700;
-
   text-align:right;
-
   color:var(--orange);
 }
 
-
-/* ═══════════════════════════════════════
-   FOOTER KPI
-═══════════════════════════════════════ */
-
+/* ───────── FOOTER KPI ───────── */
 .dash-footer{
-
-  height:100px;
+  height:90px;
 
   display:flex;
-
   justify-content:center;
-
   align-items:center;
-
   gap:50px;
-
-  padding-bottom:10px;
 }
 
-
-/* Carte KPI */
 .global-counter{
-
   background:#1a1a1a;
-
   color:#fff;
-
-  padding:14px 34px;
-
-  border-radius:12px;
-
+  padding:12px 30px;
+  border-radius:10px;
   text-align:center;
-
-  min-width:220px;
 }
 
-
-/* Label KPI */
 .global-label{
-
   font-size:16px;
-
   opacity:.7;
 }
 
-
-/* Valeur KPI */
 .global-val{
-
-  font-size:48px;
-
+  font-size:40px;
   font-weight:900;
 }
 
-
-/* KPI actif */
 .global-val.has-data{
-
   color:#4caf50;
 }
+/* ──────────────────────────────────────
+   ACTIVE LE SCROLL DASHBOARD
+────────────────────────────────────── */
+
+/* Scroll vertical global */
+body{
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+
+/* Scroll interne du dashboard */
+.dashboard-prod{
+  overflow-y:auto;
+}
+
+
+/* Scroll zone principale */
+.dash-body{
+  overflow-y:auto;
+}
+
+
+/* Style scrollbar moderne */
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:#e8dfd3;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#b8aa98;
+  border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#9f907d;
+}
+
