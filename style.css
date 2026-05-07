@@ -775,296 +775,538 @@ select {
 }
 
 /* ═══════════════════════════════════════
-   DASHBOARD ULTRA INDUSTRIEL — 55"
+   DASHBOARD MODERNE INDUSTRIEL — 55"
 ═══════════════════════════════════════ */
 
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-  font-family:'Arial',sans-serif;
-  background:#F2ECE3;
-  color:#1a1a1a;
-}
-
-/* ───────── CONTAINER GLOBAL ───────── */
 .dashboard-prod{
+
+  --bg:#f3eee6;
+  --panel:#ece4d8;
+  --card:#fbfbfb;
+
+  --border:#d9d0c5;
+
+  --text:#171717;
+  --muted:#7b7b7b;
+
+  --green:#1f9d41;
+  --blue:#2463eb;
+  --orange:#ff7a00;
+  --red:#d32f2f;
+
+  background:var(--bg);
+
   height:100vh;
+
   display:flex;
   flex-direction:column;
 
-  --bg:#F2ECE3;
-  --card:#ffffff;
-  --border:#d6cdc2;
+  overflow-y:auto;
 
-  --text:#1a1a1a;
-  --muted:#777;
-
-  --green:#2e7d32;
-  --red:#c62828;
-  --orange:#ed6c02;
+  font-family:'DM Sans',sans-serif;
 }
 
-/* ───────── HEADER (1 LIGNE) ───────── */
-.header{
-  height:90px;
-  padding:0 40px;
+
+/* ───────────────── HEADER ───────────────── */
+
+.dashboard-prod .header{
+
+  height:82px;
+
+  background:#e8e0d4;
+
+  border-bottom:2px solid var(--border);
 
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  background:#e6ded2;
-  border-bottom:2px solid #d6cdc2;
-}
+  padding:0 28px;
 
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:30px;
+  flex-shrink:0;
 }
 
 .header-brand{
-  font-size:26px;
-  font-weight:700;
-  letter-spacing:5px;
+
+  font-size:30px;
+
+  font-weight:900;
+
+  letter-spacing:6px;
+
+  color:#111;
 }
 
-.header-date{
-  font-size:16px;
-  color:#555;
+.header-brand span{
+
+  font-size:22px;
+
+  letter-spacing:3px;
+
+  margin-left:10px;
+
+  opacity:.9;
 }
 
 .header-right{
+
   display:flex;
   align-items:center;
-  gap:30px;
+  gap:34px;
 }
 
 .header-clock{
-  font-size:28px;
+
+  font-size:42px;
+
+  font-weight:900;
+
+  line-height:1;
+}
+
+.header-date{
+
+  font-size:18px;
+
+  color:#555;
+
+  margin-top:2px;
+}
+
+.header-live{
+
+  font-size:24px;
+
   font-weight:700;
+
+  color:var(--green);
 }
 
-/* ───────── BODY ───────── */
-.dash-body{
+.live-dot{
+
+  width:12px;
+  height:12px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+  display:inline-block;
+
+  margin-right:8px;
+}
+
+.header-link{
+
+  font-size:20px;
+}
+
+
+/* ───────────────── BODY ───────────────── */
+
+.dashboard-prod .dash-body{
+
   flex:1;
+
   display:grid;
-  grid-template-columns: 1fr 320px;
-  gap:12px;
-  padding:12px;
+
+  grid-template-columns: 1fr 430px;
+
+  gap:14px;
+
+  padding:14px;
+
+  min-height:0;
 }
 
 
-/* ═══════════════════════════════════════
-   ZONE CHAÎNES (GAUCHE)
-═══════════════════════════════════════ */
+/* ───────────────── CHAÎNES ───────────────── */
 
 .zone-chaines{
 
   display:grid;
 
-  /* 3 colonnes */
   grid-template-columns:repeat(3,1fr);
 
-  /* hauteur fixe réduite */
-  grid-auto-rows:127.5px;
+  grid-template-rows:repeat(5,170px);
 
-  gap:12px;
-
-  height:auto;
+  gap:14px;
 }
 
 
-/* ═══════════════════════════════════════
-   ZONE SPÉCIALE (DROITE)
-═══════════════════════════════════════ */
+/* ───────────────── COLONNE DROITE ───────────────── */
 
 .zone-speciale{
 
   display:flex;
+
   flex-direction:column;
+
+  gap:14px;
+}
+
+
+/* ───────────────── BLOCS SPÉCIAUX ───────────────── */
+
+.section-block{
+
+  background:var(--panel);
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  padding:12px;
+}
+
+
+/* HVA + BROD MACHINE */
+
+.hva,
+.brod-mach{
+
+  height:370px;
+}
+
+
+/* BRODERIE MAIN */
+
+.brod-main{
+
+  margin-top:14px;
+}
+
+
+/* ───────────────── TITRES ───────────────── */
+
+.section-title{
+
+  text-align:center;
+
+  font-size:34px;
+
+  font-weight:900;
+
+  margin-bottom:12px;
+
+  color:#111;
+}
+
+
+/* ───────────────── GRIDS ───────────────── */
+
+.hva .section-grid,
+.brod-mach .section-grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(2,1fr);
+
+  grid-template-rows:repeat(2,1fr);
 
   gap:12px;
 
-  height:auto;
+  height:100%;
 }
 
 
-/* BLOCS SPÉCIAUX */
-.section-block{
+/* BRODERIE MAIN */
 
-  /* hauteur augmentée */
-  min-height:425px;
+.brod-main .section-grid{
 
-  display:flex;
-  flex-direction:column;
+  display:grid;
 
-  background:#ede7dc;
+  grid-template-columns:repeat(8,1fr);
+
+  gap:12px;
+}
+
+
+/* ───────────────── CARTES ───────────────── */
+
+.chain-card,
+.poste-card{
+
+  background:var(--card);
 
   border:1px solid var(--border);
-  border-radius:12px;
+
+  border-radius:14px;
 
   padding:10px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
+
+  box-shadow:
+  0 1px 2px rgba(0,0,0,.03),
+  0 6px 18px rgba(0,0,0,.04);
+
+  transition:.2s;
+}
+
+.chain-card:hover,
+.poste-card:hover{
+
+  transform:translateY(-2px);
 }
 
 
+/* ───────────────── TITRE CHAÎNE ───────────────── */
 
-.section-title{
+.chain-name{
+
   text-align:center;
-  font-size:20px;
+
+  font-size:28px;
+
   font-weight:900;
+
+  margin-bottom:6px;
+}
+
+
+/* ───────────────── REFERENCES ───────────────── */
+
+.chain-refs-row{
+
+  display:flex;
+
+  border-bottom:1px solid #ddd;
+
+  padding-bottom:6px;
+}
+
+.ref-col{
+
+  flex:1;
+
+  text-align:center;
+}
+
+.ref-col:first-child{
+
+  border-right:1px solid #ddd;
+}
+
+.ref-col-label{
+
+  font-size:17px;
+
+  color:#555;
+
   margin-bottom:4px;
 }
 
+.ref-col-value{
 
-/* ───────── BRODERIE MAIN (BAS) ───────── */
-.zone-broderie-main{
-  height:170px;
-  padding:10px;
+  font-size:26px;
+
+  font-weight:700;
+
+  color:#111;
 }
 
-.zone-broderie-main .section-grid{
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  gap:10px;
-}
 
-/* ───────── CARTES UNIFIÉES ───────── */
-.chain-card,
-.poste-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
+/* ───────────────── DATA ───────────────── */
+
+.chain-data{
 
   display:flex;
-  flex-direction:column;
-  justify-content:space-between;
 
-  padding:8px;
-}
-
-/* ───────── TITRES ───────── */
-.chain-name{
-  text-align:center;
-  font-size:20px;
-  font-weight:900;
-}
-
-/* ───────── STRUCTURE ───────── */
-.chain-data,
-.poste-data{
-  display:flex;
   flex:1;
 }
 
-.ref-data-col,
-.poste-data{
+.ref-data-col{
+
   flex:1;
+
   display:flex;
+
   flex-direction:column;
+
   justify-content:space-between;
+
+  padding-top:8px;
 }
 
-/* ───────── OBJECTIF ───────── */
-.ref-data-top,
-.poste-top{
+.ref-data-col:first-child{
+
+  border-right:1px solid #ddd;
+}
+
+
+/* ───────────────── OBJECTIF + TAUX ───────────────── */
+
+.ref-data-top{
+
   display:flex;
+
   justify-content:space-between;
-  font-size:16px;
+
+  font-size:18px;
+
   font-weight:700;
 }
 
-/* ───────── COMPTEURS (TRÈS GROS) ───────── */
-.ref-counter,
-.poste-counter{
-  font-size:72px;
-  font-weight:900;
-  text-align:center;
-  line-height:1;
+.val-obj{
+
+  color:var(--blue);
 }
 
-/* ───────── COULEURS STATUT ───────── */
-.ok{color:var(--green)}
-.nok{color:var(--red)}
-.neutral{color:#999}
+.val-taux{
 
-/* ───────── CUMUL ───────── */
+  color:var(--green);
+}
+
+
+/* ───────────────── GROS COMPTEUR ───────────────── */
+
+.ref-counter,
+.poste-counter{
+
+  text-align:center;
+
+  font-size:78px;
+
+  font-weight:900;
+
+  line-height:1;
+
+  color:#8d8d8d;
+}
+
+
+/* ───────────────── CUMUL ───────────────── */
+
 .ref-cumul,
 .poste-cumul{
-  font-size:16px;
+
   text-align:right;
+
+  font-size:26px;
+
+  font-weight:700;
+
   color:var(--orange);
 }
 
-/* ───────── FOOTER KPI ───────── */
+
+/* ───────────────── STATUT ───────────────── */
+
+.ok{color:var(--green)}
+.nok{color:var(--red)}
+.neutral{color:#9b9b9b}
+
+
+/* ───────────────── FOOTER KPI ───────────────── */
+
 .dash-footer{
-  height:90px;
+
+  height:120px;
 
   display:flex;
+
   justify-content:center;
+
   align-items:center;
-  gap:50px;
+
+  gap:24px;
+
+  padding:12px 0;
+
+  flex-shrink:0;
 }
 
+
+/* KPI */
+
 .global-counter{
-  background:#1a1a1a;
-  color:#fff;
-  padding:12px 30px;
-  border-radius:10px;
-  text-align:center;
+
+  width:260px;
+
+  height:92px;
+
+  background:#151515;
+
+  border-radius:18px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  box-shadow:
+  0 8px 24px rgba(0,0,0,.2);
 }
 
 .global-label{
-  font-size:16px;
-  opacity:.7;
+
+  font-size:18px;
+
+  color:#cfcfcf;
+
+  margin-bottom:4px;
 }
 
 .global-val{
-  font-size:40px;
+
+  font-size:54px;
+
   font-weight:900;
+
+  line-height:1;
 }
 
 .global-val.has-data{
-  color:#4caf50;
-}
-/* ──────────────────────────────────────
-   ACTIVE LE SCROLL DASHBOARD
-────────────────────────────────────── */
 
-/* Scroll vertical global */
-body{
-  overflow-y:auto;
-  overflow-x:hidden;
+  color:#43d167;
 }
 
 
-/* Scroll interne du dashboard */
-.dashboard-prod{
-  overflow-y:auto;
+/* ───────────────── LOADING ───────────────── */
+
+.loading{
+
+  position:fixed;
+
+  inset:0;
+
+  background:var(--bg);
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  z-index:9999;
 }
 
+.spinner{
 
-/* Scroll zone principale */
-.dash-body{
-  overflow-y:auto;
+  width:46px;
+  height:46px;
+
+  border:4px solid #ddd;
+
+  border-top:4px solid #111;
+
+  border-radius:50%;
+
+  animation:spin 1s linear infinite;
+
+  margin:16px 0;
 }
 
-
-/* Style scrollbar moderne */
-::-webkit-scrollbar{
-  width:10px;
+@keyframes spin{
+  to{transform:rotate(360deg)}
 }
-
-::-webkit-scrollbar-track{
-  background:#e8dfd3;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#b8aa98;
-  border-radius:10px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background:#9f907d;
-}
-
