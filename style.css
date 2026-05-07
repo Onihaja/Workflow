@@ -773,7 +773,8 @@ select {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-corrige cette style et comment pour chaque ligne : /* ═══════════════════════════════════════
+
+/* ═══════════════════════════════════════
    DASHBOARD ULTRA INDUSTRIEL — 55"
 ═══════════════════════════════════════ */
 
