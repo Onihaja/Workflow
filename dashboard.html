@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +16,7 @@
   <div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Chargement...</div>
 </div>
 
-<!-- HEADER -->
+ 
 <header class="header">
   <div>
     <span class="header-brand">AKANJO <span>Madagascar</span></span>
@@ -48,13 +48,12 @@
 
 </div>
 
-<!-- BRODERIE MAIN -->
 <div class="section-block brod-main">
   <div class="section-title">BRODERIE MAIN</div>
   <div class="section-grid" id="grid-brod-main"></div>
 </div>
 
-<!-- FOOTER — compteurs globaux -->
+
 <footer class="dash-footer">
   <div class="global-counter">
     <div class="global-label">Production</div>
@@ -322,6 +321,773 @@ db.channel('dash-live')
   .subscribe()
 
 // ══ INIT ══
+charger()
+setInterval(charger, 60000)
+</script>
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AKANJO — Dashboard Production</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;900&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #F0EDE6;
+      --panel:    #E8E0D4;
+      --card:     #FAFAF8;
+      --border:   #D8D0C4;
+      --text:     #171717;
+      --muted:    #888;
+      --blue:     #2463EB;
+      --green:    #1A9A3C;
+      --orange:   #E07800;
+      --red:      #D32F2F;
+      --neutral:  #9B9B9B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ══ PAGE WRAPPER ══ */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══ HEADER ══ */
+    .header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .header-brand {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #111;
+    }
+
+    .header-brand span {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-left: 8px;
+      opacity: .85;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .header-clock {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .header-date {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .header-live {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: blink 1.8s infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .header-link {
+      font-size: 14px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .header-link:hover { text-decoration: underline; }
+
+    /* ══ CORPS PRINCIPAL ══ */
+    .dash-body {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 12px;
+      padding: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ══ ZONE CHAÎNES — 6 colonnes × 5 lignes ══ */
+    .zone-chaines {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(5, auto);
+      gap: 8px;
+    }
+
+    /* ══ ZONE DROITE ══ */
+    .zone-speciale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ══ BLOCS SPÉCIAUX ══ */
+    .section-block {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .section-title .icon { font-size: 20px; }
+
+    /* Broderie Machine : 2 col × 2 lignes */
+    .brod-mach .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 8px;
+    }
+
+    /* HVA : 2 col × 2 lignes */
+    .hva .section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 8px;
+    }
+
+    /* ══ BRODERIE MAIN — full width sous tout ══ */
+    .zone-brod-main {
+      padding: 0 12px 12px;
+    }
+
+    .brod-main .section-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+    }
+
+    /* ══ CARTE CHAÎNE NORMALE ══ */
+    .chain-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .chain-name {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    /* ligne refs */
+    .chain-refs-row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+      gap: 0;
+    }
+
+    .ref-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .ref-col:first-child {
+      border-right: 1px solid #ddd;
+      padding-right: 6px;
+    }
+
+    .ref-col:last-child { padding-left: 6px; }
+
+    .ref-col-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .ref-col-value {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ref-col-value.empty { color: #bbb; font-weight: 400; }
+
+    /* ligne données : compteur | %obj | %taux | cumul */
+    .chain-data {
+      display: flex;
+      gap: 0;
+    }
+
+    .ref-data-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 0;
+    }
+
+    .ref-data-col:first-child {
+      border-right: 1px solid #eee;
+      padding-right: 6px;
+    }
+
+    .ref-data-col:last-child { padding-left: 6px; }
+
+    /* compteur principal */
+    .val-counter {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      min-width: 24px;
+    }
+
+    .val-counter.ok      { color: var(--green); }
+    .val-counter.nok     { color: var(--red); }
+    .val-counter.neutral { color: var(--neutral); }
+
+    /* taux objectif (bleu) */
+    .val-obj-pct {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    /* taux commande (vert) */
+    .val-taux {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    /* cumul (orange) */
+    .val-cumul {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-left: auto;
+    }
+
+    /* ══ POSTE SECTION SPÉCIALE ══ */
+    .poste-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* refs poste */
+    .poste-refs-row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 3px;
+      gap: 0;
+    }
+
+    .poste-ref-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .poste-ref-col:first-child {
+      border-right: 1px solid #ddd;
+      padding-right: 5px;
+    }
+
+    .poste-ref-col:last-child { padding-left: 5px; }
+
+    .poste-ref-label {
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .poste-ref-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .poste-ref-value.empty { color: #bbb; font-weight: 400; }
+
+    /* données poste */
+    .poste-data-row {
+      display: flex;
+      gap: 0;
+    }
+
+    .poste-data-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .poste-data-col:first-child {
+      border-right: 1px solid #eee;
+      padding-right: 5px;
+    }
+
+    .poste-data-col:last-child { padding-left: 5px; }
+
+    /* compteur poste */
+    .poste-counter {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .poste-counter.ok      { color: var(--green); }
+    .poste-counter.nok     { color: var(--red); }
+    .poste-counter.neutral { color: var(--neutral); }
+
+    .poste-val-obj  { font-size: 10px; font-weight: 700; color: var(--blue); }
+    .poste-val-taux { font-size: 10px; font-weight: 700; color: var(--green); }
+    .poste-val-cumul {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange);
+      margin-left: auto;
+    }
+
+    /* ══ FOOTER ══ */
+    .dash-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 12px 24px 16px;
+      flex-shrink: 0;
+    }
+
+    .global-counter {
+      width: 240px;
+      height: 80px;
+      background: #151515;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .global-icon { font-size: 28px; }
+
+    .global-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .global-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #aaa;
+      font-weight: 600;
+    }
+
+    .global-val {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--neutral);
+    }
+
+    .global-val.has-data-green  { color: var(--green); }
+    .global-val.has-data-orange { color: var(--orange); }
+
+    /* ══ LOADING ══ */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .loading-brand {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 8px;
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #ddd;
+      border-top-color: #111;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+  <div class="loading-brand">AKANJO</div>
+  <div class="spinner"></div>
+  <div style="font-size:11px;letter-spacing:2px;color:#aaa;text-transform:uppercase">Chargement...</div>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">AKANJO <span>Madagascar</span></div>
+    <div class="header-right">
+      <div>
+        <div class="header-clock" id="clock">--:--:--</div>
+        <div class="header-date" id="date-label"></div>
+      </div>
+      <div class="header-live"><span class="live-dot"></span>LIVE</div>
+      <a class="header-link" href="objectifs.html">⚙ Objectifs</a>
+    </div>
+  </header>
+
+  <!-- CORPS : chaînes + section droite -->
+  <div class="dash-body">
+
+    <!-- Chaînes normales : 6×5 -->
+    <div class="zone-chaines" id="zone-chaines"></div>
+
+    <!-- Colonne droite -->
+    <div class="zone-speciale">
+      <div class="section-block brod-mach">
+        <div class="section-title"><span class="icon">🧵</span> BRODERIE MACHINE</div>
+        <div class="section-grid" id="grid-brod-mach"></div>
+      </div>
+      <div class="section-block hva">
+        <div class="section-title"><span class="icon">⚡</span> HVA</div>
+        <div class="section-grid" id="grid-hva"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BRODERIE MAIN : full width -->
+  <div class="zone-brod-main">
+    <div class="section-block brod-main">
+      <div class="section-title"><span class="icon">🧶</span> BRODERIE MAIN</div>
+      <div class="section-grid" id="grid-brod-main"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="dash-footer">
+    <div class="global-counter">
+      <div class="global-icon">📈</div>
+      <div class="global-text">
+        <div class="global-label">Production</div>
+        <div class="global-val" id="cpt-production">0</div>
+      </div>
+    </div>
+    <div class="global-counter">
+      <div class="global-icon">🎯</div>
+      <div class="global-text">
+        <div class="global-label">Pôle Qualité</div>
+        <div class="global-val" id="cpt-qualite">0</div>
+      </div>
+    </div>
+    <div class="global-counter">
+      <div class="global-icon">📦</div>
+      <div class="global-text">
+        <div class="global-label">Finition</div>
+        <div class="global-val" id="cpt-finition">0</div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// ══ CONFIG ══
+const { createClient } = supabase
+const db = createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey)
+
+const CHAINES_NORMALES = [
+  'CH1','CH2','CH3','CH4','CH5','CH6',
+  'CH7','CH8','CH9','CH10','CH11','CH12',
+  'CH14','CH15','CH16'
+]
+
+const SECTIONS_SPECIALES = {
+  'BRODERIE_MACHINE': { id: 'grid-brod-mach', maxRefs: 4 },
+  'HVA':              { id: 'grid-hva',       maxRefs: 4 },
+  'BRODERIE_MAIN':    { id: 'grid-brod-main', maxRefs: 8 },
+}
+
+const TOUTES_CHAINES = [...CHAINES_NORMALES, ...Object.keys(SECTIONS_SPECIALES)]
+
+// ══ HORLOGE ══
+function majHorloge() {
+  const n = new Date()
+  document.getElementById('clock').textContent =
+    n.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit', second:'2-digit' })
+  document.getElementById('date-label').textContent =
+    n.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' })
+}
+setInterval(majHorloge, 1000)
+majHorloge()
+
+const today = () => new Date().toISOString().slice(0, 10)
+
+// ══ CHARGEMENT ══
+async function charger() {
+  const t = today()
+
+  const [
+    { data: objectifs },
+    { data: sorties_chaine },
+    { data: entrees_qualite },
+    { data: entrees_finition },
+    { data: produits },
+    { data: toutesProductions }
+  ] = await Promise.all([
+    db.from('objectifs_journaliers').select('*').eq('date', t),
+    db.from('mouvements').select('produit_id').eq('action','sortie_chaine').gte('created_at', t+'T00:00:00'),
+    db.from('mouvements').select('produit_id').eq('action','entree_qualite').gte('created_at', t+'T00:00:00'),
+    db.from('mouvements').select('produit_id').eq('action','entree_finition').gte('created_at', t+'T00:00:00'),
+    db.from('produits').select('id,reference,chaine_production').not('chaine_production','is',null),
+    db.from('mouvements').select('produit_id').eq('action','sortie_chaine'),
+  ])
+
+  const idsSortie   = new Set((sorties_chaine    ||[]).map(m=>m.produit_id))
+  const idsQualite  = new Set((entrees_qualite   ||[]).map(m=>m.produit_id))
+  const idsFinition = new Set((entrees_finition  ||[]).map(m=>m.produit_id))
+  const idsCumul    = new Set((toutesProductions ||[]).map(m=>m.produit_id))
+
+  // Compteurs globaux
+  const elProd = document.getElementById('cpt-production')
+  const elQual = document.getElementById('cpt-qualite')
+  const elFini = document.getElementById('cpt-finition')
+
+  elProd.textContent = idsSortie.size
+  elQual.textContent = idsQualite.size
+  elFini.textContent = idsFinition.size
+  elProd.className = 'global-val' + (idsSortie.size  > 0 ? ' has-data-green'  : '')
+  elQual.className = 'global-val' + (idsQualite.size > 0 ? ' has-data-green'  : '')
+  elFini.className = 'global-val' + (idsFinition.size> 0 ? ' has-data-orange' : '')
+
+  // Données par chaîne
+  const dataParChaine = {}
+  TOUTES_CHAINES.forEach(ch => {
+    const prods = (produits||[]).filter(p => p.chaine_production === ch)
+    const refs  = [...new Set(prods.map(p=>p.reference))].filter(Boolean)
+    dataParChaine[ch] = refs.map(ref => {
+      const r        = prods.filter(p=>p.reference===ref)
+      const total    = r.length
+      const auj      = r.filter(p=>idsSortie.has(p.id)).length
+      const cumul    = r.filter(p=>idsCumul.has(p.id)).length
+      const taux     = total>0 ? Math.round((cumul/total)*100) : 0
+      const obj      = (objectifs||[]).find(o=>o.chaine===ch&&o.reference===ref)
+      const objectif = obj?.objectif||0
+      const objPct   = objectif>0 ? Math.round((auj/objectif)*100) : 0
+      return { reference:ref, auj, cumul, total, taux, objectif, objPct }
+    })
+  })
+
+  // Chaînes normales
+  const zoneChaines = document.getElementById('zone-chaines')
+  zoneChaines.innerHTML = ''
+  CHAINES_NORMALES.forEach(ch => {
+    zoneChaines.appendChild(creerCarteChaine(ch, dataParChaine[ch]||[]))
+  })
+
+  // Sections spéciales
+  Object.entries(SECTIONS_SPECIALES).forEach(([ch, cfg]) => {
+    const grid = document.getElementById(cfg.id)
+    grid.innerHTML = ''
+    const refs = dataParChaine[ch]||[]
+    for (let i=0; i<cfg.maxRefs; i++) {
+      grid.appendChild(creerPoste(refs[i]||null))
+    }
+  })
+
+  document.getElementById('loading').style.display = 'none'
+}
+
+// ══ CARTE CHAÎNE (2 refs, données sur 1 ligne) ══
+function creerCarteChaine(chaine, refs) {
+  const r1 = refs[0]||null
+  const r2 = refs[1]||null
+
+  const card = document.createElement('div')
+  card.className = 'chain-card'
+
+  // Nom
+  card.innerHTML = `<div class="chain-name">${chaine}</div>`
+
+  // Ligne refs
+  const refsRow = document.createElement('div')
+  refsRow.className = 'chain-refs-row'
+  refsRow.innerHTML = `
+    <div class="ref-col">
+      <div class="ref-col-label">Réf 1</div>
+      <div class="ref-col-value ${r1?'':'empty'}">${r1?r1.reference:'—'}</div>
+    </div>
+    <div class="ref-col">
+      <div class="ref-col-label">Réf 2</div>
+      <div class="ref-col-value ${r2?'':'empty'}">${r2?r2.reference:'—'}</div>
+    </div>
+  `
+  card.appendChild(refsRow)
+
+  // Ligne données
+  const dataRow = document.createElement('div')
+  dataRow.className = 'chain-data'
+  ;[r1, r2].forEach(r => {
+    const col = document.createElement('div')
+    col.className = 'ref-data-col'
+    if (!r) {
+      col.innerHTML = `
+        <span class="val-counter neutral">0</span>
+        <span class="val-obj-pct">0%</span>
+        <span class="val-taux">0%</span>
+        <span class="val-cumul">0</span>
+      `
+    } else {
+      const atteint = r.objectif>0 && r.auj>=r.objectif
+      const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
+      col.innerHTML = `
+        <span class="val-counter ${cls}">${r.auj}</span>
+        <span class="val-obj-pct">${r.objPct}%</span>
+        <span class="val-taux">${r.taux}%</span>
+        <span class="val-cumul">${r.cumul}</span>
+      `
+    }
+    dataRow.appendChild(col)
+  })
+  card.appendChild(dataRow)
+
+  return card
+}
+
+// ══ POSTE SECTION SPÉCIALE ══
+function creerPoste(r) {
+  const card = document.createElement('div')
+  card.className = 'poste-card'
+
+  // refs
+  const refsRow = document.createElement('div')
+  refsRow.className = 'poste-refs-row'
+  refsRow.innerHTML = `
+    <div class="poste-ref-col">
+      <div class="poste-ref-label">Réf 1</div>
+      <div class="poste-ref-value ${r?'':'empty'}">${r?r.reference:'—'}</div>
+    </div>
+    <div class="poste-ref-col">
+      <div class="poste-ref-label">Réf 2</div>
+      <div class="poste-ref-value empty">—</div>
+    </div>
+  `
+  card.appendChild(refsRow)
+
+  // données
+  const dataRow = document.createElement('div')
+  dataRow.className = 'poste-data-row'
+
+  if (!r) {
+    dataRow.innerHTML = `
+      <div class="poste-data-col">
+        <span class="poste-counter neutral">0</span>
+        <span class="poste-val-obj">0%</span>
+        <span class="poste-val-taux">0%</span>
+        <span class="poste-val-cumul">0</span>
+      </div>
+    `
+  } else {
+    const atteint = r.objectif>0 && r.auj>=r.objectif
+    const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
+    dataRow.innerHTML = `
+      <div class="poste-data-col">
+        <span class="poste-counter ${cls}">${r.auj}</span>
+        <span class="poste-val-obj">${r.objPct}%</span>
+        <span class="poste-val-taux">${r.taux}%</span>
+        <span class="poste-val-cumul">${r.cumul}</span>
+      </div>
+    `
+  }
+  card.appendChild(dataRow)
+  return card
+}
+
+// ══ REALTIME ══
+db.channel('dash-live')
+  .on('postgres_changes',{event:'*',schema:'public',table:'mouvements'},charger)
+  .on('postgres_changes',{event:'*',schema:'public',table:'objectifs_journaliers'},charger)
+  .subscribe()
+
 charger()
 setInterval(charger, 60000)
 </script>
