@@ -785,7 +785,7 @@ select {
       --green:    #1A9A3C;
       --orange:   #E07800;
       --red:      #D32F2F;
-      --neutral:  #9B9B9B;
+      --neutral:  #000000;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1075,7 +1075,7 @@ select {
 
     /* compteur principal */
     .val-counter {
-      font-size:50px;
+      font-size:70px;
       font-weight:900;
       line-height:1;
       width:100%;
@@ -1189,7 +1189,7 @@ select {
 
     /* compteur poste */
     .poste-counter {
-      font-size:50px;
+      font-size:70px;
       font-weight:900;
       line-height:1;
       width:100%;
