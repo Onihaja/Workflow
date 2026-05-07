@@ -221,19 +221,19 @@ function creerCarteChaine(chaine, refs) {
     const col = document.createElement('div')
     col.className = 'ref-data-col'
     if (!r) {
-      col.innerHTML = `
-        <span class="val-counter neutral">0</span>
+      col.innerHTML = `        
         <span class="val-obj-pct">0</span>
         <span class="val-taux">0%</span>
+        <span class="val-counter neutral">0</span>
         <span class="val-cumul">0</span>
       `
     } else {
       const atteint = r.objectif>0 && r.auj>=r.objectif
       const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
-      col.innerHTML = `
-        <span class="val-counter ${cls}">${r.auj}</span>
+      col.innerHTML = `        
         <span class="val-obj-pct">${r.objPct}</span>
         <span class="val-taux">${r.taux}%</span>
+        <span class="val-counter ${cls}">${r.auj}</span>
         <span class="val-cumul">${r.cumul}</span>
       `
     }
@@ -270,10 +270,10 @@ function creerPoste(r) {
 
   if (!r) {
     dataRow.innerHTML = `
-      <div class="poste-data-col">
-        <span class="poste-counter neutral">0</span>
+      <div class="poste-data-col">        
         <span class="poste-val-obj">0</span>
         <span class="poste-val-taux">0%</span>
+        <span class="poste-counter neutral">0</span>
         <span class="poste-val-cumul">0</span>
       </div>
     `
@@ -281,10 +281,10 @@ function creerPoste(r) {
     const atteint = r.objectif>0 && r.auj>=r.objectif
     const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
     dataRow.innerHTML = `
-      <div class="poste-data-col">
-        <span class="poste-counter ${cls}">${r.auj}</span>
+      <div class="poste-data-col">        
         <span class="poste-val-obj">${r.objPct}</span>
         <span class="poste-val-taux">${r.taux}%</span>
+        <span class="poste-counter ${cls}">${r.auj}</span>
         <span class="poste-val-cumul">${r.cumul}</span>
       </div>
     `
