@@ -854,32 +854,60 @@ body{
   padding:12px;
 }
 
-/* ───────── CHAÎNES ───────── */
+
+/* ═══════════════════════════════════════
+   ZONE CHAÎNES (GAUCHE)
+═══════════════════════════════════════ */
+
 .zone-chaines{
+
   display:grid;
-  height:127.5px;
+
+  /* 3 colonnes */
   grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(4,1fr);
+
+  /* hauteur fixe réduite */
+  grid-auto-rows:127.5px;
+
   gap:12px;
+
+  height:auto;
 }
 
-/* ───────── COLONNE DROITE ───────── */
+
+/* ═══════════════════════════════════════
+   ZONE SPÉCIALE (DROITE)
+═══════════════════════════════════════ */
+
 .zone-speciale{
-  height:42.5px;
+
   display:flex;
   flex-direction:column;
+
   gap:12px;
+
+  height:auto;
 }
 
+
+/* BLOCS SPÉCIAUX */
 .section-block{
-  flex:1;
+
+  /* hauteur augmentée */
+  min-height:425px;
+
   display:flex;
   flex-direction:column;
+
   background:#ede7dc;
+
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:8px;
+  border-radius:12px;
+
+  padding:10px;
 }
+
+
 
 .section-title{
   text-align:center;
@@ -888,12 +916,6 @@ body{
   margin-bottom:4px;
 }
 
-.section-grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
 
 /* ───────── BRODERIE MAIN (BAS) ───────── */
 .zone-broderie-main{
