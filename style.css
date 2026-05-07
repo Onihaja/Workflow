@@ -798,9 +798,6 @@ body{
   font-family:'DM Sans',sans-serif;
   background:#F2ECE3;
   color:#1a1a1a;
-
-  /* Empêche le scroll sur TV */
-  overflow:hidden;
 }
 
 
