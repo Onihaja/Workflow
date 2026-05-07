@@ -1035,15 +1035,18 @@ select {
       color: var(--muted);
       font-weight: 600;
       letter-spacing: 0.3px;
+      display:none;
     }
 
     .ref-col-value {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size:20px;
+      font-weight:900;
+      text-align:center;
+      color:#111;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .ref-col-value.empty { color: #bbb; font-weight: 400; }
@@ -1071,10 +1074,14 @@ select {
 
     /* compteur principal */
     .val-counter {
-      font-size: 22px;
-      font-weight: 900;
-      line-height: 1;
-      min-width: 24px;
+      font-size:50px;
+      font-weight:900;
+      line-height:1;
+      width:100%;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .val-counter.ok      { color: var(--green); }
@@ -1141,15 +1148,18 @@ select {
       font-size: 9px;
       color: var(--muted);
       font-weight: 600;
+      display:none;
     }
 
     .poste-ref-value {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size:20px;
+      font-weight:900;
+      text-align:center;
+      color:#111;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .poste-ref-value.empty { color: #bbb; font-weight: 400; }
@@ -1176,9 +1186,14 @@ select {
 
     /* compteur poste */
     .poste-counter {
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1;
+      font-size:50px;
+      font-weight:900;
+      line-height:1;
+      width:100%;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .poste-counter.ok      { color: var(--green); }
