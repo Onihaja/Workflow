@@ -777,7 +777,7 @@ html, body {
 }
 
 .global-counter {
-  width: 260px; height: 100px;
+  width: 280px; height: 120px;
   background: #726566;
   border-radius: 12px;
   display: flex;
