@@ -824,15 +824,6 @@ html, body {
   margin-bottom:6px;
 }
 
-/* OBJECTIF */
-.val-obj,
-.poste-val-obj{
-  font-size:16px;
-  font-weight:800;
-  color:var(--blue);
-  line-height:1;
-}
-
 /* ───────── BARRE AVANCEMENT ───────── */
 .progress-wrap{
   display:flex;
