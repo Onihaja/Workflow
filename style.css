@@ -427,8 +427,8 @@ select {
 
 .login-card{
   width:100%;
-  max-width:1050px;
-  min-height:620px;
+  max-width:670px;
+  min-height:520px;
   display:grid;
   grid-template-columns: 1.1fr 0.9fr;
   border-radius:28px;
