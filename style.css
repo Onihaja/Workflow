@@ -661,15 +661,14 @@ html, body {
 
 .chain-data { display: flex; flex: 1; gap: 0; min-height: 0; }
 
-.ref-data-col {
+.ref-data-col , .poste-data-col{
   flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  position:relative;
+  justify-content: center;
   align-items: center;
   gap: 2px;
-  min-height: 0;
-  padding: 2px 0;
+  min-height: 90px;
 }
 
 .ref-data-col:first-child { border-right: 1px solid #eee; padding-right: 6px; }
@@ -691,9 +690,9 @@ html, body {
 .val-counter.nok     { color: var(--red); }
 .val-counter.neutral { color: var(--neutral); }
 
-.val-obj-pct { font-size: 20px; font-weight: 700; color: var(--blue); }
-.val-taux    { font-size: 20px; font-weight: 700; color: var(--green); }
-.val-cumul   { font-size: 20px; font-weight: 700; color: var(--orange); }
+.val-obj-pct { position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
+.val-taux    { position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--green); }
+.val-cumul   { position:absolute;bottom:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
 
 /* ── POSTE SECTION SPÉCIALE ── */
 .poste-card {
@@ -733,17 +732,6 @@ html, body {
   min-height: 0;
 }
 
-.poste-data-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2px;
-  padding: 2px 0;
-  min-height: 0;
-}
-
 .poste-data-col:first-child { border-right: 1px solid #eee; padding-right: 5px; }
 .poste-data-col:last-child  { padding-left: 5px; }
 
@@ -762,9 +750,9 @@ html, body {
 .poste-counter.nok     { color: var(--red); }
 .poste-counter.neutral { color: var(--neutral); }
 
-.poste-val-obj   { font-size: 20px; font-weight: 700; color: var(--blue); }
-.poste-val-taux  { font-size: 20px; font-weight: 700; color: var(--green); }
-.poste-val-cumul { font-size: 20px; font-weight: 700; color: var(--orange); }
+.poste-val-obj   { position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
+.poste-val-taux  { position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--green); }
+.poste-val-cumul { position:absolute;bottom:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
 
 /* ── FOOTER ── */
 .dash-footer {
