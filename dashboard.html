@@ -235,7 +235,14 @@ function creerCarteChaine(chaine, refs) {
       const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
       col.innerHTML = `
         <span class="val-obj-pct">${r.objPct}</span>
-        <span class="val-taux">${r.taux}%</span>
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill ${r.taux > 100 ? 'over' : ''}"
+             style="width:${Math.min(r.taux,100)}%">
+            </div>
+          </div>
+          <span class="val-taux">${r.taux}%</span>
+        </div>
         <span class="val-counter ${cls}">${r.auj}</span>
         <span class="val-cumul">${r.cumul} </span>
       `
@@ -284,7 +291,17 @@ function creerPoste(r1, r2) {
       const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
       col.innerHTML = `
         <span class="poste-val-obj">${r.objPct}</span>
-        <span class="poste-val-taux">${r.taux}%</span>
+        <div class="poste-top-row">
+          <span class="poste-val-obj">${r.objectif}</span>
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div class="progress-fill ${r.taux > 100 ? 'over' : ''}"
+              style="width:${Math.min(r.taux,100)}%">
+              </div>
+            </div>
+            <span class="poste-val-taux">${r.taux}%</span>
+          </div>
+        </div>
         <span class="poste-counter ${cls}">${r.auj}</span>
         <span class="poste-val-cumul">${r.cumul} </span>
       `
