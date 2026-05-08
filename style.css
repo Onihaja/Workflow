@@ -659,7 +659,7 @@ html, body {
 
 .ref-col-value.empty { color: #bbb; font-weight: 400; }
 
-.chain-data { display: flex; flex: 1; gap: 12px; min-height: 0; }
+.chain-data { display: flex; flex: 1; gap: 0; min-height: 0; }
 
 .ref-data-col , .poste-data-col{
   flex: 1;
@@ -690,9 +690,9 @@ html, body {
 .val-counter.nok     { color: var(--red); }
 .val-counter.neutral { color: var(--neutral); }
 
-.val-obj-pct { position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
+.val-obj-pct { position:absolute;top:0;left:6px;font-size: 20px; font-weight: 700; color: var(--blue); }
 .val-taux    { position:absolute;bottom:0;left:0;font-size: 20px; font-weight: 700; color: var(--green); }
-.val-cumul   { position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
+.val-cumul   { position:absolute;top:0;right:6px;font-size: 20px; font-weight: 700; color: var(--orange); }
 
 /* ── POSTE SECTION SPÉCIALE ── */
 .poste-card {
@@ -728,7 +728,7 @@ html, body {
 .poste-data-row {
   display: flex;
   flex: 1;
-  gap: 12px;
+  gap: 0;
   min-height: 0;
 }
 
