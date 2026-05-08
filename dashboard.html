@@ -99,9 +99,9 @@ const CHAINES_NORMALES = [
 ]
 
 const SECTIONS_SPECIALES = {
-  'BRODERIE_MACHINE': { id: 'grid-brod-mach', maxRefs: 2 },
-  'HVA':              { id: 'grid-hva',       maxRefs: 2 },
-  'BRODERIE_MAIN':    { id: 'grid-brod-main', maxRefs: 4 },
+  'BRODERIE_MACHINE': { id: 'grid-brod-mach', maxPostes: 2 },
+  'HVA':              { id: 'grid-hva',       maxPostes: 2 },
+  'BRODERIE_MAIN':    { id: 'grid-brod-main', maxPostes: 4 },
 }
 
 const TOUTES_CHAINES = [...CHAINES_NORMALES, ...Object.keys(SECTIONS_SPECIALES)]
@@ -179,13 +179,15 @@ async function charger() {
     zoneChaines.appendChild(creerCarteChaine(ch, dataParChaine[ch]||[]))
   })
 
-  // Sections spéciales
+  // Sections spéciales — 2 refs par poste
   Object.entries(SECTIONS_SPECIALES).forEach(([ch, cfg]) => {
     const grid = document.getElementById(cfg.id)
     grid.innerHTML = ''
     const refs = dataParChaine[ch]||[]
-    for (let i=0; i<cfg.maxRefs; i++) {
-      grid.appendChild(creerPoste(refs[i]||null))
+    for (let i=0; i<cfg.maxPostes; i++) {
+      const r1 = refs[i*2]   || null
+      const r2 = refs[i*2+1] || null
+      grid.appendChild(creerPoste(r1, r2))
     }
   })
 
@@ -245,44 +247,51 @@ function creerCarteChaine(chaine, refs) {
   return card
 }
 
-// ══ POSTE SECTION SPÉCIALE ══
-function creerPoste(r) {
+// ══ POSTE SECTION SPÉCIALE (2 refs comme carte chaîne) ══
+function creerPoste(r1, r2) {
   const card = document.createElement('div')
   card.className = 'poste-card'
 
+  // Refs row
   const refsRow = document.createElement('div')
   refsRow.className = 'poste-refs-row'
   refsRow.innerHTML = `
     <div class="poste-ref-col">
-      <div class="poste-ref-value ${r?'':'empty'}">${r?r.reference:'—'}</div>
+      <div class="poste-ref-value ${r1?'':'empty'}">${r1?r1.reference:'—'}</div>
+    </div>
+    <div class="poste-ref-col">
+      <div class="poste-ref-value ${r2?'':'empty'}">${r2?r2.reference:'—'}</div>
     </div>
   `
   card.appendChild(refsRow)
 
+  // Données — 2 colonnes
   const dataRow = document.createElement('div')
   dataRow.className = 'poste-data-row'
 
-  if (!r) {
-    dataRow.innerHTML = `
-      <div class="poste-data-col">
+  ;[r1, r2].forEach(r => {
+    const col = document.createElement('div')
+    col.className = 'poste-data-col'
+    if (!r) {
+      col.innerHTML = `
         <span class="poste-val-obj">0</span>
         <span class="poste-val-taux">0%</span>
         <span class="poste-counter neutral">0</span>
         <span class="poste-val-cumul">0</span>
-      </div>
-    `
-  } else {
-    const atteint = r.objectif>0 && r.auj>=r.objectif
-    const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
-    dataRow.innerHTML = `
-      <div class="poste-data-col">
+      `
+    } else {
+      const atteint = r.objectif>0 && r.auj>=r.objectif
+      const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
+      col.innerHTML = `
         <span class="poste-val-obj">${r.objPct}</span>
         <span class="poste-val-taux">${r.taux}%</span>
         <span class="poste-counter ${cls}">${r.auj}</span>
         <span class="poste-val-cumul">${r.cumul}</span>
-      </div>
-    `
-  }
+      `
+    }
+    dataRow.appendChild(col)
+  })
+
   card.appendChild(dataRow)
   return card
 }
