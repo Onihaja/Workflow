@@ -690,9 +690,9 @@ html, body {
 .val-counter.nok     { color: var(--red); }
 .val-counter.neutral { color: var(--neutral); }
 
-.val-obj-pct { position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
+.val-obj-pct { padding: 2px;position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
 .val-taux    { position:absolute;bottom:0;left:0;font-size: 20px; font-weight: 700; color: var(--green); }
-.val-cumul   { position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
+.val-cumul   { padding: 2px;position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
 
 /* ── POSTE SECTION SPÉCIALE ── */
 .poste-card {
@@ -750,9 +750,9 @@ html, body {
 .poste-counter.nok     { color: var(--red); }
 .poste-counter.neutral { color: var(--neutral); }
 
-.poste-val-obj   { position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
+.poste-val-obj   { padding: 2px;position:absolute;top:0;left:0;font-size: 20px; font-weight: 700; color: var(--blue); }
 .poste-val-taux  { position:absolute;bottom:0;left:0;font-size: 20px; font-weight: 700; color: var(--green); }
-.poste-val-cumul { position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
+.poste-val-cumul { padding: 2px;position:absolute;top:0;right:0;font-size: 20px; font-weight: 700; color: var(--orange); }
 
 /* ── FOOTER ── */
 .dash-footer {
