@@ -572,7 +572,7 @@ html, body {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 8px;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   min-height: 0;
