@@ -228,7 +228,7 @@ function creerCarteChaine(chaine, refs) {
         <span class="val-obj-pct">0</span>
         <span class="val-taux">0%</span>
         <span class="val-counter neutral">0</span>
-        <span class="val-cumul">0</span>
+        <span class="val-cumul">0 </span>
       `
     } else {
       const atteint = r.objectif>0 && r.auj>=r.objectif
@@ -237,7 +237,7 @@ function creerCarteChaine(chaine, refs) {
         <span class="val-obj-pct">${r.objPct}</span>
         <span class="val-taux">${r.taux}%</span>
         <span class="val-counter ${cls}">${r.auj}</span>
-        <span class="val-cumul">${r.cumul}</span>
+        <span class="val-cumul">${r.cumul} </span>
       `
     }
     dataRow.appendChild(col)
@@ -277,7 +277,7 @@ function creerPoste(r1, r2) {
         <span class="poste-val-obj">0</span>
         <span class="poste-val-taux">0%</span>
         <span class="poste-counter neutral">0</span>
-        <span class="poste-val-cumul">0</span>
+        <span class="poste-val-cumul">0 </span>
       `
     } else {
       const atteint = r.objectif>0 && r.auj>=r.objectif
@@ -286,7 +286,7 @@ function creerPoste(r1, r2) {
         <span class="poste-val-obj">${r.objPct}</span>
         <span class="poste-val-taux">${r.taux}%</span>
         <span class="poste-counter ${cls}">${r.auj}</span>
-        <span class="poste-val-cumul">${r.cumul}</span>
+        <span class="poste-val-cumul">${r.cumul} </span>
       `
     }
     dataRow.appendChild(col)
