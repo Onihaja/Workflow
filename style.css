@@ -813,3 +813,62 @@ html, body {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ───────── ZONE TOP KPI ───────── */
+.ref-top-row,
+.poste-top-row{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+/* OBJECTIF */
+.val-obj,
+.poste-val-obj{
+  font-size:16px;
+  font-weight:800;
+  color:var(--blue);
+  line-height:1;
+}
+
+/* ───────── BARRE AVANCEMENT ───────── */
+.progress-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* TEXTE % */
+.val-taux,
+.poste-val-taux{
+  font-size:14px;
+  font-weight:800;
+  color:var(--green);
+  min-width:42px;
+  text-align:right;
+}
+
+/* BARRE FOND */
+.progress-bar{
+  width:90px;
+  height:10px;
+  background:#D9D3CA;
+  border-radius:999px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* REMPLISSAGE */
+.progress-fill{
+  height:100%;
+  border-radius:999px;
+  transition:width .4s ease;
+  background:linear-gradient(90deg,#34C759,#22C55E);
+}
+
+/* SI >100% */
+.progress-fill.over{
+  background:linear-gradient(90deg,#FF9800,#FF6D00);
+}
