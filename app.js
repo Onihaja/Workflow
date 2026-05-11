@@ -138,34 +138,25 @@ function afficherConfirmation(pieces, meta) {
 }
 
 function imprimerQR() {
-
   const printZone = document.getElementById('print-zone')
   printZone.innerHTML = ''
-
   const NB_PAR_PAGE = 9
   const NB_LIGNES = 10
 
   // Création des pages
   for (let i = 0; i < dernierePieces.length; i += NB_PAR_PAGE) {
-
     const page = document.createElement('div')
     page.className = 'print-page'
-
     const grid = document.createElement('div')
     grid.className = 'print-grid'
-
     const morceaux = dernierePieces.slice(i, i + NB_PAR_PAGE)
-
     morceaux.forEach((piece) => {
-
       const lignes = Array(NB_LIGNES)
         .fill('<div class="print-dot-line"></div>')
         .join('')
 
       const cell = document.createElement('div')
-
       cell.className = 'print-cell'
-
       cell.innerHTML = `
         <div class="print-cell-top">
           <div class="print-cell-infos">
@@ -183,10 +174,8 @@ function imprimerQR() {
           ${lignes}
         </div>
       `
-
       grid.appendChild(cell)
     })
-
     page.appendChild(grid)
     printZone.appendChild(page)
   }
@@ -225,18 +214,6 @@ function imprimerQR() {
     }, 1000)
 
   }, 2000)
-}
-
-  // Afficher la zone, imprimer, puis cacher
-  const printZone = document.getElementById('print-zone')
-  printZone.style.display = 'block'
-
-  const delai = Math.min(dernierePieces.length * 15 + 600, 3500)
-  setTimeout(() => {
-    window.print()
-    // Cacher après impression
-    setTimeout(() => { printZone.style.display = 'none' }, 1000)
-  }, delai)
 }
 
 // ── NOUVELLE COMMANDE ──
