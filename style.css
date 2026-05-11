@@ -559,9 +559,7 @@ select {
 }
 
 html, body {
-  height: 100%;
   width: 100%;
-  overflow: hidden;
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
