@@ -94,108 +94,95 @@
     /* ── ZONE IMPRESSION (invisible à l'écran) ── */
     .print-zone { display: none; }
 
-    /* ── IMPRESSION — 9 étiquettes par page A4 (3×3) ── */
-    @media print {
-      @page { size: A4 portrait; margin: 6mm; }
+   @media print {
 
-      /* Cacher tout sauf la zone d'impression */
-      body > *:not(.print-zone) { display: none !important; }
+  @page {
+    size: A4 portrait;
+    margin: 6mm;
+  }
 
-      .print-zone {
-        display: block !important;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
 
-      .print-page {
-        width: 100%;
-        page-break-after: always;
-        break-after: page;
-      }
+  body > *:not(.print-zone) {
+    display: none !important;
+  }
 
-      .print-page:last-child {
-        page-break-after: auto;
-        break-after: auto;
-      }
+  .print-zone {
+    display: block !important;
+    width: 100%;
+  }
 
-      .print-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 3mm;
-        width: 100%;
-      }
+  .print-page {
+    width: 100%;
+    page-break-after: always;
+    break-after: page;
+  }
 
-      .print-cell {
-        border: 1.5px solid #111;
-        flex-direction: column;
-        break-inside: avoid;
-        page-break-inside: avoid;
-        overflow: hidden;
-        min-height: 90mm;
-      }
+  .print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
 
-      .print-cell-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 3mm 3mm 2mm 3mm;
-        border-bottom: 1.5px solid #111;
-        gap: 2mm;
-      }
+  .print-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+    width: 100%;
+  }
 
-      .print-cell-infos {
-        flex: 1;
-        font-family: Arial, sans-serif;
-      }
+  .print-cell {
+    min-height: 90mm;
 
-      .print-cell-infos p {
-        font-size: 8.5pt;
-        font-weight: 700;
-        margin: 0 0 1mm 0;
-        line-height: 1.35;
-        color: #000;
-      }
+    border: 1.5px solid #111;
 
-      .print-cell-infos .lbl { font-weight: 400; }
+    display: flex;
+    flex-direction: column;
 
-      .print-cell-code {
-        font-size: 8pt;
-        font-weight: 700;
-        margin-top: 2mm;
-        color: #000;
-        font-family: Arial, sans-serif;
-        word-break: break-all;
-      }
+    overflow: hidden;
 
-      .print-cell-qr {
-        flex-shrink: 0;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-      }
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-      .print-cell-qr canvas,
-      .print-cell-qr img {
-        width: 22mm !important;
-        height: 22mm !important;
-      }
+  .print-cell-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 
-      .print-cell-lines {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        padding: 1mm 3mm;
-      }
+    padding: 3mm;
+    border-bottom: 1px solid #111;
+  }
 
-      .print-dot-line {
-        border: none;
-        border-bottom: 1px dashed #aaa;
-        height: 0;
-        margin: 0;
-      }
-    }
+  .print-cell-infos p {
+    font-size: 8pt;
+    margin: 0 0 1mm 0;
+  }
+
+  .print-cell-qr canvas,
+  .print-cell-qr img {
+    width: 22mm !important;
+    height: 22mm !important;
+  }
+
+  .print-cell-lines {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2mm;
+  }
+
+  .print-dot-line {
+    border-bottom: 1px dashed #999;
+  }
+}
   </style>
 </head>
 <body>
