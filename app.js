@@ -180,8 +180,16 @@ function imprimerQR() {
     }, idx * 15)
   })
 
+  // Afficher la zone, imprimer, puis cacher
+  const printZone = document.getElementById('print-zone')
+  printZone.style.display = 'block'
+
   const delai = Math.min(dernierePieces.length * 15 + 600, 3500)
-  setTimeout(() => window.print(), delai)
+  setTimeout(() => {
+    window.print()
+    // Cacher après impression
+    setTimeout(() => { printZone.style.display = 'none' }, 1000)
+  }, delai)
 }
 
 // ── NOUVELLE COMMANDE ──
