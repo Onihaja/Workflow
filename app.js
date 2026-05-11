@@ -5,7 +5,10 @@ const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
-const CHAINES = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16']
+
+// Pièces de la dernière commande (pour impression)
+let dernierePieces = []
+let dernieresMeta  = {}
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded', () => {
@@ -20,16 +23,7 @@ function recupererTaillesQuantites() {
     .filter(item => item.quantite > 0)
 }
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('\"', '&quot;')
-    .replaceAll("'", '&#39;')
-}
-
-// ── CRÉATION — UN PRODUIT PAR PIÈCE INDIVIDUELLE ──
+// ── CRÉATION PIÈCES ──
 async function creerPieces() {
   const client      = document.getElementById('client').value.trim()
   const reference   = document.getElementById('reference').value.trim()
@@ -54,106 +48,188 @@ async function creerPieces() {
   btn.textContent = `Création de ${totalPieces} pièce(s)...`
   afficherMsg('', '')
 
-  const produitsPayload = []
-  for (const { taille, quantite } of taillesQty) {
-    for (let i = 0; i < quantite; i++) {
-      produitsPayload.push({
-        client,
-        reference,
-        designation,
-        couleur:           couleur || null,
-        taille,
-        chaine_production: chaine,
-        etat_actuel:       'creation'
-      })
-    }
-  }
+  const piecesCreees = []
 
   try {
-    const { data: piecesCreees, error: errorProduits } = await db
-      .from('produits')
-      .insert(produitsPayload)
-      .select()
+    // Une entrée par pièce individuelle
+    for (const { taille, quantite } of taillesQty) {
+      for (let i = 0; i < quantite; i++) {
+        const { data, error } = await db.from('produits').insert([{
+          client,
+          reference,
+          designation,
+          couleur:           couleur || null,
+          taille,
+          chaine_production: chaine,
+          etat_actuel:       'creation'
+        }]).select().single()
 
-    if (errorProduits) throw new Error(errorProduits.message)
+        if (error) throw new Error(error.message)
 
-    const mouvementsPayload = piecesCreees.map((piece) => ({
-      produit_id:     piece.id,
-      departement_id: 1,
-      action:         'creation',
-      operateur:      'Coupe'
-    }))
+        await db.from('mouvements').insert([{
+          produit_id:     data.id,
+          departement_id: 1,
+          action:         'creation',
+          operateur:      'Coupe'
+        }])
 
-    const { error: errorMouvements } = await db.from('mouvements').insert(mouvementsPayload)
-    if (errorMouvements) throw new Error(errorMouvements.message)
+        piecesCreees.push(data)
+      }
+    }
 
-    afficherMsg('success', `✓ ${piecesCreees.length} pièce(s) créée(s).`)
-    afficherQRCodes(piecesCreees, { client, reference, designation, couleur, chaine })
+    // Sauvegarder pour impression
+    dernierePieces = piecesCreees
+    dernieresMeta  = { client, reference, designation, couleur, chaine, taillesQty, totalPieces }
+
+    // Afficher confirmation (sans QR)
+    afficherConfirmation(piecesCreees, dernieresMeta)
 
   } catch (e) {
     afficherMsg('error', 'Erreur : ' + e.message)
-  } finally {
     btn.disabled = false
     btn.textContent = 'Générer les QR codes'
   }
 }
 
-// ── AFFICHER LES QR CODES ──
-function afficherQRCodes(pieces, meta) {
-  const qrCard = document.getElementById('qr-card')
-  const qrBox  = document.getElementById('qr-box')
-  const qrInfo = document.getElementById('qr-info')
+// ── AFFICHER CONFIRMATION ──
+function afficherConfirmation(pieces, meta) {
+  const grid = document.getElementById('resume-grid')
 
-  qrBox.innerHTML = ''
+  // Résumé tailles
+  const taillesTexte = meta.taillesQty
+    .map(t => `${t.taille} × ${t.quantite}`)
+    .join('  |  ')
 
-  const taillesResume = [...new Set(pieces.map(p => p.taille))]
-    .map(t => `${t}×${pieces.filter(p => p.taille === t).length}`)
-    .join(', ')
+  // IDs générés
+  const idsTexte = pieces.map(p => `#${p.id}`).join('  ')
 
-  qrInfo.innerHTML = `
-    <div><strong>Client</strong> &nbsp; ${escapeHtml(meta.client)}</div>
-    <div><strong>Réf</strong> &nbsp; ${escapeHtml(meta.reference)}</div>
-    <div><strong>Désignation</strong> &nbsp; ${escapeHtml(meta.designation)}</div>
-    ${meta.couleur ? `<div><strong>Couleur</strong> &nbsp; ${escapeHtml(meta.couleur)}</div>` : ''}
-    <div><strong>Chaîne</strong> &nbsp; ${escapeHtml(meta.chaine)}</div>
-    <div><strong>Tailles</strong> &nbsp; ${escapeHtml(taillesResume)}</div>
-    <div class="qr-id">Total : ${pieces.length} QR codes</div>
+  grid.innerHTML = `
+    <div class="resume-row">
+      <span class="resume-key">Client</span>
+      <span class="resume-val">${meta.client}</span>
+    </div>
+    <div class="resume-row">
+      <span class="resume-key">Référence</span>
+      <span class="resume-val">${meta.reference}</span>
+    </div>
+    <div class="resume-row">
+      <span class="resume-key">Désignation</span>
+      <span class="resume-val">${meta.designation}</span>
+    </div>
+    <div class="resume-row">
+      <span class="resume-key">Couleur</span>
+      <span class="resume-val">${meta.couleur || '—'}</span>
+    </div>
+    <div class="resume-row" style="grid-column:1/-1">
+      <span class="resume-key">Chaîne</span>
+      <span class="resume-val">${labelChaine(meta.chaine)}</span>
+    </div>
+    <div class="tailles-resume">
+      <strong style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#aaa">Tailles</strong><br>
+      ${taillesTexte}
+    </div>
+    <div class="resume-total">
+      <span class="resume-total-label">Total QR codes créés</span>
+      <span class="resume-total-val">${meta.totalPieces}</span>
+    </div>
+    <div class="ids-liste">
+      <strong style="font-size:10px;letter-spacing:1px;color:#aaa;display:block;margin-bottom:4px">IDs générés</strong>
+      ${idsTexte}
+    </div>
   `
 
-  const grid = document.createElement('div')
-  grid.className = 'qr-print-grid'
-
-  pieces.forEach((piece, idx) => {
-    const cell = document.createElement('div')
-    cell.className = 'qr-cell'
-    cell.innerHTML = `
-      <div class="qr-canvas" id="qr-canvas-${piece.id}"></div>
-      <div class="qr-cell-ref">${escapeHtml(piece.reference)}</div>
-      <div class="qr-cell-detail">${escapeHtml(piece.taille)} · ${escapeHtml(meta.chaine)}</div>
-      ${meta.couleur ? `<div class="qr-cell-detail">${escapeHtml(meta.couleur)}</div>` : ''}
-      <div class="qr-cell-client">${escapeHtml(piece.client)}</div>
-      <div class="qr-cell-id">#${piece.id}</div>
-    `
-    grid.appendChild(cell)
-
-    setTimeout(() => {
-      new QRCode(document.getElementById(`qr-canvas-${piece.id}`), {
-        text:       String(piece.id),
-        width:      120,
-        height:     120,
-        colorDark:  '#1a1a1a',
-        colorLight: '#ffffff'
-      })
-    }, idx * 20)
-  })
-
-  qrBox.appendChild(grid)
-  qrCard.style.display = 'block'
-  qrCard.scrollIntoView({ behavior: 'smooth' })
+  document.getElementById('card-form').style.display = 'none'
+  document.getElementById('card-confirm').style.display = 'block'
+  document.getElementById('card-confirm').scrollIntoView({ behavior: 'smooth' })
 }
 
+// ── IMPRESSION QR CODES ──
+function imprimerQR() {
+  const printGrid = document.getElementById('print-grid')
+  printGrid.innerHTML = ''
+
+  // Générer les QR codes dans la zone d'impression
+  dernierePieces.forEach((piece, idx) => {
+    const cell = document.createElement('div')
+    cell.className = 'print-cell'
+    cell.innerHTML = `
+      <div class="print-cell-ref">${piece.reference}</div>
+      <div id="print-qr-${piece.id}" style="display:flex;justify-content:center;margin:3mm 0"></div>
+      <div class="print-cell-detail">
+        ${piece.taille} · ${labelChaine(piece.chaine_production)}
+        ${piece.couleur ? `<br>${piece.couleur}` : ''}
+        <br>${piece.client}
+      </div>
+      <div class="print-cell-id">ID : ${piece.id}</div>
+    `
+    printGrid.appendChild(cell)
+  })
+
+  // Générer les QR codes après injection dans le DOM
+  dernierePieces.forEach((piece, idx) => {
+    setTimeout(() => {
+      const el = document.getElementById(`print-qr-${piece.id}`)
+      if (el) {
+        new QRCode(el, {
+          text:       String(piece.id),
+          width:      106,
+          height:     106,
+          colorDark:  '#1a1a1a',
+          colorLight: '#ffffff'
+        })
+      }
+    }, idx * 15)
+  })
+
+  // Lancer l'impression après génération des QR
+  const delai = Math.min(dernierePieces.length * 15 + 500, 3000)
+  setTimeout(() => window.print(), delai)
+}
+
+// ── NOUVELLE COMMANDE ──
+function nouvelleCommande() {
+  dernierePieces = []
+  dernieresMeta  = {}
+
+  document.getElementById('client').value      = ''
+  document.getElementById('reference').value   = ''
+  document.getElementById('designation').value = ''
+  document.getElementById('couleur').value     = ''
+  document.getElementById('chaine').value      = ''
+
+  TAILLES.forEach(t => {
+    const el = document.getElementById(`qte-${t}`)
+    if (el) el.value = 0
+  })
+
+  const btn = document.getElementById('btn-generer-qr')
+  btn.disabled = false
+  btn.textContent = 'Générer les QR codes'
+
+  document.getElementById('card-confirm').style.display = 'none'
+  document.getElementById('card-form').style.display = 'block'
+  document.getElementById('msg').className = 'msg'
+  document.getElementById('print-grid').innerHTML = ''
+
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// ── HELPERS ──
 function afficherMsg(type, texte) {
   const msg = document.getElementById('msg')
   msg.className = type ? `msg ${type}` : 'msg'
   msg.textContent = texte
 }
+
+function labelChaine(chaine) {
+  const map = {
+    'BRODERIE_MACHINE': 'Broderie Machine',
+    'HVA':              'Haute Valeur Ajoutée',
+    'BRODERIE_MAIN':    'Broderie Main'
+  }
+  return map[chaine] || chaine
+}
+
+window.creerPieces    = creerPieces
+window.imprimerQR     = imprimerQR
+window.nouvelleCommande = nouvelleCommande
