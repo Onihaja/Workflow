@@ -98,18 +98,20 @@
     @media print {
       @page { size: A4 portrait; margin: 6mm; }
 
-      body * { visibility: hidden; }
-      .print-zone, .print-zone * { visibility: visible; }
+      /* Cacher tout sauf la zone d'impression */
+      body > *:not(.print-zone) { display: none !important; }
 
       .print-zone {
         display: block !important;
-        position: static;
         width: 100%;
+        margin: 0;
+        padding: 0;
       }
 
       .print-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: calc((297mm - 12mm - 6mm) / 3);
         gap: 3mm;
         width: 100%;
       }
@@ -121,7 +123,6 @@
         break-inside: avoid;
         page-break-inside: avoid;
         overflow: hidden;
-        height: calc((297mm - 12mm - 6mm) / 3);
       }
 
       .print-cell-top {
@@ -219,6 +220,30 @@
     </div>
 
     <div class="field">
+      <label>Désignation *</label>
+      <select id="designation">
+        <option value="" selected disabled>Sélectionner une désignation</option>
+        <optgroup label="Désignation">
+          <option value="ROBE">ROBE</option>
+          <option value="ROBE LONGUE">ROBE LONGUE</option>
+          <option value="ROBE COURTE">ROBE COURTE</option>
+          <option value="PANTALON">PANTALON</option>
+          <option value="SHORT">SHORT</option>
+          <option value="JUPE">JUPE</option>
+          <option value="JUPE LONGUE">JUPE LONGUE</option>
+          <option value="JUPE COURTE">JUPE COURTE</option>
+          <option value="SLIP">SLIP</option>
+          <option value="SOUTIEN-GORGE">SOUTIEN-GORGE</option>
+          <option value="BIKINI">BIKINI</option>
+          <option value="CHEMISE">CHEMISE</option>
+          <option value="CH14">CH14</option>
+          <option value="CH15">CH15</option>
+          <option value="CH16">CH16</option>
+        </optgroup>  
+      </select>
+    </div>
+
+    <div class="field">
       <label>Couleur</label>
       <input type="text" id="couleur" placeholder="ex: NR001">
     </div>
@@ -284,8 +309,8 @@
 
 </div>
 
-<!-- ── ZONE IMPRESSION (invisible à l'écran, visible à l'impression) ── -->
-<div class="print-zone" id="print-zone">
+<!-- ── ZONE IMPRESSION ── -->
+<div class="print-zone" id="print-zone" style="display:none">
   <div class="print-grid" id="print-grid"></div>
 </div>
 
