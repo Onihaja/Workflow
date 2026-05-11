@@ -164,7 +164,7 @@ function imprimerQR() {
             <p><span class="lbl">Réf: </span>${piece.reference}</p>
             <p><span class="lbl">Couleur: </span>${piece.couleur || '—'}</p>
             <p><span class="lbl">Taille: </span>${piece.taille}</p>
-            <div class="print-cell-code">ID: ${piece.id}</div>
+            <div class="print-cell-code">ID: ${piece.id.slice(0, 8)}</div>
           </div>
 
           <div class="print-cell-qr" id="print-qr-${piece.id}"></div>
