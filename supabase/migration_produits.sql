@@ -29,7 +29,9 @@ BEGIN
       ADD CONSTRAINT produits_chaine_chk
       CHECK (
         chaine_production IS NULL OR chaine_production IN (
-          'CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16'
+          'CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8','CH9','CH10','CH11','CH12','CH14','CH15','CH16','CH17','BRODERIE_MACHINE',
+  'HVA',
+  'BRODERIE_MAIN'
         )
       );
   END IF;
