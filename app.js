@@ -137,48 +137,95 @@ function afficherConfirmation(pieces, meta) {
   document.getElementById('card-confirm').scrollIntoView({ behavior: 'smooth' })
 }
 
-// ── IMPRESSION QR CODES ──
 function imprimerQR() {
-  const printGrid = document.getElementById('print-grid')
-  printGrid.innerHTML = ''
 
+  const printZone = document.getElementById('print-zone')
+  printZone.innerHTML = ''
+
+  const NB_PAR_PAGE = 9
   const NB_LIGNES = 10
 
-  dernierePieces.forEach((piece) => {
-    const lignes = Array(NB_LIGNES).fill('<div class="print-dot-line"></div>').join('')
+  // Création des pages
+  for (let i = 0; i < dernierePieces.length; i += NB_PAR_PAGE) {
 
-    const cell = document.createElement('div')
-    cell.className = 'print-cell'
-    cell.innerHTML = `
-      <div class="print-cell-top">
-        <div class="print-cell-infos">
-          <p><span class="lbl">Client: </span>${piece.client}</p>
-          <p><span class="lbl">Réf: </span>${piece.reference}</p>
-          <p><span class="lbl">Couleur: </span>${piece.couleur || '—'}</p>
-          <p><span class="lbl">Taille: </span>${piece.taille}</p>
-          <div class="print-cell-code">ID: ${piece.id}</div>
+    const page = document.createElement('div')
+    page.className = 'print-page'
+
+    const grid = document.createElement('div')
+    grid.className = 'print-grid'
+
+    const morceaux = dernierePieces.slice(i, i + NB_PAR_PAGE)
+
+    morceaux.forEach((piece) => {
+
+      const lignes = Array(NB_LIGNES)
+        .fill('<div class="print-dot-line"></div>')
+        .join('')
+
+      const cell = document.createElement('div')
+
+      cell.className = 'print-cell'
+
+      cell.innerHTML = `
+        <div class="print-cell-top">
+          <div class="print-cell-infos">
+            <p><span class="lbl">Client: </span>${piece.client}</p>
+            <p><span class="lbl">Réf: </span>${piece.reference}</p>
+            <p><span class="lbl">Couleur: </span>${piece.couleur || '—'}</p>
+            <p><span class="lbl">Taille: </span>${piece.taille}</p>
+            <div class="print-cell-code">ID: ${piece.id}</div>
+          </div>
+
+          <div class="print-cell-qr" id="print-qr-${piece.id}"></div>
         </div>
-        <div class="print-cell-qr" id="print-qr-${piece.id}"></div>
-      </div>
-      <div class="print-cell-lines">${lignes}</div>
-    `
-    printGrid.appendChild(cell)
-  })
 
+        <div class="print-cell-lines">
+          ${lignes}
+        </div>
+      `
+
+      grid.appendChild(cell)
+    })
+
+    page.appendChild(grid)
+    printZone.appendChild(page)
+  }
+
+  // Générer QR
   dernierePieces.forEach((piece, idx) => {
+
     setTimeout(() => {
+
       const el = document.getElementById(`print-qr-${piece.id}`)
+
       if (el) {
+
         new QRCode(el, {
-          text:       String(piece.id),
-          width:      84,
-          height:     84,
-          colorDark:  '#000000',
+          text: String(piece.id),
+          width: 84,
+          height: 84,
+          colorDark: '#000000',
           colorLight: '#ffffff'
         })
+
       }
-    }, idx * 15)
+
+    }, idx * 20)
+
   })
+
+  printZone.style.display = 'block'
+
+  setTimeout(() => {
+
+    window.print()
+
+    setTimeout(() => {
+      printZone.style.display = 'none'
+    }, 1000)
+
+  }, 2000)
+}
 
   // Afficher la zone, imprimer, puis cacher
   const printZone = document.getElementById('print-zone')
