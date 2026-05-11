@@ -563,6 +563,9 @@ html, body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
+  height: auto;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 /* ── PAGE WRAPPER ── */
@@ -748,7 +751,10 @@ html, body {
 
 /* compteur principal */
 .val-counter {
-  font-size: clamp(24px, 4vw, 90px);
+  font-size: 56px;
+  min-height: 90px;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
   font-weight: 900;
   line-height: 1;
   text-align: center;
@@ -808,7 +814,10 @@ html, body {
 .poste-data-col:last-child  { padding-left: 5px; }
 
 .poste-counter {
-  font-size: clamp(24px, 4vw, 90px);
+  font-size: 56px;
+  min-height: 90px;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
   font-weight: 900;
   line-height: 1;
   text-align: center;
