@@ -142,41 +142,45 @@ function imprimerQR() {
   const printGrid = document.getElementById('print-grid')
   printGrid.innerHTML = ''
 
-  // Générer les QR codes dans la zone d'impression
-  dernierePieces.forEach((piece, idx) => {
+  const NB_LIGNES = 10
+
+  dernierePieces.forEach((piece) => {
+    const lignes = Array(NB_LIGNES).fill('<div class="print-dot-line"></div>').join('')
+
     const cell = document.createElement('div')
     cell.className = 'print-cell'
     cell.innerHTML = `
-      <div class="print-cell-ref">${piece.reference}</div>
-      <div id="print-qr-${piece.id}" style="display:flex;justify-content:center;margin:3mm 0"></div>
-      <div class="print-cell-detail">
-        ${piece.taille} · ${labelChaine(piece.chaine_production)}
-        ${piece.couleur ? `<br>${piece.couleur}` : ''}
-        <br>${piece.client}
+      <div class="print-cell-top">
+        <div class="print-cell-infos">
+          <p><span class="lbl">Client: </span>${piece.client}</p>
+          <p><span class="lbl">Réf: </span>${piece.reference}</p>
+          <p><span class="lbl">Couleur: </span>${piece.couleur || '—'}</p>
+          <p><span class="lbl">Taille: </span>${piece.taille}</p>
+          <div class="print-cell-code">ID: ${piece.id}</div>
+        </div>
+        <div class="print-cell-qr" id="print-qr-${piece.id}"></div>
       </div>
-      <div class="print-cell-id">ID : ${piece.id}</div>
+      <div class="print-cell-lines">${lignes}</div>
     `
     printGrid.appendChild(cell)
   })
 
-  // Générer les QR codes après injection dans le DOM
   dernierePieces.forEach((piece, idx) => {
     setTimeout(() => {
       const el = document.getElementById(`print-qr-${piece.id}`)
       if (el) {
         new QRCode(el, {
           text:       String(piece.id),
-          width:      106,
-          height:     106,
-          colorDark:  '#1a1a1a',
+          width:      84,
+          height:     84,
+          colorDark:  '#000000',
           colorLight: '#ffffff'
         })
       }
     }, idx * 15)
   })
 
-  // Lancer l'impression après génération des QR
-  const delai = Math.min(dernierePieces.length * 15 + 500, 3000)
+  const delai = Math.min(dernierePieces.length * 15 + 600, 3500)
   setTimeout(() => window.print(), delai)
 }
 
