@@ -9,6 +9,154 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="supabase-config.js"></script>
   <script src="auth.js"></script>
+  <style>
+    /* ── RÉSUMÉ COMMANDE ── */
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 16px;
+      margin-bottom: 20px;
+    }
+
+    .resume-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0ece6;
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+    }
+
+    .resume-row:last-child { border-bottom: none; }
+
+    .resume-key {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    .resume-val {
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .resume-total {
+      grid-column: 1 / -1;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 2px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .resume-total-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .resume-total-val {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .tailles-resume {
+      grid-column: 1 / -1;
+      background: #faf8f5;
+      border: 1px solid #e8e2d9;
+      border-radius: 2px;
+      padding: 10px 14px;
+      font-family: 'Arial', sans-serif;
+      font-size: 12px;
+      color: #555;
+      letter-spacing: 0.5px;
+      line-height: 1.8;
+    }
+
+    .ids-liste {
+      grid-column: 1 / -1;
+      background: #faf8f5;
+      border: 1px solid #e8e2d9;
+      border-radius: 2px;
+      padding: 10px 14px;
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.5px;
+      line-height: 2;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    /* ── ZONE IMPRESSION (invisible à l'écran) ── */
+    .print-zone { display: none; }
+
+    /* ── IMPRESSION — 9 QR codes par page A4 ── */
+    @media print {
+      body * { visibility: hidden; }
+
+      .print-zone,
+      .print-zone * { visibility: visible; }
+
+      .print-zone {
+        display: block !important;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        padding: 10mm;
+      }
+
+      .print-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6mm;
+      }
+
+      .print-cell {
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        padding: 6mm 4mm;
+        text-align: center;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .print-cell-ref {
+        font-size: 10pt;
+        font-weight: 700;
+        font-family: Arial, sans-serif;
+        letter-spacing: 1px;
+        margin-bottom: 3mm;
+      }
+
+      .print-cell-detail {
+        font-size: 8pt;
+        color: #666;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin-bottom: 2mm;
+      }
+
+      .print-cell-id {
+        font-size: 7pt;
+        color: #bbb;
+        font-family: Arial, sans-serif;
+        margin-top: 2mm;
+      }
+
+      .print-cell canvas,
+      .print-cell img {
+        width: 28mm !important;
+        height: 28mm !important;
+      }
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -22,23 +170,56 @@
 <div class="container">
   <a class="main-btn-link" href="index.html">← Retour accueil</a>
 
-  <div class="card">
-    <div class="card-title">Nouvelle pièce</div>
+  <!-- ── FORMULAIRE ── -->
+  <div class="card" id="card-form">
+    <div class="card-title">Nouvelle commande</div>
 
-    <div class="field"><label>Client *</label><input type="text" id="client" placeholder="ex: Chloé, Kenzo"></div>
-    <div class="field"><label>Référence *</label><input type="text" id="reference" placeholder="ex: 26TS"></div>
-    <div class="field"><label>Désignation *</label><input type="text" id="designation" placeholder="ex: Robe, Chemise"></div>
-    <div class="field"><label>Couleur</label><input type="text" id="couleur" placeholder="ex: NR001"></div>
+    <div class="field">
+      <label>Client *</label>
+      <input type="text" id="client" placeholder="ex: Chloé, Kenzo">
+    </div>
+
+    <div class="field">
+      <label>Référence *</label>
+      <input type="text" id="reference" placeholder="ex: 26TS">
+    </div>
+
+    <div class="field">
+      <label>Désignation *</label>
+      <input type="text" id="designation" placeholder="ex: Robe, Chemise">
+    </div>
+
+    <div class="field">
+      <label>Couleur</label>
+      <input type="text" id="couleur" placeholder="ex: NR001">
+    </div>
 
     <div class="field">
       <label>Chaîne de production *</label>
       <select id="chaine">
         <option value="" selected disabled>Sélectionner une chaîne</option>
-        <option value="CH1">CH1</option><option value="CH2">CH2</option><option value="CH3">CH3</option>
-        <option value="CH4">CH4</option><option value="CH5">CH5</option><option value="CH6">CH6</option>
-        <option value="CH7">CH7</option><option value="CH8">CH8</option><option value="CH9">CH9</option>
-        <option value="CH10">CH10</option><option value="CH11">CH11</option><option value="CH12">CH12</option>
-        <option value="CH14">CH14</option><option value="CH15">CH15</option><option value="CH16">CH16</option>
+        <optgroup label="Chaînes de production">
+          <option value="CH1">CH1</option>
+          <option value="CH2">CH2</option>
+          <option value="CH3">CH3</option>
+          <option value="CH4">CH4</option>
+          <option value="CH5">CH5</option>
+          <option value="CH6">CH6</option>
+          <option value="CH7">CH7</option>
+          <option value="CH8">CH8</option>
+          <option value="CH9">CH9</option>
+          <option value="CH10">CH10</option>
+          <option value="CH11">CH11</option>
+          <option value="CH12">CH12</option>
+          <option value="CH14">CH14</option>
+          <option value="CH15">CH15</option>
+          <option value="CH16">CH16</option>
+        </optgroup>
+        <optgroup label="Sections spéciales">
+          <option value="BRODERIE_MACHINE">Broderie Machine</option>
+          <option value="HVA">Haute Valeur Ajoutée (HVA)</option>
+          <option value="BRODERIE_MAIN">Broderie Main</option>
+        </optgroup>
       </select>
     </div>
 
@@ -62,12 +243,21 @@
     <div class="msg" id="msg"></div>
   </div>
 
-  <div class="card qr-card" id="qr-card" style="display:none">
-    <div class="card-title">QR Codes générés</div>
-    <div id="qr-info" class="qr-meta"></div>
-    <div id="qr-box"></div>
-    <button class="main-btn light" onclick="window.print()">🖨 Imprimer</button>
+  <!-- ── CONFIRMATION (après génération) ── -->
+  <div class="card" id="card-confirm" style="display:none">
+    <div class="card-title">Commande enregistrée</div>
+
+    <div class="resume-grid" id="resume-grid"></div>
+
+    <button class="main-btn" onclick="imprimerQR()">🖨 Imprimer les QR codes</button>
+    <button class="main-btn light" onclick="nouvelleCommande()" style="margin-top:10px">+ Nouvelle commande</button>
   </div>
+
+</div>
+
+<!-- ── ZONE IMPRESSION (invisible à l'écran, visible à l'impression) ── -->
+<div class="print-zone" id="print-zone">
+  <div class="print-grid" id="print-grid"></div>
 </div>
 
 <script src="app.js"></script>
