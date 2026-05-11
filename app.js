@@ -10,12 +10,6 @@ const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 let dernierePieces = []
 let dernieresMeta  = {}
 
-// ── INIT ──
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('btn-generer-qr')
-    ?.addEventListener('click', (e) => { e.preventDefault(); creerPieces() })
-})
-
 // ── RÉCUPÉRER TAILLES/QUANTITÉS ──
 function recupererTaillesQuantites() {
   return TAILLES
