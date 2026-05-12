@@ -208,10 +208,10 @@ function creerCarteChaine(chaine, refs) {
   refsRow.className = 'chain-refs-row'
   refsRow.innerHTML = `
     <div class="ref-col">
-      <div class="ref-col-value ${r1?'':'empty'}">${r1?r1.reference:'—'}</div>
+      <div class="ref-col-value ${r1?'':'empty'}" title="${r1 ? r1.reference : ''}">${r1 ? r1.reference : '—'}</div>
     </div>
     <div class="ref-col">
-      <div class="ref-col-value ${r2?'':'empty'}">${r2?r2.reference:'—'}</div>
+      <div class="ref-col-value ${r2?'':'empty'}" title="${r2 ? r2.reference : ''}">${r2 ? r2.reference : '—'}</div>
     </div>
   `
   card.appendChild(refsRow)
@@ -263,10 +263,10 @@ function creerPoste(r1, r2) {
   refsRow.className = 'poste-refs-row'
   refsRow.innerHTML = `
     <div class="poste-ref-col">
-      <div class="poste-ref-value ${r1?'':'empty'}">${r1?r1.reference:'—'}</div>
+      <div class="poste-ref-value ${r1?'':'empty'}" title="${r1 ? r1.reference : ''}">${r1 ? r1.reference : '—'}</div>
     </div>
     <div class="poste-ref-col">
-      <div class="poste-ref-value ${r2?'':'empty'}">${r2?r2.reference:'—'}</div>
+      <div class="poste-ref-value ${r2?'':'empty'}" title="${r2 ? r2.reference : ''}">${r2 ? r2.reference : '—'}</div>
     </div>
   `
   card.appendChild(refsRow)
