@@ -1180,3 +1180,14 @@ html, body {
   background:#eee;
   color:#666;
 }
+
+.history-ref-link{
+  color:#111;
+  text-decoration:none;
+  font-weight:800;
+}
+
+.history-ref-link:hover{
+  color:var(--blue);
+  text-decoration:underline;
+}
