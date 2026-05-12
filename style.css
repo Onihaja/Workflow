@@ -750,7 +750,7 @@ html, body {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   word-break: break-word;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .ref-col-value.empty { color: #bbb; font-weight: 400; }
@@ -843,7 +843,7 @@ html, body {
   -webkit-box-orient: vertical;
   word-break: break-word;
   text-overflow: ellipsis;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .poste-ref-value.empty { color: #bbb; font-weight: 400; }
