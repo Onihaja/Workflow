@@ -735,6 +735,7 @@ font-size: clamp(10px, 1.6vw, 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: default;
 }
 
 .ref-col-value.empty { color: #bbb; font-weight: 400; }
@@ -777,6 +778,7 @@ font-size: clamp(10px, 1.6vw, 20px);
 .val-taux    { position:absolute;bottom:0;left:0;font-size: 20px; font-weight: 700; color: var(--green); }
 .val-cumul   { position:absolute;top:0;right:9px;font-size: 20px; font-weight: 700; color: var(--orange); }
 
+
 /* ── POSTE SECTION SPÉCIALE ── */
 .poste-card {
   background: var(--card);
@@ -809,6 +811,7 @@ font-size: clamp(10px, 1.6vw, 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: default;
 }
 
 .poste-ref-value.empty { color: #bbb; font-weight: 400; }
