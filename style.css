@@ -1008,7 +1008,8 @@ html, body {
 .poste-val-taux{
   position:absolute;
   bottom:0;
-  align-items:center;
+  left:50%;
+  transform:translateX(-50%);
   z-index:2;
   font-size:10px;
   font-weight:900;
