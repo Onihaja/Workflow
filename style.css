@@ -1019,3 +1019,163 @@ html, body {
   line-height:1;
   gap:4px;
 }
+
+/* ═══════════════════════════════════════
+   HISTORIQUE
+═══════════════════════════════════════ */
+
+.history-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px;
+  gap:20px;
+}
+
+.history-title{
+  font-size:30px;
+  font-weight:900;
+}
+
+.history-sub{
+  margin-top:4px;
+  color:#777;
+  font-size:14px;
+}
+
+.history-stats{
+  display:flex;
+  gap:12px;
+}
+
+.history-stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px 20px;
+  min-width:140px;
+}
+
+.history-stat-label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:#888;
+}
+
+.history-stat-val{
+  margin-top:4px;
+  font-size:34px;
+  font-weight:900;
+}
+
+/* filtres */
+.history-filters{
+  display:flex;
+  gap:10px;
+  padding:0 20px 18px;
+  flex-wrap:wrap;
+}
+
+.history-filters input,
+.history-filters select{
+  height:42px;
+  padding:0 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  min-width:170px;
+  font-family:'DM Sans',sans-serif;
+}
+
+.history-btn{
+  height:42px;
+  padding:0 20px;
+  border:none;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* table */
+.history-table-wrap{
+  flex:1;
+  overflow:auto;
+  padding:0 20px 20px;
+}
+
+.history-table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.history-table thead{
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.history-table th{
+  background:var(--panel);
+  padding:14px;
+  text-align:left;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:1px solid var(--border);
+}
+
+.history-table td{
+  padding:14px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
+
+.history-table tbody tr:hover{
+  background:#fafafa;
+}
+
+.history-ref{
+  font-weight:800;
+}
+
+.history-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.badge-blue{
+  background:#E8F0FF;
+  color:#2463EB;
+}
+
+.badge-green{
+  background:#E8F7EC;
+  color:#1A9A3C;
+}
+
+.badge-orange{
+  background:#FFF1E3;
+  color:#E07800;
+}
+
+.badge-dark{
+  background:#111;
+  color:#fff;
+}
+
+.badge-gray{
+  background:#eee;
+  color:#666;
+}
