@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AKANJO — Historique Production</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="supabase-config.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      AKANJO <span>Historique</span>
+    </div>
+
+    <div class="header-right">
+      <a class="header-link" href="dashboard.html">← Dashboard</a>
+    </div>
+  </header>
+
+  <!-- TOP -->
+  <div class="history-top">
+
+    <div class="history-title-wrap">
+      <div class="history-title">Historique Production</div>
+      <div class="history-sub">
+        Suivi complet des mouvements de production
+      </div>
+    </div>
+
+    <div class="history-stats">
+      <div class="history-stat">
+        <div class="history-stat-label">Mouvements</div>
+        <div class="history-stat-val" id="total-mouvements">0</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FILTRES -->
+  <div class="history-filters">
+
+    <input type="date" id="filter-date">
+
+    <input
+      type="text"
+      id="filter-reference"
+      placeholder="Référence..."
+    >
+
+    <input
+      type="text"
+      id="filter-client"
+      placeholder="Client..."
+    >
+
+    <input
+      type="text"
+      id="filter-operateur"
+      placeholder="Opérateur..."
+    >
+
+    <select id="filter-chaine">
+      <option value="">Toutes chaînes</option>
+      <option>CH1</option>
+      <option>CH2</option>
+      <option>CH3</option>
+      <option>CH4</option>
+      <option>CH5</option>
+      <option>CH6</option>
+      <option>CH7</option>
+      <option>CH8</option>
+      <option>CH9</option>
+      <option>CH10</option>
+      <option>CH11</option>
+      <option>CH12</option>
+      <option>CH14</option>
+      <option>CH15</option>
+      <option>CH16</option>
+      <option>CH17</option>
+      <option>BRODERIE_MACHINE</option>
+      <option>HVA</option>
+      <option>BRODERIE_MAIN</option>
+    </select>
+
+    <select id="filter-action">
+      <option value="">Toutes actions</option>
+      <option value="sortie_chaine">Sortie chaîne</option>
+      <option value="entree_qualite">Entrée qualité</option>
+      <option value="sortie_qualite">Sortie qualité</option>
+      <option value="a_retoucher">À retoucher</option>
+      <option value="retour_retouche">Retour retouche</option>
+      <option value="entree_finition">Entrée finition</option>
+      <option value="sortie_packing">Packing</option>
+    </select>
+
+    <button class="history-btn" id="btn-export">
+      Export Excel
+    </button>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="history-table-wrap">
+
+    <table class="history-table">
+
+      <thead>
+        <tr>
+          <th>Heure</th>
+          <th>Référence</th>
+          <th>Désignation</th>
+          <th>Client</th>
+          <th>Chaîne</th>
+          <th>Action</th>
+          <th>Opérateur</th>
+        </tr>
+      </thead>
+
+      <tbody id="history-body"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+const { createClient } = supabase
+
+const db = createClient(
+  window.SUPABASE_CONFIG.url,
+  window.SUPABASE_CONFIG.anonKey
+)
+
+const body = document.getElementById('history-body')
+
+function labelAction(action){
+  const map = {
+    creation: 'Création',
+    sortie_chaine: 'Sortie chaîne',
+    entree_qualite: 'Entrée qualité',
+    sortie_qualite: 'Qualité OK',
+    a_retoucher: 'À retoucher',
+    retour_retouche: 'Retour retouche',
+    entree_finition: 'Entrée finition',
+    sortie_packing: 'Packing'
+  }
+
+  return map[action] || action
+}
+
+function badgeClass(action){
+  const map = {
+    sortie_chaine: 'badge-blue',
+    entree_qualite: 'badge-blue',
+    sortie_qualite: 'badge-green',
+    a_retoucher: 'badge-orange',
+    retour_retouche: 'badge-orange',
+    entree_finition: 'badge-blue',
+    sortie_packing: 'badge-dark'
+  }
+
+  return map[action] || 'badge-gray'
+}
+
+async function chargerHistorique(){
+
+  let query = db
+    .from('mouvements')
+    .select(`
+      *,
+      produits (
+        reference,
+        designation,
+        client,
+        chaine_production
+      )
+    `)
+    .order('created_at', { ascending:false })
+    .limit(300)
+
+  const date = document.getElementById('filter-date').value
+  const action = document.getElementById('filter-action').value
+
+  if(date){
+    query = query.gte('created_at', date + 'T00:00:00')
+  }
+
+  if(action){
+    query = query.eq('action', action)
+  }
+
+  const { data, error } = await query
+
+  if(error){
+    console.error(error)
+    return
+  }
+
+  const refFilter = document.getElementById('filter-reference').value.toLowerCase()
+  const clientFilter = document.getElementById('filter-client').value.toLowerCase()
+  const operateurFilter = document.getElementById('filter-operateur').value.toLowerCase()
+  const chaineFilter = document.getElementById('filter-chaine').value
+
+  let rows = data || []
+
+  rows = rows.filter(r => {
+
+    const p = r.produits || {}
+
+    const okRef =
+      !refFilter ||
+      (p.reference || '').toLowerCase().includes(refFilter)
+
+    const okClient =
+      !clientFilter ||
+      (p.client || '').toLowerCase().includes(clientFilter)
+
+    const okOperateur =
+      !operateurFilter ||
+      (r.operateur || '').toLowerCase().includes(operateurFilter)
+
+    const okChaine =
+      !chaineFilter ||
+      p.chaine_production === chaineFilter
+
+    return okRef && okClient && okOperateur && okChaine
+  })
+
+  document.getElementById('total-mouvements').textContent = rows.length
+
+  body.innerHTML = ''
+
+  rows.forEach(r => {
+
+    const p = r.produits || {}
+
+    const tr = document.createElement('tr')
+
+    tr.innerHTML = `
+      <td>
+        ${new Date(r.created_at).toLocaleString('fr-FR')}
+      </td>
+
+      <td class="history-ref">
+        ${p.reference || '—'}
+      </td>
+
+      <td>
+        ${p.designation || '—'}
+      </td>
+
+      <td>
+        ${p.client || '—'}
+      </td>
+
+      <td>
+        ${p.chaine_production || '—'}
+      </td>
+
+      <td>
+        <span class="history-badge ${badgeClass(r.action)}">
+          ${labelAction(r.action)}
+        </span>
+      </td>
+
+      <td>
+        ${r.operateur || '—'}
+      </td>
+    `
+
+    body.appendChild(tr)
+  })
+}
+
+function exporterExcel(){
+
+  const rows = [...document.querySelectorAll('#history-body tr')]
+
+  const data = rows.map(row => {
+    const cols = row.querySelectorAll('td')
+
+    return {
+      Heure: cols[0]?.innerText,
+      Reference: cols[1]?.innerText,
+      Designation: cols[2]?.innerText,
+      Client: cols[3]?.innerText,
+      Chaine: cols[4]?.innerText,
+      Action: cols[5]?.innerText,
+      Operateur: cols[6]?.innerText,
+    }
+  })
+
+  const ws = XLSX.utils.json_to_sheet(data)
+  const wb = XLSX.utils.book_new()
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Historique')
+
+  XLSX.writeFile(wb, 'historique_production.xlsx')
+}
+
+document.getElementById('btn-export')
+  .addEventListener('click', exporterExcel)
+
+;[
+  'filter-date',
+  'filter-reference',
+  'filter-client',
+  'filter-operateur',
+  'filter-chaine',
+  'filter-action'
+].forEach(id => {
+  document.getElementById(id)
+    .addEventListener('input', chargerHistorique)
+})
+
+db.removeAllChannels()
+
+db.channel('historique-live')
+  .on(
+    'postgres_changes',
+    {
+      event:'*',
+      schema:'public',
+      table:'mouvements'
+    },
+    async () => {
+      await chargerHistorique()
+    }
+  )
+  .subscribe()
+
+chargerHistorique()
+
+</script>
+</body>
+</html>
