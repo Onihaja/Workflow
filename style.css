@@ -917,8 +917,8 @@ html, body {
 }
 
 .global-val {
-  font-size: 90px; font-weight: 900; line-height: 1;
-  color: var(--neutral);
+  font-size: 90px; font-weight: 700; line-height: 1;
+  color: #120228;
   width: 100%; display: flex;
   align-items: center; justify-content: center;
 }
