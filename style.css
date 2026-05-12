@@ -925,7 +925,7 @@ html, body {
 }
 
 .progress-bar{
-  width:90%;
+  width:80%;
   height:14px;
   background:#D9D3CA;
   border-radius:999px;
