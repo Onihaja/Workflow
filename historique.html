@@ -254,7 +254,7 @@ async function chargerHistorique(){
       </td>
 
       <td class="history-ref">
-        ${p.reference || '—'}
+        <a href="historique-reference.html?ref=${encodeURIComponent(p.reference || '')}" class="history-ref-link">${p.reference || '—'}</a>
       </td>
 
       <td>
