@@ -922,6 +922,7 @@ html, body {
   background:#D9D3CA;
   border-radius:999px;
   overflow:hidden;
+  position:absolute;bottom:0;left:0;
 }
 
 /* REMPLISSAGE */
