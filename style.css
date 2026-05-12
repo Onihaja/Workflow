@@ -737,13 +737,15 @@ html, body {
 .chain-data { display: flex; flex: 1; gap: 0; min-height: 0; }
 
 .ref-data-col , .poste-data-col{
-  flex: 1;
-  display: flex;
+  flex:1;
+  display:flex;
+  flex-direction:column;
   position:relative;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-  min-height: 90px;
+  align-items:center;
+  justify-content:flex-start;
+  gap:4px;
+  min-height:90px;
+  padding-bottom:8px;
 }
 
 .ref-data-col:first-child { border-right: 1px solid #eee; padding-right: 6px; }
@@ -889,51 +891,60 @@ html, body {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ───────── ZONE TOP KPI ───────── */
 .ref-top-row,
 .poste-top-row{
   width:100%;
   display:flex;
-  justify-content:space-between;
+  flex-direction:column;
   align-items:center;
-  margin-bottom:6px;
+  justify-content:flex-end;
+  gap:4px;
+  margin-top:auto;
 }
 
-/* ───────── BARRE AVANCEMENT ───────── */
+/* WRAP */
 .progress-wrap{
+  width:100%;
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:center;
   gap:4px;
 }
 
 /* TEXTE % */
 .val-taux,
 .poste-val-taux{
+  position:static;
   font-size:12px;
-  font-weight:700;
-  color:#333;
+  font-weight:800;
+  color:var(--green);
+  line-height:1;
+  text-align:center;
+  font-family:'DM Mono', monospace;
 }
 
-/* BARRE FOND */
+/* BARRE */
 .progress-bar{
-  width:90px;
+  width:90%;
   height:10px;
   background:#D9D3CA;
   border-radius:999px;
   overflow:hidden;
-  position:absolute;bottom:0;left:0;
+  position:relative;
+  flex-shrink:0;
 }
 
 /* REMPLISSAGE */
 .progress-fill{
   height:100%;
+  width:0;
   border-radius:999px;
-  transition:width .4s ease;
+  transition:width .45s ease;
   background:linear-gradient(90deg,#34C759,#22C55E);
 }
 
-/* SI >100% */
+/* >100% */
 .progress-fill.over{
   background:linear-gradient(90deg,#FF9800,#FF6D00);
 }
