@@ -1006,7 +1006,8 @@ html, body {
 
 .val-taux,
 .poste-val-taux{
-  position:relative;
+  position:absolute;
+  bottom:0;
   z-index:2;
   font-size:10px;
   font-weight:900;
