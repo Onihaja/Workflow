@@ -208,7 +208,7 @@ function creerCarteChaine(chaine, refs) {
   refsRow.className = 'chain-refs-row'
   refsRow.innerHTML = `
     <div class="ref-col">
-      <div class="ref-col-value ${r1?'':'empty'}" title="${r1 ? r1.reference : ''}"${r1 ? formatRef(r1.reference) : '—'}</div>
+      <div class="ref-col-value ${r1?'':'empty'}" title="${r1 ? r1.reference : ''}">${r1 ? formatRef(r1.reference) : '—'}</div>
     </div>
     <div class="ref-col">
       <div class="ref-col-value ${r2?'':'empty'}" title="${r2 ? r2.reference : ''}">${r2 ? formatRef(r2.reference) : '—'}</div>
@@ -317,6 +317,7 @@ function creerPoste(r1, r2) {
 }
 
 // ══ REALTIME ══
+db.removeAllChannels()
 db.channel('dashboard-live')
   .on(
     'postgres_changes',
@@ -331,7 +332,7 @@ db.channel('dashboard-live')
     }
   )
   .subscribe()
-
+  db.removeAllChannels()
   db.channel('objectifs-live')
   .on(
     'postgres_changes',
@@ -342,7 +343,7 @@ db.channel('dashboard-live')
     },
     async () => {
       console.log('Realtime update objectifs')
-      await chargerDashboard()
+      await charger()
     }
   )
   .subscribe()
