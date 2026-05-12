@@ -317,11 +317,35 @@ function creerPoste(r1, r2) {
 }
 
 // ══ REALTIME ══
-db.channel('dash-live')
-  .on('postgres_changes',{event:'*',schema:'public',table:'mouvements'},charger)
-  .on('postgres_changes',{event:'*',schema:'public',table:'objectifs_journaliers'},charger)
+db.channel('dashboard-live')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'mouvements'
+    },
+    async () => {
+      console.log('Realtime update mouvements')
+      await chargerDashboard()
+    }
+  )
   .subscribe()
 
+  db.channel('objectifs-live')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'objectifs_journaliers'
+    },
+    async () => {
+      console.log('Realtime update objectifs')
+      await chargerDashboard()
+    }
+  )
+  .subscribe()
 charger()
 setInterval(charger, 60000)
 </script>
