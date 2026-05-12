@@ -721,6 +721,7 @@ html, body {
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid #ddd;
   padding-bottom: 4px;
+  align-items:flex-start;
 }
 
 .ref-col {
@@ -784,6 +785,8 @@ html, body {
   align-items: center;
   justify-content: center;
   margin-top: 12px;
+  position:absolute;
+  inset:0;
 }
 
 .val-counter.ok      { color: var(--green); }
@@ -813,6 +816,7 @@ html, body {
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid #ddd;
   padding-bottom: 4px;
+  align-items:flex-start;
 }
 
 .poste-ref-col {
@@ -867,6 +871,8 @@ html, body {
   align-items: center;
   justify-content: center;
   margin-top: 12px;
+  position:absolute;
+  inset:0;
 }
 
 .poste-counter.ok      { color: var(--green); }
