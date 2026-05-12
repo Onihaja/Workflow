@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AKANJO — Historique Référence</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-brand">
+      AKANJO <span>Référence</span>
+    </div>
+
+    <div class="header-right">
+      <a class="header-link" href="historique.html">
+        ← Historique
+      </a>
+    </div>
+  </header>
+
+  <!-- TOP -->
+  <div class="ref-top">
+
+    <div>
+      <div class="ref-page-title" id="ref-title">
+        Référence
+      </div>
+
+      <div class="ref-page-sub" id="ref-sub">
+        Chargement...
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-wrap">
+
+    <div id="timeline"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+const { createClient } = supabase
+
+const db = createClient(
+  window.SUPABASE_CONFIG.url,
+  window.SUPABASE_CONFIG.anonKey
+)
+
+const params = new URLSearchParams(window.location.search)
+const REF = params.get('ref')
+
+document.getElementById('ref-title').textContent = REF || 'Référence'
+
+function labelAction(action){
+
+  const map = {
+    creation: 'Création',
+    sortie_chaine: 'Sortie chaîne',
+    entree_qualite: 'Entrée qualité',
+    sortie_qualite: 'Qualité OK',
+    a_retoucher: 'À retoucher',
+    retour_retouche: 'Retour retouche',
+    entree_finition: 'Entrée finition',
+    sortie_packing: 'Packing'
+  }
+
+  return map[action] || action
+}
+
+function badgeClass(action){
+
+  const map = {
+    sortie_chaine: 'badge-blue',
+    entree_qualite: 'badge-blue',
+    sortie_qualite: 'badge-green',
+    a_retoucher: 'badge-orange',
+    retour_retouche: 'badge-orange',
+    entree_finition: 'badge-blue',
+    sortie_packing: 'badge-dark'
+  }
+
+  return map[action] || 'badge-gray'
+}
+
+async function charger(){
+
+  // récupérer tous les produits de cette ref
+  const { data: produits } = await db
+    .from('produits')
+    .select('*')
+    .eq('reference', REF)
+
+  if(!produits || produits.length === 0){
+    document.getElementById('timeline').innerHTML =
+      '<div class="empty-state">Aucune donnée</div>'
+    return
+  }
+
+  const ids = produits.map(p => p.id)
+
+  // récupérer tous les mouvements
+  const { data: mouvements } = await db
+    .from('mouvements')
+    .select('*')
+    .in('produit_id', ids)
+    .order('created_at', { ascending:false })
+
+  document.getElementById('ref-sub').textContent =
+    `${produits.length} pièce(s) • ${mouvements.length} mouvement(s)`
+
+  const timeline = document.getElementById('timeline')
+
+  timeline.innerHTML = ''
+
+  mouvements.forEach(m => {
+
+    const produit = produits.find(p => p.id === m.produit_id)
+
+    const div = document.createElement('div')
+
+    div.className = 'timeline-item'
+
+    div.innerHTML = `
+      <div class="timeline-left">
+
+        <div class="timeline-time">
+          ${new Date(m.created_at).toLocaleString('fr-FR')}
+        </div>
+
+      </div>
+
+      <div class="timeline-dot"></div>
+
+      <div class="timeline-content">
+
+        <div class="timeline-top">
+
+          <span class="history-badge ${badgeClass(m.action)}">
+            ${labelAction(m.action)}
+          </span>
+
+          <span class="timeline-operateur">
+            ${m.operateur || '—'}
+          </span>
+
+        </div>
+
+        <div class="timeline-desc">
+
+          ${produit.designation || '—'}
+
+          • Taille ${produit.taille || '—'}
+
+          • ${produit.couleur || '—'}
+
+          • ${produit.client || '—'}
+
+          • ${produit.chaine_production || '—'}
+
+        </div>
+
+      </div>
+    `
+
+    timeline.appendChild(div)
+  })
+}
+
+charger()
+
+</script>
+
+</body>
+</html>
