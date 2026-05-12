@@ -754,7 +754,7 @@ html, body {
 /* compteur principal */
 .val-counter {
   font-size: clamp(24px, 4vw, 90px);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1;
   text-align: center;
   flex: 1;
@@ -814,7 +814,7 @@ html, body {
 
 .poste-counter {
   font-size: clamp(24px, 4vw, 90px);
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1;
   text-align: center;
   flex: 1;
