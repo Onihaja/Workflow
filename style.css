@@ -717,12 +717,9 @@ html, body {
 }
 
 .chain-refs-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  display: flex;
   border-bottom: 1px solid #ddd;
   padding-bottom: 4px;
-  min-height: 52px;
 }
 
 .ref-col {
