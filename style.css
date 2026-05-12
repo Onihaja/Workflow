@@ -962,6 +962,8 @@ html, body {
   align-items:center;
   justify-content:center;
   gap:0;
+  position:absolute;
+  bottom:0;
 }
 
 /* TEXTE % */
@@ -990,7 +992,7 @@ html, body {
 
 .progress-fill{
   position:absolute;
-  bottom:0;
+  left:0;
   align-items:center;
   height:100%;
   border-radius:999px;
