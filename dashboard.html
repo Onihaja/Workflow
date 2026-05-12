@@ -167,8 +167,7 @@ async function charger() {
       const taux     = total>0 ? Math.round((cumul/total)*100) : 0
       const obj      = (objectifs||[]).find(o=>o.chaine===ch&&o.reference===ref)
       const objectif = obj?.objectif||0
-      const objPct   = objectif>0 ? Math.round((auj/objectif)*100) : 0
-      return { reference:ref, auj, cumul, total, taux, objectif, objPct }
+      return { reference:ref, auj, cumul, total, taux, objectif }
     })
   })
 
@@ -234,16 +233,16 @@ function creerCarteChaine(chaine, refs) {
       const atteint = r.objectif>0 && r.auj>=r.objectif
       const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
       col.innerHTML = `
-        <span class="val-obj-pct">${r.objPct}</span>
+        <span class="val-obj-pct">${r.objectif}</span>
         <span class="val-cumul">${r.cumul} </span>
         <span class="val-counter ${cls}">${r.auj}</span>
         <div class="progress-wrap">
+          <span class="val-taux">${r.taux}%</span>
           <div class="progress-bar">
             <div class="progress-fill ${r.taux > 100 ? 'over' : ''}"
              style="width:${Math.min(r.taux,100)}%">
             </div>
           </div>
-          <span class="val-taux">${r.taux}%</span>
         </div>
       `
     }
@@ -290,18 +289,17 @@ function creerPoste(r1, r2) {
       const atteint = r.objectif>0 && r.auj>=r.objectif
       const cls     = r.objectif===0 ? 'neutral' : (atteint ? 'ok' : 'nok')
       col.innerHTML = `
-        <span class="poste-val-obj">${r.objPct}</span>
+        <span class="poste-val-obj">${r.objectif}</span>
         <span class="poste-val-cumul">${r.cumul} </span>
         <span class="poste-counter ${cls}">${r.auj}</span>
         <div class="poste-top-row">
-          <span class="poste-val-obj">${r.objectif}</span>
+          <span class="poste-val-taux">${r.taux}%</span>
           <div class="progress-wrap">
             <div class="progress-bar">
               <div class="progress-fill ${r.taux > 100 ? 'over' : ''}"
               style="width:${Math.min(r.taux,100)}%">
               </div>
             </div>
-            <span class="poste-val-taux">${r.taux}%</span>
           </div>
         </div>
       `
