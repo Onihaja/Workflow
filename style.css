@@ -761,7 +761,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .val-counter.ok      { color: var(--green); }
@@ -822,7 +822,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .poste-counter.ok      { color: var(--green); }
