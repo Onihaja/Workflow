@@ -1191,3 +1191,99 @@ html, body {
   color:var(--blue);
   text-decoration:underline;
 }
+
+/* ═══════════════════════════════════════
+   HISTORIQUE REFERENCE
+═══════════════════════════════════════ */
+
+.ref-top{
+  padding:24px;
+}
+
+.ref-page-title{
+  font-size:38px;
+  font-weight:900;
+}
+
+.ref-page-sub{
+  margin-top:6px;
+  color:#777;
+}
+
+.timeline-wrap{
+  padding:0 24px 24px;
+  overflow:auto;
+}
+
+.timeline-item{
+  display:grid;
+  grid-template-columns:220px 30px 1fr;
+  gap:0;
+  min-height:90px;
+}
+
+.timeline-left{
+  padding-top:12px;
+  text-align:right;
+  padding-right:18px;
+}
+
+.timeline-time{
+  font-size:13px;
+  font-weight:700;
+  color:#666;
+}
+
+.timeline-dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:#111;
+  margin-top:18px;
+  position:relative;
+}
+
+.timeline-dot::after{
+  content:'';
+  position:absolute;
+  top:14px;
+  left:6px;
+  width:2px;
+  height:100%;
+  background:#ddd;
+}
+
+.timeline-content{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 18px;
+  margin-bottom:18px;
+}
+
+.timeline-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.timeline-operateur{
+  font-size:13px;
+  font-weight:700;
+  color:#666;
+}
+
+.timeline-desc{
+  margin-top:12px;
+  line-height:1.6;
+  color:#444;
+}
+
+.empty-state{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:40px;
+  text-align:center;
+  color:#777;
+}
