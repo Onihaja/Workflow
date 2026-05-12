@@ -808,7 +808,8 @@ html, body {
 }
 
 .poste-refs-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   border-bottom: 1px solid #ddd;
   padding-bottom: 4px;
 }
