@@ -1,10 +1,3 @@
-// ⚠️ REMPLACEZ PAR VOS VALEURS SUPABASE
-const SUPABASE_URL = 'https://VOTRE_URL.supabase.co'
-const SUPABASE_KEY = 'VOTRE_ANON_KEY'
-
-const { createClient } = supabase
-const db = createClient(SUPABASE_URL, SUPABASE_KEY)
-
 // ── Variables globales ──
 let operateurNom  = ''
 let pieceEnCours  = null
