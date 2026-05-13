@@ -64,6 +64,7 @@ const db = createClient(
 
 const params = new URLSearchParams(window.location.search)
 const REF = params.get('ref')
+  console.log('REFERENCE URL =', REF)
 
 document.getElementById('ref-title').textContent = REF || 'Référence'
 
