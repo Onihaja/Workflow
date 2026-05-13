@@ -11,6 +11,8 @@
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
 
@@ -249,36 +251,45 @@ async function chargerHistorique(){
     const tr = document.createElement('tr')
 
     tr.innerHTML = `
-      <td>
-        ${new Date(r.created_at).toLocaleString('fr-FR')}
-      </td>
+  <td>
+    ${new Date(r.created_at).toLocaleString('fr-FR')}
+  </td>
 
-      <td class="history-ref">
-        <a href="historique-reference.html?ref=${encodeURIComponent(p.reference || '')}" class="history-ref-link">${p.reference || '—'}</a>
-      </td>
+  <td class="history-ref">
+    <a href="historique-reference.html?ref=${encodeURIComponent(p.reference || '')}" class="history-ref-link">
+      ${p.reference || '—'}
+    </a>
+  </td>
 
-      <td>
-        ${p.designation || '—'}
-      </td>
+  <td>
+    ${p.designation || '—'}
+  </td>
 
-      <td>
-        ${p.client || '—'}
-      </td>
+  <td>
+    ${p.client || '—'}
+  </td>
 
-      <td>
-        ${p.chaine_production || '—'}
-      </td>
+  <td>
+    ${p.chaine_production || '—'}
+  </td>
 
-      <td>
-        <span class="history-badge ${badgeClass(r.action)}">
-          ${labelAction(r.action)}
-        </span>
-      </td>
+  <td>
+    <span class="history-badge ${badgeClass(r.action)}">
+      ${labelAction(r.action)}
+    </span>
+  </td>
 
-      <td>
-        ${r.operateur || '—'}
-      </td>
-    `
+  <td>
+    ${r.operateur || '—'}
+  </td>
+
+  <td>
+    <button class="history-print-btn"
+      onclick="imprimerDepuisHistorique('${p.reference || ''}')">
+      🖨 Imprimer
+    </button>
+  </td>
+`
 
     body.appendChild(tr)
   })
@@ -343,6 +354,42 @@ db.channel('historique-live')
 
 chargerHistorique()
 
+  async function imprimerDepuisHistorique(reference){
+
+  if(!reference) return
+
+  // récupérer toutes les pièces de la référence
+  const { data, error } = await db
+    .from('produits')
+    .select('*')
+    .eq('reference', reference)
+    .order('created_at', { ascending:true })
+
+  if(error){
+    console.error(error)
+    alert('Erreur chargement impression')
+    return
+  }
+
+  if(!data || !data.length){
+    alert('Aucune pièce trouvée')
+    return
+  }
+
+  // utiliser les variables globales de app.js
+  dernierePieces = data
+
+  dernieresMeta = {
+    client: data[0].client,
+    reference: data[0].reference,
+    designation: data[0].designation,
+    couleur: data[0].couleur,
+    chaine: data[0].chaine_production
+  }
+
+  // lancer impression avec ta fonction existante
+  imprimerQR()
+}
 </script>
 </body>
 </html>
