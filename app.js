@@ -263,3 +263,50 @@ function labelChaine(chaine) {
 window.creerPieces    = creerPieces
 window.imprimerQR     = imprimerQR
 window.nouvelleCommande = nouvelleCommande
+
+async function chargerSuggestions(){
+
+  // références récentes
+  const { data: refs } = await db
+    .from('produits')
+    .select('reference, created_at')
+    .not('reference', 'is', null)
+    .order('created_at', { ascending:false })
+    .limit(200)
+
+  // clients
+  const { data: clients } = await db
+    .from('produits')
+    .select('client')
+    .not('client', 'is', null)
+
+  // références uniques
+  const refsUniques = [
+    ...new Set(
+      (refs || [])
+        .map(r => r.reference)
+        .filter(Boolean)
+    )
+  ]
+
+  // clients uniques
+  const clientsUniques = [
+    ...new Set(
+      (clients || [])
+        .map(c => c.client)
+        .filter(Boolean)
+    )
+  ]
+
+  // injecter références
+  const refList = document.getElementById('references-list')
+  refList.innerHTML = refsUniques
+    .map(ref => `<option value="${ref}">`)
+    .join('')
+
+  // injecter clients
+  const clientList = document.getElementById('clients-list')
+  clientList.innerHTML = clientsUniques
+    .map(c => `<option value="${c}">`)
+    .join('')
+}
