@@ -54,16 +54,22 @@
     <input type="date" id="filter-date">
 
     <input
-      type="text"
-      id="filter-reference"
-      placeholder="Référence..."
-    >
+  type="text"
+  id="filter-reference"
+  placeholder="Référence..."
+  list="references-list"
+>
 
-    <input
-      type="text"
-      id="filter-client"
-      placeholder="Client..."
-    >
+<datalist id="references-list"></datalist>
+
+<input
+  type="text"
+  id="filter-client"
+  placeholder="Client..."
+  list="clients-list"
+>
+
+<datalist id="clients-list"></datalist>
 
     <input
       type="text"
