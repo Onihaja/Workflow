@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,12 +13,14 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="page">
 
   <!-- HEADER -->
   <header class="header">
+
     <div class="header-brand">
       AKANJO <span>Référence</span>
     </div>
@@ -27,19 +30,43 @@
         ← Historique
       </a>
     </div>
+
   </header>
 
-  <!-- TOP -->
-  <div class="ref-top">
+  <!-- HERO -->
+  <div class="ref-hero">
 
-    <div>
-      <div class="ref-page-title" id="ref-title">
-        Référence
+    <div class="ref-hero-top">
+
+      <div>
+
+        <div class="ref-page-title" id="ref-title">
+          Référence
+        </div>
+
+        <div class="ref-page-sub" id="ref-sub">
+          Chargement...
+        </div>
+
       </div>
 
-      <div class="ref-page-sub" id="ref-sub">
-        Chargement...
+      <button
+        class="ref-print-btn"
+        onclick="imprimerDepuisHistoriqueReference()"
+      >
+        🖨 Imprimer QR
+      </button>
+
+    </div>
+
+    <!-- INFOS -->
+    <div class="ref-meta-grid" id="ref-meta-grid">
+
+      <div class="meta-card">
+        <span>Chargement</span>
+        <strong>...</strong>
       </div>
+
     </div>
 
   </div>
@@ -53,22 +80,18 @@
 
 </div>
 
+<script src="app.js"></script>
+
 <script>
 
-const { createClient } = supabase
-
-const db = createClient(
-  window.SUPABASE_CONFIG.url,
-  window.SUPABASE_CONFIG.anonKey
-)
-
 const params = new URLSearchParams(window.location.search)
-const REF = params.get('ref')
 
-console.log('REF =', REF)
+const REF = params.get('ref')
 
 document.getElementById('ref-title').textContent =
   REF || 'Référence inconnue'
+
+let produitsReference = []
 
 function labelAction(action){
 
@@ -108,7 +131,7 @@ async function charger(){
   if(!REF){
 
     document.getElementById('ref-sub').textContent =
-      'Référence absente dans URL'
+      'Référence absente'
 
     timeline.innerHTML = `
       <div class="empty-state">
@@ -128,10 +151,9 @@ async function charger(){
     .select('*')
     .eq('reference', REF)
 
-  console.log('Produits =', produits)
-  console.log('Erreur produits =', errorProduits)
-
   if(errorProduits){
+
+    console.error(errorProduits)
 
     timeline.innerHTML = `
       <div class="empty-state">
@@ -142,7 +164,7 @@ async function charger(){
     return
   }
 
-  if(!produits || produits.length === 0){
+  if(!produits || !produits.length){
 
     document.getElementById('ref-sub').textContent =
       'Aucune pièce trouvée'
@@ -156,6 +178,65 @@ async function charger(){
     return
   }
 
+  produitsReference = produits
+
+  const premier = produits[0]
+
+  // tailles
+  const taillesMap = {}
+
+  produits.forEach(p => {
+
+    taillesMap[p.taille] =
+      (taillesMap[p.taille] || 0) + 1
+
+  })
+
+  const taillesHTML =
+    Object.entries(taillesMap)
+      .map(([taille, qty]) => `${taille} × ${qty}`)
+      .join(' • ')
+
+  // CARDS INFOS
+  document.getElementById('ref-meta-grid').innerHTML = `
+
+    <div class="meta-card">
+      <span>Client</span>
+      <strong>${premier.client || '—'}</strong>
+    </div>
+
+    <div class="meta-card">
+      <span>Référence</span>
+      <strong>${premier.reference || '—'}</strong>
+    </div>
+
+    <div class="meta-card">
+      <span>Désignation</span>
+      <strong>${premier.designation || '—'}</strong>
+    </div>
+
+    <div class="meta-card">
+      <span>Couleur</span>
+      <strong>${premier.couleur || '—'}</strong>
+    </div>
+
+    <div class="meta-card">
+      <span>Chaîne</span>
+      <strong>${premier.chaine_production || '—'}</strong>
+    </div>
+
+    <div class="meta-card">
+      <span>Total pièces</span>
+      <strong>${produits.length}</strong>
+    </div>
+
+    <div class="meta-card meta-large">
+      <span>Tailles</span>
+      <strong>${taillesHTML}</strong>
+    </div>
+
+  `
+
   const ids = produits.map(p => p.id)
 
   // MOUVEMENTS
@@ -168,10 +249,9 @@ async function charger(){
     .in('produit_id', ids)
     .order('created_at', { ascending:false })
 
-  console.log('Mouvements =', mouvements)
-  console.log('Erreur mouvements =', errorMouvements)
-
   if(errorMouvements){
+
+    console.error(errorMouvements)
 
     timeline.innerHTML = `
       <div class="empty-state">
@@ -198,10 +278,12 @@ async function charger(){
     div.className = 'timeline-item'
 
     div.innerHTML = `
+
       <div class="timeline-left">
 
         <div class="timeline-time">
-          ${new Date(m.created_at).toLocaleString('fr-FR')}
+          ${new Date(m.created_at)
+            .toLocaleString('fr-FR')}
         </div>
 
       </div>
@@ -237,10 +319,31 @@ async function charger(){
         </div>
 
       </div>
+
     `
 
     timeline.appendChild(div)
+
   })
+}
+
+async function imprimerDepuisHistoriqueReference(){
+
+  if(!produitsReference.length){
+    return
+  }
+
+  dernierePieces = produitsReference
+
+  dernieresMeta = {
+    client: produitsReference[0].client,
+    reference: produitsReference[0].reference,
+    designation: produitsReference[0].designation,
+    couleur: produitsReference[0].couleur,
+    chaine: produitsReference[0].chaine_production
+  }
+
+  imprimerQR()
 }
 
 charger()
@@ -249,3 +352,4 @@ charger()
 
 </body>
 </html>
+```
