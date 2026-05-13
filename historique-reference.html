@@ -51,10 +51,7 @@
       </div>
 
       <button
-        class="ref-print-btn"
-        onclick="imprimerQR()"
-      >
-        🖨 Imprimer QR
+        class="ref-print-btn" onclick="reimprimerReference()">🖨 Réimprimer QR
       </button>
 
     </div>
@@ -79,9 +76,6 @@
   </div>
 
 </div>
-
-<script src="app.js"></script>
-
 <script>
 
 const params = new URLSearchParams(window.location.search)
@@ -326,11 +320,43 @@ async function charger(){
 
   })
 }
+async function reimprimerReference(){
 
+  if(!produitsReference.length){
+
+    alert('Aucune pièce à imprimer')
+
+    return
+  }
+
+  // alimenter les variables globales de app.js
+  dernierePieces = produitsReference
+
+  const premier = produitsReference[0]
+
+  dernieresMeta = {
+    client: premier.client,
+    reference: premier.reference,
+    designation: premier.designation,
+    couleur: premier.couleur,
+    chaine: premier.chaine_production
+  }
+
+  // lancer impression
+  imprimerQR()
+}
+  
 charger()
 
 </script>
 <script src="app.js"></script>
+  <!-- ZONE IMPRESSION -->
+<div
+  class="print-zone"
+  id="print-zone"
+  style="display:none"
+></div>
+
 </body>
 </html>
 ```
