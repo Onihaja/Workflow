@@ -146,13 +146,6 @@
 <script src="app.js"></script>
 <script>
 
-const { createClient } = supabase
-
-const db = createClient(
-  window.SUPABASE_CONFIG.url,
-  window.SUPABASE_CONFIG.anonKey
-)
-
 const body = document.getElementById('history-body')
 
 function labelAction(action){
