@@ -118,7 +118,8 @@ function badgeClass(action){
 }
 
 async function charger(){
-
+  console.log('DB =', db)
+  console.log('REF =', REF)
   const timeline = document.getElementById('timeline')
 
   if(!REF){
@@ -345,17 +346,14 @@ async function reimprimerReference(){
   imprimerQR()
 }
   
-charger()
+window.addEventListener('DOMContentLoaded', () => {
+  charger()
+})
 
 </script>
-<script src="app.js"></script>
-  <!-- ZONE IMPRESSION -->
-<div
-  class="print-zone"
-  id="print-zone"
-  style="display:none"
-></div>
 
+<script src="app.js"></script>
+<div class="print-zone" id="print-zone" style="display:none"></div>
 </body>
 </html>
 ```
