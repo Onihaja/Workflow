@@ -266,6 +266,11 @@ window.nouvelleCommande = nouvelleCommande
 
 async function chargerSuggestions(){
 
+  const refList = document.getElementById('references-list')
+  const clientList = document.getElementById('clients-list')
+
+  if(!refList || !clientList) return
+
   // références récentes
   const { data: refs } = await db
     .from('produits')
@@ -274,11 +279,13 @@ async function chargerSuggestions(){
     .order('created_at', { ascending:false })
     .limit(200)
 
-  // clients
+  // clients récents
   const { data: clients } = await db
     .from('produits')
-    .select('client')
+    .select('client, created_at')
     .not('client', 'is', null)
+    .order('created_at', { ascending:false })
+    .limit(500)
 
   // références uniques
   const refsUniques = [
@@ -299,14 +306,20 @@ async function chargerSuggestions(){
   ]
 
   // injecter références
-  const refList = document.getElementById('references-list')
   refList.innerHTML = refsUniques
     .map(ref => `<option value="${ref}">`)
     .join('')
 
   // injecter clients
-  const clientList = document.getElementById('clients-list')
   clientList.innerHTML = clientsUniques
     .map(c => `<option value="${c}">`)
     .join('')
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+
+  if(document.getElementById('references-list')){
+    chargerSuggestions()
+  }
+
+})
