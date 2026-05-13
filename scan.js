@@ -1,10 +1,17 @@
-// ── Variables globales ──
-let operateurNom  = ''
-let pieceEnCours  = null
-let scannerActif  = null
+// ──────────────────────────────────────────
+// Variables globales
+// ──────────────────────────────────────────
+let operateurNom = ''
+let pieceEnCours = null
+let scannerActif = null
+let actionEnCours = false
+
+let DEPT_ID = null
+let DEPT_NOM = ''
+let ACTIONS = []
 
 // ──────────────────────────────────────────
-// ÉTAPE 1 — Valider l'opérateur
+// ÉTAPE 1 — Valider opérateur
 // ──────────────────────────────────────────
 function validerOperateur() {
   const val = document.getElementById('operateur').value.trim()
@@ -17,68 +24,86 @@ function validerOperateur() {
   }
 
   operateurNom = val
+
   afficher('card-operateur', false)
   afficher('card-scan', true)
 }
 
 // ──────────────────────────────────────────
-// ÉTAPE 2 — Démarrer le scan caméra
+// Scan QR
 // ──────────────────────────────────────────
 function demarrerScan() {
-  const reader  = document.getElementById('reader')
+  const reader = document.getElementById('reader')
   const btnScan = document.getElementById('btn-scan')
 
   reader.style.display = 'block'
   btnScan.style.display = 'none'
 
   scannerActif = new Html5Qrcode('reader')
+
   scannerActif.start(
     { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    (texte) => {
-      scannerActif.stop()
-      reader.style.display = 'none'
-      traiterQR(texte)
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 250 }
     },
-    () => {} // erreur silencieuse pendant scan
+    (texte) => {
+
+      scannerActif.stop()
+        .then(() => {
+          reader.style.display = 'none'
+          traiterQR(texte)
+        })
+        .catch(() => {
+          reader.style.display = 'none'
+          traiterQR(texte)
+        })
+
+    },
+    () => {}
   ).catch(() => {
-    const msg = document.getElementById('msg-scan')
-    msg.className = 'msg error'
-    msg.textContent = 'Impossible d\'accéder à la caméra. Vérifiez les permissions.'
+
+    afficherMsgScan(
+      'error',
+      'Impossible d’accéder à la caméra.'
+    )
+
     reader.style.display = 'none'
     btnScan.style.display = 'block'
   })
 }
 
 // ──────────────────────────────────────────
-// Traiter le résultat du QR code
+// Traitement QR
 // ──────────────────────────────────────────
 function traiterQR(texte) {
+
   try {
+
     const data = JSON.parse(texte)
+
     if (data.id) {
       document.getElementById('input-id').value = data.id
       rechercherPiece()
-    } else {
-      afficherMsgScan('error', 'QR code invalide — aucun ID trouvé.')
+      return
     }
-  } catch {
-    // QR code contient directement l'ID
-    document.getElementById('input-id').value = texte.trim()
-    rechercherPiece()
-  }
+
+  } catch {}
+
+  document.getElementById('input-id').value = texte.trim()
+  rechercherPiece()
 }
 
 // ──────────────────────────────────────────
-// Recherche manuelle par ID
+// Recherche produit
 // ──────────────────────────────────────────
 async function rechercherPiece() {
-  const id  = document.getElementById('input-id').value.trim()
+
+  const id = document.getElementById('input-id').value.trim()
   const msg = document.getElementById('msg-scan')
 
   if (!id) {
-    msg.className = 'msg error'
-    msg.textContent = 'Veuillez saisir ou scanner un ID.'
+    afficherMsgScan('error', 'Veuillez saisir un ID.')
     return
   }
 
@@ -86,7 +111,6 @@ async function rechercherPiece() {
   msg.style.display = 'block'
   msg.textContent = 'Recherche en cours...'
 
-  // Recherche dans Supabase
   const { data: piece, error } = await db
     .from('produits')
     .select('*')
@@ -94,12 +118,10 @@ async function rechercherPiece() {
     .single()
 
   if (error || !piece) {
-    msg.className = 'msg error'
-    msg.textContent = '❌ Produit introuvable.'
+    afficherMsgScan('error', '❌ Produit introuvable.')
     return
   }
 
-  // Récupérer le dernier mouvement
   const { data: mouvements } = await db
     .from('mouvements')
     .select('*')
@@ -110,67 +132,81 @@ async function rechercherPiece() {
   piece.dernierMouvement = mouvements?.[0] || null
   pieceEnCours = piece
 
-  msg.className = 'msg'
   msg.style.display = 'none'
 
   afficherPiece(piece)
 }
 
 // ──────────────────────────────────────────
-// Afficher les infos de la pièce + actions
+// Affichage pièce
 // ──────────────────────────────────────────
 function afficherPiece(piece) {
-  const dernierAction = piece.dernierMouvement?.action || 'creation'
 
-  // Infos pièce
+  const dernierAction =
+    piece.dernierMouvement?.action || 'creation'
+
   document.getElementById('piece-info').innerHTML = `
     <div class="piece-info-row">
       <span class="piece-info-key">Client</span>
-      <span class="piece-info-val">${piece.client}</span>
+      <span class="piece-info-val">${piece.client || '—'}</span>
     </div>
+
     <div class="piece-info-row">
       <span class="piece-info-key">Référence</span>
-      <span class="piece-info-val">${piece.reference}</span>
+      <span class="piece-info-val">${piece.reference || '—'}</span>
     </div>
+
     <div class="piece-info-row">
       <span class="piece-info-key">Désignation</span>
-      <span class="piece-info-val">${piece.designation}</span>
+      <span class="piece-info-val">${piece.designation || '—'}</span>
     </div>
+
     <div class="piece-info-row">
       <span class="piece-info-key">Couleur</span>
       <span class="piece-info-val">${piece.couleur || '—'}</span>
     </div>
+
     <div class="piece-info-row">
       <span class="piece-info-key">Taille</span>
       <span class="piece-info-val">${piece.taille || '—'}</span>
     </div>
+
     <div class="piece-info-row">
       <span class="piece-info-key">Statut actuel</span>
       <span class="piece-info-val">
-        <span class="piece-statut ${classeStatut(dernierAction)}">${labelStatut(dernierAction)}</span>
+        <span class="piece-statut ${classeStatut(dernierAction)}">
+          ${labelStatut(dernierAction)}
+        </span>
       </span>
     </div>
   `
 
-  // Boutons d'actions disponibles
   const grid = document.getElementById('actions-grid')
   grid.innerHTML = ''
 
   ACTIONS.forEach(action => {
-    const disponible = action.requis.includes(dernierAction)
+
+    const disponible =
+      action.requis.includes(dernierAction)
+
     const btn = document.createElement('button')
+
     btn.className = `action-btn action-${action.style}`
-    btn.disabled  = !disponible
+    btn.disabled = !disponible
+
     btn.innerHTML = `
       <div>
         <div class="action-btn-label">${action.label}</div>
         <div class="action-btn-desc">${action.desc}</div>
       </div>
+
       <span class="action-btn-arrow">→</span>
     `
+
     if (disponible) {
       btn.onclick = () => effectuerAction(action)
     }
+
     grid.appendChild(btn)
   })
 
@@ -179,105 +215,139 @@ function afficherPiece(piece) {
 }
 
 // ──────────────────────────────────────────
-// Enregistrer l'action
+// Enregistrer action
 // ──────────────────────────────────────────
 async function effectuerAction(action) {
+
+  if (actionEnCours) return
+
+  actionEnCours = true
+
   const msg = document.getElementById('msg-action')
+
   msg.className = 'msg'
   msg.style.display = 'block'
   msg.textContent = 'Enregistrement...'
 
-  // Vérification double scan
-  const dernierAction = pieceEnCours.dernierMouvement?.action || 'creation'
+  const dernierAction =
+    pieceEnCours.dernierMouvement?.action || 'creation'
+
   if (dernierAction === action.id) {
+
     msg.className = 'msg error'
-    msg.textContent = '⚠️ Double scan détecté — action déjà enregistrée.'
+    msg.textContent = '⚠️ Double scan détecté.'
+
+    actionEnCours = false
     return
   }
 
-  // Enregistrer le mouvement
-  const { error } = await db.from('mouvements').insert([{
-    produit_id:     pieceEnCours.id,
-    departement_id: DEPT_ID,
-    action:         action.id,
-    operateur:      operateurNom
-  }])
+  const { error } = await db
+    .from('mouvements')
+    .insert([{
+      produit_id: pieceEnCours.id,
+      departement_id: DEPT_ID,
+      action: action.id,
+      operateur: operateurNom
+    }])
 
   if (error) {
+
     msg.className = 'msg error'
-    msg.textContent = 'Erreur lors de l\'enregistrement : ' + error.message
+    msg.textContent = error.message
+
+    actionEnCours = false
     return
   }
 
-  // Mettre à jour l'état du produit
-  await db.from('produits')
-    .update({ etat_actuel: action.id })
+  await db
+    .from('produits')
+    .update({
+      etat_actuel: action.id
+    })
     .eq('id', pieceEnCours.id)
 
-  // Afficher confirmation
   afficher('card-piece', false)
-  document.getElementById('confirm-title').textContent = action.label + ' enregistré'
+
+  document.getElementById('confirm-title').textContent =
+    action.label + ' enregistré'
+
   document.getElementById('confirm-sub').innerHTML = `
     <strong>${pieceEnCours.reference}</strong><br>
-    ${pieceEnCours.designation} — ${pieceEnCours.couleur || ''} ${pieceEnCours.taille || ''}<br><br>
-    Par ${operateurNom} · ${DEPT_NOM}
+    ${pieceEnCours.designation || ''}<br><br>
+    ${operateurNom} · ${DEPT_NOM}
   `
+
   afficher('card-confirm', true)
+
+  actionEnCours = false
 }
 
 // ──────────────────────────────────────────
 // Nouveau scan
 // ──────────────────────────────────────────
 function nouveauScan() {
+
   pieceEnCours = null
+
   document.getElementById('input-id').value = ''
-  document.getElementById('msg-scan').className = 'msg'
+
   document.getElementById('msg-scan').style.display = 'none'
+
   document.getElementById('btn-scan').style.display = 'block'
+
   document.getElementById('reader').style.display = 'none'
+
   afficher('card-confirm', false)
-  afficher('card-piece',   false)
-  afficher('card-scan',    true)
+  afficher('card-piece', false)
+  afficher('card-scan', true)
 }
 
 // ──────────────────────────────────────────
 // Helpers
 // ──────────────────────────────────────────
 function afficher(id, visible) {
-  document.getElementById(id).style.display = visible ? 'block' : 'none'
+  document.getElementById(id).style.display =
+    visible ? 'block' : 'none'
 }
 
 function afficherMsgScan(type, texte) {
+
   const msg = document.getElementById('msg-scan')
+
   msg.className = 'msg ' + type
+  msg.style.display = 'block'
   msg.textContent = texte
 }
 
 function classeStatut(action) {
+
   const map = {
-    creation:        'statut-cree',
-    sortie_chaine:   'statut-en-cours',
-    fin_retouche:    'statut-en-cours',
-    entree_qualite:  'statut-en-cours',
-    a_retoucher:     'statut-retouche',
-    retour_retouche: 'statut-retouche',
+    creation: 'statut-cree',
+    sortie_chaine: 'statut-en-cours',
+    fin_retouche: 'statut-retouche',
+    entree_qualite: 'statut-en-cours',
+    sortie_qualite: 'statut-conforme',
     entree_finition: 'statut-en-cours',
-    sortie_finition: 'statut-packing',
+    sortie_packing: 'statut-packing',
+    a_retoucher: 'statut-retouche'
   }
+
   return map[action] || 'statut-cree'
 }
 
 function labelStatut(action) {
+
   const map = {
-    creation:        'Créé',
-    sortie_chaine:   'Sorti chaîne',
-    fin_retouche:    'Retouche terminée',
-    entree_qualite:  'En contrôle qualité',
-    a_retoucher:     'À retoucher',
-    retour_retouche: 'Retour retouche',
-    entree_finition: 'En finition',
-    sortie_finition: 'Envoyé au Packing',
+    creation: 'Créé',
+    sortie_chaine: 'Sortie chaîne',
+    fin_retouche: 'Fin retouche',
+    entree_qualite: 'Entrée qualité',
+    sortie_qualite: 'Sortie qualité',
+    entree_finition: 'Entrée finition',
+    sortie_packing: 'Packing',
+    a_retoucher: 'À retoucher'
   }
+
   return map[action] || action
 }
 
@@ -285,6 +355,8 @@ function labelStatut(action) {
 // Initialisation
 // ──────────────────────────────────────────
 function initScan(deptId, deptNom, actions) {
-  // Ces variables sont utilisées dans les fonctions ci-dessus
-  // Elles sont définies dans chaque page HTML
+
+  DEPT_ID = deptId
+  DEPT_NOM = deptNom
+  ACTIONS = actions
 }
