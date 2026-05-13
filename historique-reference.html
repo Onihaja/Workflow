@@ -64,9 +64,11 @@ const db = createClient(
 
 const params = new URLSearchParams(window.location.search)
 const REF = params.get('ref')
-  console.log('REFERENCE URL =', REF)
 
-document.getElementById('ref-title').textContent = REF || 'Référence'
+console.log('REF =', REF)
+
+document.getElementById('ref-title').textContent =
+  REF || 'Référence inconnue'
 
 function labelAction(action){
 
@@ -101,41 +103,95 @@ function badgeClass(action){
 
 async function charger(){
 
-  // récupérer tous les produits de cette ref
- const { data: produits, error } = await db
-  .from('produits')
-  .select('*')
-  .ilike('reference', REF.trim())
+  const timeline = document.getElementById('timeline')
 
-console.log('REF URL =', REF)
-console.log('PRODUITS =', produits)
-console.log('ERROR =', error)
+  if(!REF){
+
+    document.getElementById('ref-sub').textContent =
+      'Référence absente dans URL'
+
+    timeline.innerHTML = `
+      <div class="empty-state">
+        Aucune référence reçue
+      </div>
+    `
+
+    return
+  }
+
+  // PRODUITS
+  const {
+    data: produits,
+    error: errorProduits
+  } = await db
+    .from('produits')
+    .select('*')
+    .eq('reference', REF)
+
+  console.log('Produits =', produits)
+  console.log('Erreur produits =', errorProduits)
+
+  if(errorProduits){
+
+    timeline.innerHTML = `
+      <div class="empty-state">
+        Erreur chargement produits
+      </div>
+    `
+
+    return
+  }
 
   if(!produits || produits.length === 0){
-    document.getElementById('timeline').innerHTML =
-      '<div class="empty-state">Aucune donnée</div>'
+
+    document.getElementById('ref-sub').textContent =
+      'Aucune pièce trouvée'
+
+    timeline.innerHTML = `
+      <div class="empty-state">
+        Aucune donnée pour cette référence
+      </div>
+    `
+
     return
   }
 
   const ids = produits.map(p => p.id)
 
-  // récupérer tous les mouvements
-  const { data: mouvements } = await db
+  // MOUVEMENTS
+  const {
+    data: mouvements,
+    error: errorMouvements
+  } = await db
     .from('mouvements')
     .select('*')
     .in('produit_id', ids)
     .order('created_at', { ascending:false })
 
+  console.log('Mouvements =', mouvements)
+  console.log('Erreur mouvements =', errorMouvements)
+
+  if(errorMouvements){
+
+    timeline.innerHTML = `
+      <div class="empty-state">
+        Erreur chargement mouvements
+      </div>
+    `
+
+    return
+  }
+
   document.getElementById('ref-sub').textContent =
     `${produits.length} pièce(s) • ${mouvements.length} mouvement(s)`
-
-  const timeline = document.getElementById('timeline')
 
   timeline.innerHTML = ''
 
   mouvements.forEach(m => {
 
-    const produit = produits.find(p => p.id === m.produit_id)
+    const produit = produits.find(
+      p => p.id === m.produit_id
+    )
 
     const div = document.createElement('div')
 
@@ -168,15 +224,15 @@ console.log('ERROR =', error)
 
         <div class="timeline-desc">
 
-          ${produit.designation || '—'}
+          ${produit?.designation || '—'}
 
-          • Taille ${produit.taille || '—'}
+          • Taille ${produit?.taille || '—'}
 
-          • ${produit.couleur || '—'}
+          • ${produit?.couleur || '—'}
 
-          • ${produit.client || '—'}
+          • ${produit?.client || '—'}
 
-          • ${produit.chaine_production || '—'}
+          • ${produit?.chaine_production || '—'}
 
         </div>
 
