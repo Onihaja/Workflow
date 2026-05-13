@@ -3,6 +3,7 @@ const SUPABASE_KEY = window.SUPABASE_CONFIG?.anonKey || 'VOTRE_ANON_KEY'
 
 const { createClient } = supabase
 const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+window.db = db
 
 const TAILLES = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
 
