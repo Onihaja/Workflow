@@ -327,25 +327,6 @@ async function charger(){
   })
 }
 
-async function imprimerDepuisHistoriqueReference(){
-
-  if(!produitsReference.length){
-    return
-  }
-
-  dernierePieces = produitsReference
-
-  dernieresMeta = {
-    client: produitsReference[0].client,
-    reference: produitsReference[0].reference,
-    designation: produitsReference[0].designation,
-    couleur: produitsReference[0].couleur,
-    chaine: produitsReference[0].chaine_production
-  }
-
-  imprimerQR()
-}
-
 charger()
 
 </script>
