@@ -101,10 +101,14 @@ function badgeClass(action){
 async function charger(){
 
   // récupérer tous les produits de cette ref
-  const { data: produits } = await db
-    .from('produits')
-    .select('*')
-    .eq('reference', REF)
+ const { data: produits, error } = await db
+  .from('produits')
+  .select('*')
+  .ilike('reference', REF.trim())
+
+console.log('REF URL =', REF)
+console.log('PRODUITS =', produits)
+console.log('ERROR =', error)
 
   if(!produits || produits.length === 0){
     document.getElementById('timeline').innerHTML =
