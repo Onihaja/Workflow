@@ -49,31 +49,23 @@
 
   <!-- FILTRES -->
   <div class="history-filters">
-
-    <input type="date" id="filter-date">
-    
-    <div>
-      <input type="text" id="filter-reference" placeholder="Référence..." list="references-list">
-      <button class="main-btn" onclick="ouvrirHistorique()"> Voir historique</button>
-    </div>
-
-<datalist id="references-list"></datalist>
-
-<input
-  type="text"
-  id="filter-client"
-  placeholder="Client..."
-  list="clients-list"
->
-
-<datalist id="clients-list"></datalist>
-
+    <div class="card">
+      <input type="date" id="filter-date">
+      <div>
+        <input type="text" id="filter-reference" placeholder="Référence..." list="references-list">
+        <button class="main-btn" onclick="ouvrirHistorique()"> Voir historique</button>
+      </div>
+    <datalist id="references-list"></datalist>
+    <input
+      type="text"
+      id="filter-client"
+      placeholder="Client..."
+      list="clients-list">
+    <datalist id="clients-list"></datalist>
     <input
       type="text"
       id="filter-operateur"
-      placeholder="Opérateur..."
-    >
-
+      placeholder="Opérateur...">
     <select id="filter-chaine">
       <option value="">Toutes chaînes</option>
       <option>CH1</option>
@@ -107,11 +99,11 @@
       <option value="entree_finition">Entrée finition</option>
       <option value="sortie_packing">Packing</option>
     </select>
-
+    </div>
     <button class="history-btn" id="btn-export">
       Export Excel
     </button>
-
+    
   </div>
 
   <!-- TABLE -->
