@@ -287,15 +287,19 @@ async function chargerHistorique(){
 }
   
 function ouvrirHistorique() {
+
   const ref = document
-    .getElementById('search-ref')
+    .getElementById('filter-reference')
     .value
     .trim()
 
-  if (!ref) return
+  if (!ref) {
+    alert('Entrez une référence')
+    return
+  }
 
   window.location.href =
-    `historique.html?ref=${encodeURIComponent(ref)}`
+    `historique-reference.html?ref=${encodeURIComponent(ref)}`
 }
   
 function exporterExcel(){
