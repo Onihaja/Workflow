@@ -10,6 +10,7 @@
   <script src="supabase-config.js"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   
 </head>
@@ -48,63 +49,93 @@
   </div>
 
   <!-- FILTRES -->
-  <div class="history-filters">
-    <div class="card">
-      <input type="date" id="filter-date">
-      <div>
-        <input type="text" id="filter-reference" placeholder="Référence..." list="references-list">
-        <button class="main-btn" onclick="ouvrirHistorique()"> Voir historique</button>
-      </div>
-    <datalist id="references-list"></datalist>
-    <input
-      type="text"
-      id="filter-client"
-      placeholder="Client..."
-      list="clients-list">
-    <datalist id="clients-list"></datalist>
-    <input
-      type="text"
-      id="filter-operateur"
-      placeholder="Opérateur...">
-    <select id="filter-chaine">
-      <option value="">Toutes chaînes</option>
-      <option>CH1</option>
-      <option>CH2</option>
-      <option>CH3</option>
-      <option>CH4</option>
-      <option>CH5</option>
-      <option>CH6</option>
-      <option>CH7</option>
-      <option>CH8</option>
-      <option>CH9</option>
-      <option>CH10</option>
-      <option>CH11</option>
-      <option>CH12</option>
-      <option>CH14</option>
-      <option>CH15</option>
-      <option>CH16</option>
-      <option>CH17</option>
-      <option>BRODERIE_MACHINE</option>
-      <option>HVA</option>
-      <option>BRODERIE_MAIN</option>
-    </select>
+<div class="history-filters-wrap">
 
-    <select id="filter-action">
-      <option value="">Toutes actions</option>
-      <option value="sortie_chaine">Sortie chaîne</option>
-      <option value="entree_qualite">Entrée qualité</option>
-      <option value="sortie_qualite">Sortie qualité</option>
-      <option value="a_retoucher">À retoucher</option>
-      <option value="retour_retouche">Retour retouche</option>
-      <option value="entree_finition">Entrée finition</option>
-      <option value="sortie_packing">Packing</option>
-    </select>
+  <div class="history-filters-card">
+
+    <div class="filters-grid">
+
+      <input type="date" id="filter-date">
+
+      <div class="ref-search-wrap">
+
+        <input
+          type="text"
+          id="filter-reference"
+          placeholder="Référence..."
+          list="references-list"
+        >
+
+        <button
+          class="ref-open-btn"
+          onclick="ouvrirHistorique()"
+        >
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+      </div>
+
+      <datalist id="references-list"></datalist>
+
+      <input
+        type="text"
+        id="filter-client"
+        placeholder="Client..."
+        list="clients-list"
+      >
+
+      <datalist id="clients-list"></datalist>
+
+      <input
+        type="text"
+        id="filter-operateur"
+        placeholder="Opérateur..."
+      >
+
+      <select id="filter-chaine">
+        <option value="">Toutes chaînes</option>
+        <option>CH1</option>
+        <option>CH2</option>
+        <option>CH3</option>
+        <option>CH4</option>
+        <option>CH5</option>
+        <option>CH6</option>
+        <option>CH7</option>
+        <option>CH8</option>
+        <option>CH9</option>
+        <option>CH10</option>
+        <option>CH11</option>
+        <option>CH12</option>
+        <option>CH14</option>
+        <option>CH15</option>
+        <option>CH16</option>
+        <option>CH17</option>
+        <option>BRODERIE_MACHINE</option>
+        <option>HVA</option>
+        <option>BRODERIE_MAIN</option>
+      </select>
+
+      <select id="filter-action">
+        <option value="">Toutes actions</option>
+        <option value="sortie_chaine">Sortie chaîne</option>
+        <option value="entree_qualite">Entrée qualité</option>
+        <option value="sortie_qualite">Sortie qualité</option>
+        <option value="a_retoucher">À retoucher</option>
+        <option value="retour_retouche">Retour retouche</option>
+        <option value="entree_finition">Entrée finition</option>
+        <option value="sortie_packing">Packing</option>
+      </select>
+
     </div>
+
     <button class="history-btn" id="btn-export">
+      <i class="fa-solid fa-file-excel"></i>
       Export Excel
     </button>
-    
+
   </div>
+
+</div>
 
   <!-- TABLE -->
   <div class="history-table-wrap">
