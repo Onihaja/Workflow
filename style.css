@@ -1288,6 +1288,23 @@ html, body {
   color:#777;
 }
 
+.history-print-btn{
+  border:none;
+  background:#111;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.history-print-btn:hover{
+  transform:translateY(-2px);
+  opacity:.9;
+}
+
 /* ── COUPE.HTML ── */
     .resume-grid {
       display: grid;
@@ -1612,3 +1629,4 @@ html, body {
     .msg-save {
       margin-top: 0;
     }
+
