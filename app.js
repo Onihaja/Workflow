@@ -324,14 +324,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 })
 
-function ouvrirHistorique() {
-  const ref = document
-    .getElementById('search-ref')
-    .value
-    .trim()
-
-  if (!ref) return
-
-  window.location.href =
-    `historique.html?ref=${encodeURIComponent(ref)}`
-}
