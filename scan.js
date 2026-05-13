@@ -328,7 +328,7 @@ function classeStatut(action) {
     entree_qualite: 'statut-en-cours',
     sortie_qualite: 'statut-conforme',
     entree_finition: 'statut-en-cours',
-    sortie_packing: 'statut-packing',
+    sortie_finition: 'statut-packing',
     a_retoucher: 'statut-retouche'
   }
 
@@ -344,7 +344,7 @@ function labelStatut(action) {
     entree_qualite: 'Entrée qualité',
     sortie_qualite: 'Sortie qualité',
     entree_finition: 'Entrée finition',
-    sortie_packing: 'Packing',
+    sortie_finition: 'Packing',
     a_retoucher: 'À retoucher'
   }
 
