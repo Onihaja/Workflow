@@ -293,7 +293,19 @@ async function chargerHistorique(){
     body.appendChild(tr)
   })
 }
+  
+function ouvrirHistorique() {
+  const ref = document
+    .getElementById('search-ref')
+    .value
+    .trim()
 
+  if (!ref) return
+
+  window.location.href =
+    `historique.html?ref=${encodeURIComponent(ref)}`
+}
+  
 function exporterExcel(){
 
   const rows = [...document.querySelectorAll('#history-body tr')]
