@@ -239,7 +239,7 @@ function nouvelleCommande() {
   document.getElementById('card-confirm').style.display = 'none'
   document.getElementById('card-form').style.display = 'block'
   document.getElementById('msg').className = 'msg'
-  document.getElementById('print-grid').innerHTML = ''
+  document.getElementById('print-zone').innerHTML = ''
 
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
