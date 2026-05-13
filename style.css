@@ -1851,6 +1851,7 @@ html, body {
   border:1px solid #ddd2c6;
   box-shadow:
     0 10px 25px rgba(0,0,0,.04);
+  overflow:hidden;
 }
 
 .history-table thead{
