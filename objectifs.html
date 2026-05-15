@@ -185,6 +185,11 @@ function rendreFormulaire() {
           <td><strong>${d.cumul}</strong></td>
           <td class="cumul-info">${d.total} pcs</td>
           <td><span class="taux-badge ${classTaux}">${d.taux}%</span></td>
+          <td>
+            <button class="btn-cloture ${d.active === false ? 'btn-cloture-done' : ''}"onclick="cloturerReference('${d.chaine}', '${d.reference}')"${d.active === false ? 'disabled' : ''}>
+            ${d.active === false ? '✓ Clôturée' : 'Clôturer'}
+            </button>
+          </td>
         `
         tbody.appendChild(tr)
       })
@@ -195,7 +200,23 @@ function rendreFormulaire() {
     content.appendChild(section)
   })
 }
+async function cloturerReference(chaine, reference) {
+  if (!confirm(`Clôturer la référence ${reference} sur ${chaine} ?`)) return
 
+  const { error } = await db
+    .from('produits')
+    .update({ active: false })
+    .eq('reference', reference)
+    .eq('chaine_production', chaine)
+
+  if (error) {
+    alert('Erreur : ' + error.message)
+    return
+  }
+
+  alert(`✅ Référence ${reference} clôturée sur ${chaine}`)
+  chargerDonnees() // recharger le tableau
+}
 async function sauvegarderObjectifs() {
   const today = dateAujourdhui()
   const inputs = document.querySelectorAll('.obj-input')
