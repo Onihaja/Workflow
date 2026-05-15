@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════
-   COUPE.CSS — styles spécifiques à coupe.html
-   Dépend de style.css pour : header, container,
-   card, card-title, field, label, input,
-   main-btn, main-btn-link, home-link, msg
-═══════════════════════════════════════ */
-
 /* ── SELECT DÉSIGNATION & CHAÎNE ── */
 select {
   width: 100%;
