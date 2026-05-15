@@ -1,1 +1,149 @@
+/* ═══════════════════════════════════════
+   OBJECTIFS.CSS — styles spécifiques à objectifs.html
+   Dépend de style.css pour : header, .logo-main,
+   .logo-sub, .dept-label, .home-link, .container,
+   .card, .card-title, .main-btn, .main-btn-link,
+   .msg (.success, .error)
+═══════════════════════════════════════ */
 
+/* ── EN-TÊTE OBJECTIFS ── */
+.obj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.obj-date {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #aaa;
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+/* ── SECTION PAR CHAÎNE ── */
+.chaine-section {
+  margin-bottom: 20px;
+  border: 1px solid #e8e2d9;
+  border-radius: 4px;
+}
+
+.chaine-header {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 10px 16px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chaine-header-refs {
+  font-size: 10px;
+  color: #888;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.empty-chaine {
+  padding: 14px;
+  font-size: 12px;
+  color: #ccc;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+}
+
+/* ── TABLEAU OBJECTIFS ── */
+.obj-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.obj-table th {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #aaa;
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  padding: 10px 14px;
+  text-align: left;
+  background: #faf8f5;
+  border-bottom: 1px solid #e8e2d9;
+}
+
+.obj-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0ece6;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+.obj-table tr:last-child td { border-bottom: none; }
+.obj-table tr:hover td { background: #faf8f5; }
+
+/* ── INPUT OBJECTIF ── */
+.obj-input {
+  width: 100px;
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #fff;
+}
+
+.obj-input:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+/* ── BADGES ── */
+.ref-tag {
+  display: inline-block;
+  background: #f0ece6;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+}
+
+.cumul-info {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.taux-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+}
+
+.taux-ok  { background: #f0f5e8; color: #3a5a1a; }
+.taux-nok { background: #fdf0f0; color: #7a2a2a; }
+.taux-neu { background: #f0ece6; color: #888; }
+
+/* ── BARRE DE SAUVEGARDE ── */
+.save-bar {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #e8e2d9;
+  padding: 16px 0;
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+}
+
+.msg-save { margin-top: 0; }
