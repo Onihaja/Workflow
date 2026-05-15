@@ -248,16 +248,20 @@ async function effectuerAction(action) {
       departement_id: DEPT_ID,
       action: action.id,
       operateur: operateurNom
+      jour: new Date().toISOString().slice(0, 10)
     }])
 
   if (error) {
-
-    msg.className = 'msg error'
-    msg.textContent = error.message
-
-    actionEnCours = false
-    return
+  msg.className = 'msg error'
+  if (error.code === '23505') {
+    msg.textContent = '⚠️ Ce scan vient d\'être enregistré par un autre opérateur.'
+  } else {
+    msg.textContent = 'Erreur : ' + error.message
   }
+
+  actionEnCours = false
+  return
+}
 
   await db
     .from('produits')
@@ -279,7 +283,9 @@ async function effectuerAction(action) {
 
   afficher('card-confirm', true)
 
-  actionEnCours = false
+  } finally {
+    actionEnCours = false
+  }
 }
 
 // ──────────────────────────────────────────
