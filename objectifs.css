@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════
-   OBJECTIFS.CSS — styles spécifiques à objectifs.html
-   Dépend de style.css pour : header, .logo-main,
-   .logo-sub, .dept-label, .home-link, .container,
-   .card, .card-title, .main-btn, .main-btn-link,
-   .msg (.success, .error)
-═══════════════════════════════════════ */
-
 /* ── EN-TÊTE OBJECTIFS ── */
 .obj-header {
   display: flex;
