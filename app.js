@@ -18,6 +18,38 @@ function recupererTaillesQuantites() {
     .filter(item => item.quantite > 0)
 }
 
+// Vérifier les références actives sur la chaîne
+async function verifierLimiteRefs(chaine, reference) {
+  const limites = {
+    'BRODERIE_MACHINE': 4,
+    'HVA': 4,
+    'BRODERIE_MAIN': 8,
+  }
+  const limite = limites[chaine] || 2
+
+  // Compter les références actives sur cette chaîne
+  const { data } = await db
+    .from('produits')
+    .select('reference')
+    .eq('chaine_production', chaine)
+    .eq('active', true)
+
+  const refsActives = [...new Set((data || []).map(p => p.reference))]
+
+  // Si la référence existe déjà → OK
+  if (refsActives.includes(reference)) return true
+
+  // Sinon vérifier la limite
+  if (refsActives.length >= limite) {
+    const msg = document.getElementById('msg')
+    msg.className = 'msg error'
+    msg.textContent = `⚠️ Limite atteinte sur ${chaine} : ${refsActives.length}/${limite} références actives. Clôturez une référence avant d'en ajouter une nouvelle.`
+    return false
+  }
+
+  return true
+}
+
 // ── CRÉATION PIÈCES ──
 async function creerPieces() {
   const client      = document.getElementById('client').value.trim()
@@ -36,7 +68,8 @@ async function creerPieces() {
     afficherMsg('error', 'Ajoutez au moins une taille avec une quantité > 0.')
     return
   }
-
+  const ok = await verifierLimiteRefs(chaine, reference)
+    if (!ok) return
   const totalPieces = taillesQty.reduce((sum, item) => sum + item.quantite, 0)
   const btn = document.getElementById('btn-generer-qr')
   btn.disabled = true
@@ -264,6 +297,7 @@ function labelChaine(chaine) {
 window.creerPieces    = creerPieces
 window.imprimerQR     = imprimerQR
 window.nouvelleCommande = nouvelleCommande
+
 
 async function chargerSuggestions(){
 
