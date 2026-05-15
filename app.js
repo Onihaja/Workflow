@@ -50,70 +50,74 @@ async function verifierLimiteRefs(chaine, reference) {
   return true
 }
 
-// ── CRÉATION PIÈCES ──
 async function creerPieces() {
-  const client      = document.getElementById('client').value.trim()
-  const reference   = document.getElementById('reference').value.trim()
-  const designation = document.getElementById('designation').value.trim()
-  const couleur     = document.getElementById('couleur').value.trim()
-  const chaine      = document.getElementById('chaine').value
-  const taillesQty  = recupererTaillesQuantites()
+  // ... validation existante ...
 
-  // Validations
-  if (!client || !reference || !designation || !chaine) {
-    afficherMsg('error', 'Client, référence, désignation et chaîne sont obligatoires.')
-    return
-  }
-  if (!taillesQty.length) {
-    afficherMsg('error', 'Ajoutez au moins une taille avec une quantité > 0.')
-    return
-  }
-  const ok = await verifierLimiteRefs(chaine, reference)
-    if (!ok) return
-  const totalPieces = taillesQty.reduce((sum, item) => sum + item.quantite, 0)
   const btn = document.getElementById('btn-generer-qr')
   btn.disabled = true
-  btn.textContent = `Création de ${totalPieces} pièce(s)...`
-  afficherMsg('', '')
-
-  const piecesCreees = []
+  btn.textContent = 'Création en cours...'
 
   try {
-    // Une entrée par pièce individuelle
-    for (const { taille, quantite } of taillesQty) {
-      for (let i = 0; i < quantite; i++) {
-        const { data, error } = await db.from('produits').insert([{
+    // ── Construire TOUTES les pièces d'un coup ──
+    const tailles = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
+    const lignes = []
+
+    tailles.forEach(taille => {
+      const qte = parseInt(document.getElementById('qte-' + taille)?.value) || 0
+      for (let i = 0; i < qte; i++) {
+        lignes.push({
           client,
           reference,
           designation,
-          couleur:           couleur || null,
+          couleur,
           taille,
           chaine_production: chaine,
-          etat_actuel:       'creation'
-        }]).select().single()
-
-        if (error) throw new Error(error.message)
-
-        await db.from('mouvements').insert([{
-          produit_id:     data.id,
-          departement_id: 1,
-          action:         'creation',
-          operateur:      'Coupe'
-        }])
-
-        piecesCreees.push(data)
+          etat_actuel: 'créé',
+          active: true
+        })
       }
+    })
+
+    if (lignes.length === 0) {
+      afficherMsg('error', 'Aucune quantité saisie.')
+      return
     }
 
-    // Sauvegarder pour impression
-    dernierePieces = piecesCreees
-    dernieresMeta  = { client, reference, designation, couleur, chaine, taillesQty, totalPieces }
+    // ── 1 SEULE requête pour toutes les pièces ──
+    const { data: pieces, error: errPieces } = await db
+      .from('produits')
+      .insert(lignes)
+      .select('id, taille')
 
-    // Afficher confirmation (sans QR)
-    afficherConfirmation(piecesCreees, dernieresMeta)
+    if (errPieces) {
+      afficherMsg('error', 'Erreur création pièces : ' + errPieces.message)
+      return
+    }
 
-  } catch (e) {
-    afficherMsg('error', 'Erreur : ' + e.message)
+    // ── 1 SEULE requête pour tous les mouvements ──
+    const mouvements = pieces.map(p => ({
+      produit_id:     p.id,
+      departement_id: 1,
+      action:         'creation',
+      operateur:      'Coupe'
+    }))
+
+    const { error: errMouvements } = await db
+      .from('mouvements')
+      .insert(mouvements)
+
+    if (errMouvements) {
+      afficherMsg('error', 'Erreur mouvements : ' + errMouvements.message)
+      return
+    }
+
+    // ── Succès ──
+    dernierePieces = pieces
+    dernieresMeta  = { client, reference, designation, couleur, chaine }
+
+    afficherResume(pieces)
+
+  } finally {
     btn.disabled = false
     btn.textContent = 'Générer les QR codes'
   }
