@@ -1,3 +1,4 @@
+const db = window.db
 // ──────────────────────────────────────────
 // Variables globales
 // ──────────────────────────────────────────
@@ -222,7 +223,7 @@ async function effectuerAction(action) {
   if (actionEnCours) return
 
   actionEnCours = true
-
+ try {
   const msg = document.getElementById('msg-action')
 
   msg.className = 'msg'
@@ -247,7 +248,7 @@ async function effectuerAction(action) {
       produit_id: pieceEnCours.id,
       departement_id: DEPT_ID,
       action: action.id,
-      operateur: operateurNom
+      operateur: operateurNom,
       jour: new Date().toISOString().slice(0, 10)
     }])
 
