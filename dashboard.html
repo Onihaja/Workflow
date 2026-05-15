@@ -135,7 +135,7 @@ async function charger() {
     db.from('mouvements').select('produit_id').eq('action','sortie_chaine').gte('created_at', t+'T00:00:00'),
     db.from('mouvements').select('produit_id').eq('action','entree_qualite').gte('created_at', t+'T00:00:00'),
     db.from('mouvements').select('produit_id').eq('action','entree_finition').gte('created_at', t+'T00:00:00'),
-    db.from('produits').select('id,reference,chaine_production').not('chaine_production','is',null),
+    db.from('produits').select('id,reference,chaine_production').not('chaine_production','is',null).eq('active', true),
     db.from('mouvements').select('produit_id').eq('action','sortie_chaine'),
   ])
 
