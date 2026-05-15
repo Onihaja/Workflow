@@ -90,33 +90,42 @@ async function rechercherPiece() {
     return
   }
 
-  msg.className    = 'msg'
+  msg.className = 'msg'
   msg.style.display = 'block'
-  msg.textContent  = 'Recherche en cours...'
+  msg.textContent = 'Recherche en cours...'
 
-  const { data: piece, error } = await getDb()
-    .from('produits')
-    .select('*')
-    .eq('id', id)
-    .single()
+  try {
+    const db = getDb()
+    if (!db) throw new Error('Base de données Supabase non initialisée')
 
-  if (error || !piece) {
-    afficherMsgScan('error', '❌ Produit introuvable.')
-    return
+    const { data: piece, error } = await db
+      .from('produits')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error || !piece) {
+      afficherMsgScan('error', '❌ Produit introuvable.')
+      return
+    }
+
+    const { data: mouvements } = await db
+      .from('mouvements')
+      .select('*')
+      .eq('produit_id', id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+
+    piece.dernierMouvement = mouvements?.[0] || null
+    pieceEnCours = piece
+
+    msg.style.display = 'none'
+    afficherPiece(piece)
+
+  } catch (err) {
+    console.error('Erreur rechercherPiece:', err)
+    afficherMsgScan('error', 'Erreur lors de la recherche.')
   }
-
-  const { data: mouvements } = await getDb()
-    .from('mouvements')
-    .select('*')
-    .eq('produit_id', id)
-    .order('created_at', { ascending: false })
-    .limit(1)
-
-  piece.dernierMouvement = mouvements?.[0] || null
-  pieceEnCours = piece
-
-  msg.style.display = 'none'
-  afficherPiece(piece)
 }
 
 // ──────────────────────────────────────────
