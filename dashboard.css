@@ -1,11 +1,3 @@
-
-/* ═══════════════════════════════════════
-   DASHBOARD.CSS — styles spécifiques à dashboard.html
-   Dépend de style.css pour : rien (dashboard
-   est une page autonome plein écran avec son
-   propre header .header, pas le header commun)
-═══════════════════════════════════════ */
-
 /* ── VARIABLES ── */
 :root {
   --bg:      #F0EDE6;
