@@ -1,15 +1,3 @@
-/* ═══════════════════════════════════════
-   STYLE.CSS — styles communs à toutes les pages
-   Utilisé par : index, coupe, atelier, qualite,
-   finition, objectifs, admin, historique,
-   historique-reference, dashboard
-   ═══════════════════════════════════════
-   Chaque page charge ensuite son CSS spécifique :
-     coupe.css, scan.css, dashboard.css,
-     historique.css, historique-reference.css,
-     objectifs.css, admin.css
-═══════════════════════════════════════ */
-
 /* ── RESET ── */
 * {
   box-sizing: border-box;
