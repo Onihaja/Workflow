@@ -159,6 +159,7 @@ function rendreFormulaire() {
             <th>Cumulé</th>
             <th>Total commandé</th>
             <th>Avancement</th>
+            <th>Statut</th> 
           </tr>
         </thead>
         <tbody></tbody>
@@ -186,8 +187,8 @@ function rendreFormulaire() {
           <td class="cumul-info">${d.total} pcs</td>
           <td><span class="taux-badge ${classTaux}">${d.taux}%</span></td>
           <td>
-            <button class="btn-cloture ${d.active === false ? 'btn-cloture-done' : ''}"onclick="cloturerReference('${d.chaine}', '${d.reference}')"${d.active === false ? 'disabled' : ''}>
-            ${d.active === false ? '✓ Clôturée' : 'Clôturer'}
+            <button class="btn-cloture ${d.active === false ? 'btn-cloture-done' : ''}"onclick="cloturerReference('${d.chaine}', '${d.reference}')"${d.active === false ? 'disabled title="Déjà clôturée"' : 'title="Libérer cette place"'}>
+              ${d.active === false ? '✓ Clôturée' : '⏹ Clôturer'}
             </button>
           </td>
         `
