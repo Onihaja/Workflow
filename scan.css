@@ -1,12 +1,3 @@
-
-/* ═══════════════════════════════════════
-   SCAN.CSS — styles communs aux pages de scan
-   atelier.html, qualite.html, finition.html
-   Dépend de style.css pour : header, container,
-   card, card-title, field, label, input,
-   main-btn, main-btn-link, home-link, msg, divider
-═══════════════════════════════════════ */
-
 /* ── SCAN CAMÉRA ── */
 #reader {
   width: 100%;
