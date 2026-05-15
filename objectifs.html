@@ -85,11 +85,12 @@ async function chargerDonnees() {
     .select('*')
     .eq('date', today)
 
-  // Tous les produits avec chaîne
-  const { data: produits } = await db
-    .from('produits')
-    .select('id, reference, chaine_production')
-    .not('chaine_production', 'is', null)
+ // récupère les produits actifs
+const { data: produits } = await db
+  .from('produits')
+  .select('id, reference, chaine_production')
+  .not('chaine_production', 'is', null)
+  .eq('active', true) 
 
   // Toutes les productions cumulées
   const { data: productions } = await db
