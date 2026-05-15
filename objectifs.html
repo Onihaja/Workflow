@@ -201,21 +201,65 @@ function rendreFormulaire() {
   })
 }
 async function cloturerReference(chaine, reference) {
-  if (!confirm(`Clôturer la référence ${reference} sur ${chaine} ?`)) return
+  // ── Confirmation stylée ──
+  const ok = confirm(
+    `Clôturer la référence ${reference} sur ${chaine} ?\n\n` +
+    `• Toutes les pièces seront marquées inactives\n` +
+    `• L'objectif journalier sera supprimé\n` +
+    `• La place sera libérée pour une nouvelle référence`
+  )
+  if (!ok) return
 
-  const { error } = await db
+  const msg = document.getElementById('msg-save')
+  msg.className = 'msg'
+  msg.style.display = 'block'
+  msg.textContent = `Clôture de ${reference} sur ${chaine} en cours...`
+
+  const today = dateAujourdhui()
+  let erreurs = 0
+
+  // ── Étape 1 : Marquer les pièces inactives ──
+  const { error: errProduits } = await db
     .from('produits')
     .update({ active: false })
     .eq('reference', reference)
     .eq('chaine_production', chaine)
 
-  if (error) {
-    alert('Erreur : ' + error.message)
+  if (errProduits) {
+    console.error(errProduits)
+    erreurs++
+  }
+
+  // ── Étape 2 : Supprimer l'objectif journalier du jour ──
+  const { error: errObj } = await db
+    .from('objectifs_journaliers')
+    .delete()
+    .eq('chaine', chaine)
+    .eq('reference', reference)
+    .eq('date', today)
+
+  if (errObj) {
+    console.error(errObj)
+    erreurs++
+  }
+
+  // ── Résultat ──
+  if (erreurs > 0) {
+    msg.className = 'msg error'
+    msg.textContent = `⚠️ Erreur lors de la clôture de ${reference} sur ${chaine}.`
     return
   }
 
-  alert(`✅ Référence ${reference} clôturée sur ${chaine}`)
-  chargerDonnees() // recharger le tableau
+  msg.className = 'msg success'
+  msg.textContent = `✓ Référence ${reference} clôturée sur ${chaine} — objectif supprimé.`
+
+  setTimeout(() => {
+    msg.className = 'msg'
+    msg.style.display = 'none'
+  }, 3000)
+
+  // Recharger le tableau
+  await chargerDonnees()
 }
 async function sauvegarderObjectifs() {
   const today = dateAujourdhui()
