@@ -141,3 +141,111 @@
   color: #777;
   font-family: 'DM Sans', sans-serif;
 }
+
+/* =========================================================
+   IMPRESSION QR — IDENTIQUE À coupe.html
+========================================================= */
+
+.print-zone{
+  display:none;
+}
+
+.print-page{
+  width:100%;
+  page-break-after:always;
+  padding:12mm;
+  box-sizing:border-box;
+}
+
+.print-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+
+.print-cell{
+  border:1.5px dashed #000;
+  border-radius:10px;
+  padding:10px;
+  height:255px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:#fff;
+}
+
+.print-cell-top{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:flex-start;
+}
+
+.print-cell-infos{
+  flex:1;
+}
+
+.print-cell-infos p{
+  margin:2px 0;
+  font-size:11px;
+  color:#000;
+  line-height:1.35;
+  font-family:Arial, sans-serif;
+}
+
+.print-cell-infos .lbl{
+  font-weight:700;
+}
+
+.print-cell-code{
+  margin-top:6px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.print-cell-qr{
+  width:84px;
+  height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.print-cell-lines{
+  margin-top:10px;
+}
+
+.print-dot-line{
+  border-bottom:1px dotted #888;
+  margin-bottom:7px;
+}
+
+/* =========================================================
+   MODE IMPRESSION
+========================================================= */
+
+@media print{
+
+  body *{
+    visibility:hidden;
+  }
+
+  .print-zone,
+  .print-zone *{
+    visibility:visible;
+  }
+
+  .print-zone{
+    display:block !important;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    background:#fff;
+  }
+
+  .print-page{
+    page-break-after:always;
+  }
+
+}
