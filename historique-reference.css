@@ -142,43 +142,43 @@
   font-family: 'DM Sans', sans-serif;
 }
 
-/* =========================================================
-   IMPRESSION QR — IDENTIQUE À coupe.html
-========================================================= */
-
 .print-zone{
   display:none;
 }
 
 .print-page{
   width:100%;
+  min-height:100vh;
   page-break-after:always;
-  padding:12mm;
+  padding:0;
+  margin:0;
   box-sizing:border-box;
 }
 
 .print-grid{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:10px;
+  gap:8px;
+  padding:8px;
 }
 
 .print-cell{
-  border:1.5px dashed #000;
-  border-radius:10px;
-  padding:10px;
-  height:255px;
+  border:1px dashed #000;
+  border-radius:8px;
+  padding:8px;
+  height:250px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
   background:#fff;
+  box-sizing:border-box;
 }
 
 .print-cell-top{
   display:flex;
   justify-content:space-between;
-  gap:8px;
   align-items:flex-start;
+  gap:8px;
 }
 
 .print-cell-infos{
@@ -188,8 +188,8 @@
 .print-cell-infos p{
   margin:2px 0;
   font-size:11px;
+  line-height:1.3;
   color:#000;
-  line-height:1.35;
   font-family:Arial, sans-serif;
 }
 
@@ -198,7 +198,7 @@
 }
 
 .print-cell-code{
-  margin-top:6px;
+  margin-top:5px;
   font-size:10px;
   font-weight:700;
 }
@@ -212,19 +212,31 @@
 }
 
 .print-cell-lines{
-  margin-top:10px;
+  margin-top:8px;
 }
 
 .print-dot-line{
-  border-bottom:1px dotted #888;
+  border-bottom:1px dotted #666;
   margin-bottom:7px;
 }
 
 /* =========================================================
-   MODE IMPRESSION
+   PRINT MODE
 ========================================================= */
 
+@page{
+  margin:0;
+  size:auto;
+}
+
 @media print{
+
+  html,
+  body{
+    margin:0 !important;
+    padding:0 !important;
+    background:#fff;
+  }
 
   body *{
     visibility:hidden;
@@ -241,10 +253,14 @@
     left:0;
     top:0;
     width:100%;
+    margin:0;
+    padding:0;
     background:#fff;
   }
 
   .print-page{
+    margin:0;
+    padding:0;
     page-break-after:always;
   }
 
