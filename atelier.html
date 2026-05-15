@@ -6,10 +6,6 @@
   <title>Akanjo Madagascar — Atelier</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="scan.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <script src="supabase-config.js"></script>
-  <script src="auth.js"></script>
 </head>
 <body>
 <header>
@@ -65,7 +61,10 @@
     <button class="main-btn" onclick="nouveauScan()" style="margin-top:28px">Scanner une autre pièce</button>
   </div>
 </div>
-<script src="scan.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="scan.js"></script>
 <script>
   const DEPT_ID  = 7
   const DEPT_NOM = 'Atelier'
@@ -88,5 +87,6 @@
   
   initScan(DEPT_ID, DEPT_NOM, ACTIONS)
 </script>
+  <script src="auth.js"></script>
 </body>
 </html>
