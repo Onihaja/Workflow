@@ -116,7 +116,7 @@ async function creerPieces() {
     // ── 1 seule requête pour tous les mouvements ──
     const mouvements = pieces.map(p => ({
       produit_id:     p.id,
-      departement_id: 1,
+      departement_id: 6,
       action:         'creation',
       operateur:      'Coupe',
       jour:           new Date().toISOString().slice(0, 10)
