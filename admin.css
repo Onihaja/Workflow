@@ -1,9 +1,3 @@
-/* ═══════════════════════════════════════
-   ADMIN.CSS — styles spécifiques à admin.html
-   Dépend de style.css pour : header, container,
-   card, field, label, input, main-btn, msg
-═══════════════════════════════════════ */
-
 /* ── NAVIGATION RAPIDE ── */
 .nav-links {
   display: grid;
