@@ -1,11 +1,3 @@
-/* ═══════════════════════════════════════
-   HISTORIQUE.CSS — styles spécifiques à historique.html
-   Dépend de style.css pour : rien
-   Dépend de dashboard.css pour :
-     .page, .header, .header-brand, .header-right,
-     .header-link, .histo
-═══════════════════════════════════════ */
-
 /* ── HISTO WRAPPER ── */
 .histo {
   width: 100vw;
