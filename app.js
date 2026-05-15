@@ -51,29 +51,48 @@ async function verifierLimiteRefs(chaine, reference) {
 }
 
 async function creerPieces() {
-  // ... validation existante ...
+
+  // ── Récupérer les valeurs du formulaire ──
+  const client      = document.getElementById('client').value.trim()
+  const reference   = document.getElementById('reference').value.trim()
+  const designation = document.getElementById('designation').value
+  const couleur     = document.getElementById('couleur').value.trim()
+  const chaine      = document.getElementById('chaine').value
+
+  console.log('Chaîne sélectionnée :', chaine) // ← debug
+
+  // ── Validation ──
+  if (!client || !reference || !designation || !chaine) {
+    afficherMsg('error', 'Veuillez remplir tous les champs obligatoires.')
+    return
+  }
+
+  // ── Vérifier limite références ──
+  const ok = await verifierLimiteRefs(chaine, reference)
+  if (!ok) return
 
   const btn = document.getElementById('btn-generer-qr')
   btn.disabled = true
   btn.textContent = 'Création en cours...'
 
   try {
-    // ── Construire TOUTES les pièces d'un coup ──
-    const tailles = ['T32','T34','T36','T38','T40','T42','T44','T46','T48','T50']
+    // ── Construire toutes les pièces ──
     const lignes = []
+    const taillesQty = []
 
-    tailles.forEach(taille => {
+    TAILLES.forEach(taille => {
       const qte = parseInt(document.getElementById('qte-' + taille)?.value) || 0
+      if (qte > 0) taillesQty.push({ taille, quantite: qte })
       for (let i = 0; i < qte; i++) {
         lignes.push({
           client,
           reference,
           designation,
-          couleur,
+          couleur:           couleur || null,
           taille,
           chaine_production: chaine,
-          etat_actuel: 'créé',
-          active: true
+          etat_actuel:       'créé',
+          active:            true
         })
       }
     })
@@ -83,23 +102,24 @@ async function creerPieces() {
       return
     }
 
-    // ── 1 SEULE requête pour toutes les pièces ──
+    // ── 1 seule requête pour toutes les pièces ──
     const { data: pieces, error: errPieces } = await db
       .from('produits')
       .insert(lignes)
-      .select('id, taille')
+      .select('id, taille, client, reference, couleur, designation')
 
     if (errPieces) {
       afficherMsg('error', 'Erreur création pièces : ' + errPieces.message)
       return
     }
 
-    // ── 1 SEULE requête pour tous les mouvements ──
+    // ── 1 seule requête pour tous les mouvements ──
     const mouvements = pieces.map(p => ({
       produit_id:     p.id,
       departement_id: 1,
       action:         'creation',
-      operateur:      'Coupe'
+      operateur:      'Coupe',
+      jour:           new Date().toISOString().slice(0, 10)
     }))
 
     const { error: errMouvements } = await db
@@ -113,9 +133,17 @@ async function creerPieces() {
 
     // ── Succès ──
     dernierePieces = pieces
-    dernieresMeta  = { client, reference, designation, couleur, chaine }
+    dernieresMeta  = {
+      client,
+      reference,
+      designation,
+      couleur,
+      chaine,
+      taillesQty,
+      totalPieces: pieces.length
+    }
 
-    afficherResume(pieces)
+    afficherConfirmation(pieces, dernieresMeta)
 
   } finally {
     btn.disabled = false
